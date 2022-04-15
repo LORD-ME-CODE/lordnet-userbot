@@ -6,7 +6,7 @@ from types import ModuleType
 
 
 def to_linux(name: str):
-    return '/'.join(name.replace('\\', '/').split("/")[:-1])
+    return "/".join(name.replace("\\", "/").split("/")[:-1])
 
 
 def get_module_name(insp: ModuleType):

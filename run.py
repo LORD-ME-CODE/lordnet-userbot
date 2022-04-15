@@ -18,8 +18,6 @@ if __name__ == "__main__":
     import config
     from helper.misc import __version__, git
 
-    print(sys.argv)
-
     app = Client(
         "lordnet",
         api_id=config.api_id,
@@ -54,5 +52,20 @@ if __name__ == "__main__":
         )
         os.rename("./lordnet.session", "./lordnet.session-old")
         os.execvp("python3", ["python3", "run.py"])
+
+    if len(sys.argv) == 4:
+        restart_type = sys.argv[3]
+        if restart_type == "1":
+            text = "<b>Userbot updated successfully!</b>"
+        else:
+            text = "<b>Restart completed successfully!</b>"
+        try:
+            app.send_message(
+                chat_id=sys.argv[1], text=text, reply_to_message_id=int(sys.argv[2])
+            )
+        except errors.RPCError:
+            app.send_message(chat_id=sys.argv[1], text=text)
+
+    logging.info("lordnet-userbot started!")
 
     idle()
