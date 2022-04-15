@@ -17,6 +17,9 @@ class ModulesDict(dict):
         return self.__dict[module]
 
 
+modules_dict = ModulesDict()
+
+
 git = Repo(".")
 commits_from_repo = list(git.iter_commits())
 result = len(commits_from_repo)
