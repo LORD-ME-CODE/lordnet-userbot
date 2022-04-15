@@ -11,7 +11,7 @@ from helper.misc import __version__, git
 logging.basicConfig(level=logging.INFO)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     basepath = os.path.dirname(os.path.realpath(__file__))
     if basepath != os.getcwd():
         os.chdir(basepath)
