@@ -3,10 +3,9 @@ import logging
 import platform
 import sqlite3
 import subprocess
+import sys
 
 from pyrogram import Client, errors, idle
-import config
-from helper.misc import __version__, git
 
 logging.basicConfig(level=logging.INFO)
 
@@ -15,6 +14,11 @@ if __name__ == "__main__":
     basepath = os.path.dirname(os.path.realpath(__file__))
     if basepath != os.getcwd():
         os.chdir(basepath)
+
+    import config
+    from helper.misc import __version__, git
+
+    print(sys.argv)
 
     app = Client(
         "lordnet",

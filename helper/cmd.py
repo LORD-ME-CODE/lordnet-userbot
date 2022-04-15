@@ -3,4 +3,4 @@ import sys
 
 
 def restart():
-    os.execvp(sys.executable, [sys.executable, "main.py"])
+    os.execvp(sys.executable, [sys.executable, "run.py"])
