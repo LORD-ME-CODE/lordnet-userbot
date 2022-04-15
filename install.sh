@@ -16,6 +16,7 @@ su -c "python3 -m pip install -U pip" $SUDO_USER
 su -c "python3 -m pip install -U setuptools wheel" $SUDO_USER
 
 if [[ -d "lordnet-userbot" ]]; then
+  # shellcheck disable=SC2164
   cd lordnet-userbot
 elif [[ -f ".env.dist" ]] && [[ -f "run.py" ]] && [[ -d "modules" ]]; then
   :
