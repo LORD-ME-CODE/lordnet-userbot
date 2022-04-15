@@ -1,4 +1,5 @@
 from git import Repo
+from .db import db
 
 
 class ModulesDict(dict):
@@ -27,3 +28,5 @@ top = int(result // 1000)
 ver = int((result % 1000) // 100)
 bottom = int((result % 1000) % 100)
 __version__ = f"{top}.{ver}.{bottom}"
+
+prefix = db.get("core.misc", "prefix", ".")
