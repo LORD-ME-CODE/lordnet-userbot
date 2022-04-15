@@ -73,8 +73,17 @@ case $install_type in
     su -c "pm2 start main.py --name lordnet --interpreter python3" $SUDO_USER
     su -c "pm2 save" $SUDO_USER
 
-    echo
-    echo "============================"
+    echo "                                      "
+    echo "  _               _            _      "
+    echo " | | ___  _ __ __| |_ __   ___| |_    "
+    echo " | |/ _ \| '__/ _` | '_ \ / _ | __|   "
+    echo " | | (_) | | | (_| | | | |  __| |_    "
+    echo " |_|\___/|_|  \__,_|_|_|_|\___|\___   "
+    echo "  _   _ ___  ___ _ __| |__   ___ | |_ "
+    echo "| | | / __|/ _ | '__| '_ \ / _ \| __| "
+    echo "| |_| \__ |  __| |  | |_) | (_) | |_  "
+    echo " \__,_|___/\___|_|  |_.__/ \___/ \__|  "
+    echo "                                      "
     echo "Great! lordnet-userbot installed successfully and running now!"
     echo "Installation type: PM2"
     echo "Start with: \"pm2 start lordnet\""
@@ -100,8 +109,17 @@ EOL
     systemctl start lordnet
     systemctl enable lordnet
 
-    echo
-    echo "============================"
+    echo "                                      "
+    echo "  _               _            _      "
+    echo " | | ___  _ __ __| |_ __   ___| |_    "
+    echo " | |/ _ \| '__/ _` | '_ \ / _ | __|   "
+    echo " | | (_) | | | (_| | | | |  __| |_    "
+    echo " |_|\___/|_|  \__,_|_|_|_|\___|\___   "
+    echo "  _   _ ___  ___ _ __| |__   ___ | |_ "
+    echo "| | | / __|/ _ | '__| '_ \ / _ \| __| "
+    echo "| |_| \__ |  __| |  | |_) | (_) | |_  "
+    echo " \__,_|___/\___|_|  |_.__/ \___/ \__|  "
+    echo "                                      "
     echo "Great! lordnet-userbot installed successfully and running now!"
     echo "Installation type: Systemd service"
     echo "Start with: \"sudo systemctl start lordnet\""
@@ -109,8 +127,17 @@ EOL
     echo "============================"
     ;;
   *)
-    echo
-    echo "============================"
+    echo "                                      "
+    echo "  _               _            _      "
+    echo " | | ___  _ __ __| |_ __   ___| |_    "
+    echo " | |/ _ \| '__/ _` | '_ \ / _ | __|   "
+    echo " | | (_) | | | (_| | | | |  __| |_    "
+    echo " |_|\___/|_|  \__,_|_|_|_|\___|\___   "
+    echo "  _   _ ___  ___ _ __| |__   ___ | |_ "
+    echo "| | | / __|/ _ | '__| '_ \ / _ \| __| "
+    echo "| |_| \__ |  __| |  | |_) | (_) | |_  "
+    echo " \__,_|___/\___|_|  |_.__/ \___/ \__|  "
+    echo "                                      "
     echo "Great! lordnet-userbot installed successfully!"
     echo "Installation type: Custom"
     echo "Start with: \"python3 run.py\""
