@@ -29,4 +29,4 @@ ver = int((result % 1000) // 100)
 bottom = int((result % 1000) % 100)
 __version__ = f"{top}.{ver}.{bottom}"
 
-prefix = db.get("core.misc", "prefix", ".")
+prefix = db.get("prefix", ".")

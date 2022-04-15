@@ -2,6 +2,17 @@ from json import dumps, loads
 from sqlite3 import connect, Row, Cursor, OperationalError
 import inspect
 from threading import Lock
+from types import ModuleType
+
+
+def to_linux(name: str):
+    return '/'.join(name.replace('\\', '/').split("/")[:-1])
+
+
+def get_module_name(insp: ModuleType):
+    pref = "custom." if to_linux(insp.__file__).endswith("modules") else "core"
+    module = pref + insp.__name__
+    return module
 
 
 class Database:
@@ -43,7 +54,7 @@ class Database:
             self._lock.release()
 
     def get(self, variable: str, default=None):
-        module = "custom." + inspect.getmodule(inspect.stack()[1][0]).__name__
+        module = get_module_name(inspect.getmodule(inspect.stack()[1][0]))
 
         sql = f"SELECT * FROM '{module}' WHERE var=:var"
         cur = self.__execute(module, sql, {"tabl": module, "var": variable})
@@ -55,7 +66,7 @@ class Database:
             return self._parse_row(row)
 
     def set(self, variable: str, value) -> bool:
-        module = "custom." + inspect.getmodule(inspect.stack()[1][0]).__name__
+        module = get_module_name(inspect.getmodule(inspect.stack()[1][0]))
 
         sql = f"""
         INSERT INTO '{module}' VALUES ( :var, :val, :type )
@@ -82,14 +93,14 @@ class Database:
         return True
 
     def remove(self, variable: str):
-        module = "custom." + inspect.getmodule(inspect.stack()[1][0]).__name__
+        module = get_module_name(inspect.getmodule(inspect.stack()[1][0]))
 
         sql = f"DELETE FROM '{module}' WHERE var=:var"
         self.__execute(module, sql, {"var": variable})
         self._conn.commit()
 
     def get_collection(self) -> dict:
-        module = "custom." + inspect.getmodule(inspect.stack()[1][0]).__name__
+        module = get_module_name(inspect.getmodule(inspect.stack()[1][0]))
 
         sql = f"SELECT * FROM '{module}'"
         cur = self.__execute(module, sql)
