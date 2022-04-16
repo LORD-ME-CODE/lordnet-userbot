@@ -14,6 +14,12 @@ class ModulesDict(dict):
     def get(self, key):
         return self.__dict.get(key)
 
+    def add_command(self, module: str, command: dict):
+        self.__dict[module]["commands"].append(command)
+
+    def module_in(self, module: str) -> bool:
+        return module in self.__dict
+
     def __setitem__(self, module: str, value: dict):
         self.__dict[module] = value
 
@@ -24,6 +30,9 @@ class ModulesDict(dict):
 
     def __str__(self):
         return str(self.__dict)
+
+    def __len__(self):
+        return len(self.__dict)
 
 
 modules_dict = ModulesDict()

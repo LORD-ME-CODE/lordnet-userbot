@@ -6,11 +6,20 @@ from helper.cmd import get_module_name
 from helper.misc import modules_dict, prefix
 
 
+def get_commands(x: tuple):
+    return x[0] if len(x) > 0 and isinstance(x[0], list) else None
+
+
 def module(*filters, **params):
     if not params and not filters:
         raise IndexError("None of the arguments are specified")
 
-    commands = params.get("command") or params.get("commands")
+    commands = (
+        params.get("commands")
+        or params.get("command")
+        or params.get("cmds")
+        or get_commands(filters)
+    )
     if isinstance(commands, str):
         commands = [commands]
     elif isinstance(commands, list):
@@ -22,20 +31,21 @@ def module(*filters, **params):
 
     module_value = get_module_name(inspect.getmodule(inspect.stack()[1][0]))
 
-    if module_value not in modules_dict:
+    if not modules_dict.module_in(module_value):
         modules_dict[module_value] = {
             "commands": [],
         }
 
     if commands:
-        modules_dict[module_value]["commands"].append(
+        modules_dict.add_command(
+            module_value,
             {
                 "name": commands,
                 "desc": params.get("desc")
                 or params.get("description")
                 or "Module without description",
                 "args": params.get("args") or params.get("arguments") or [],
-            }
+            },
         )
         dec = modules_dict.client.on_message(
             pyrogram.filters.command(commands, prefix) & pyrogram.filters.me

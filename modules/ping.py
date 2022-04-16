@@ -3,7 +3,7 @@ from pyrogram.types import Message
 from helper.module import module
 
 
-@module(commands=["ping", "p"])
+@module(commands=["ping", "p"], description="Check ping")
 async def ping_cmd(_, message: Message):
     start = perf_counter()
     await message.edit("<b>○ Pong!</b>")

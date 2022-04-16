@@ -22,6 +22,14 @@ async def help_cmd(_: Client, message: Message):
                 )
             else:
                 text += "<i>No commands</i>\n"
+        text += f"\nThe number of modules in the userbot: {len(modules_dict)}</b>"
+        if len(text) >= 2048:
+            await message.edit(text[:2048], disable_web_page_preview=True)
+            text = text[2048:]
+        while len(text) >= 2048:
+            await message.reply(text[:2048], disable_web_page_preview=True)
+            text = text[2048:]
+
     else:
         value = modules_dict.get("modules." + message.command[1].lower())
         if value is None:
