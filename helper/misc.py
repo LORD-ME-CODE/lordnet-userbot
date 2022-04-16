@@ -5,17 +5,25 @@ from .db import db
 class ModulesDict(dict):
     def __init__(self, **items):
         super().__init__(items)
-        self.__dict = None
+        self.__dict = {}
+        self.client = None
+
+    def items(self):
+        return self.__dict.items()
+
+    def get(self, key):
+        return self.__dict.get(key)
 
     def __setitem__(self, module: str, value: dict):
-        if module in self.__dict:
-            raise KeyError(f"Module {module} already exists")
         self.__dict[module] = value
 
     def __getitem__(self, module: str):
         if module not in self.__dict:
             raise KeyError(f"Module {module} does not exist")
         return self.__dict[module]
+
+    def __str__(self):
+        return str(self.__dict)
 
 
 modules_dict = ModulesDict()
@@ -29,4 +37,4 @@ ver = int((result % 1000) // 100)
 bottom = int((result % 1000) % 100)
 __version__ = f"{top}.{ver}.{bottom}"
 
-prefix = db.get("prefix", ".")
+prefix = db.get("prefix", ",")

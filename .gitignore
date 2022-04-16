@@ -133,3 +133,4 @@ dmypy.json
 .pyre/
 /lordnet.session
 /lordnet.sqlite3
+/lordnet.session-journal

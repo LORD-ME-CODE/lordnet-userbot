@@ -4,6 +4,8 @@ import platform
 import sqlite3
 import subprocess
 import sys
+from importlib import import_module
+from pathlib import Path
 
 from pyrogram import Client, errors, idle
 
@@ -16,7 +18,7 @@ if __name__ == "__main__":
         os.chdir(basepath)
 
     import config
-    from helper.misc import __version__, git
+    from helper.misc import __version__, git, modules_dict
 
     app = Client(
         "lordnet",
@@ -33,6 +35,7 @@ if __name__ == "__main__":
 
     try:
         app.start()
+        modules_dict.client = app
     except sqlite3.OperationalError as e:
         if str(e) == "database is locked" and os.name == "posix":
             logging.warning(
@@ -52,6 +55,15 @@ if __name__ == "__main__":
         )
         os.rename("./lordnet.session", "./lordnet.session-old")
         os.execvp("python3", ["python3", "run.py"])
+
+    for path in sorted((Path("modules")).rglob("*.py")):
+        module_path = ".".join(path.parent.parts + (path.stem,))
+        try:
+            module = import_module(module_path)
+        except Exception as e:
+            logging.warning(
+                f"Can't import module {module_path}: {e.__class__.__name__}: {e}"
+            )
 
     if len(sys.argv) == 4:
         restart_type = sys.argv[3]

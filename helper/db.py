@@ -2,17 +2,7 @@ from json import dumps, loads
 from sqlite3 import connect, Row, Cursor, OperationalError
 import inspect
 from threading import Lock
-from types import ModuleType
-
-
-def to_linux(name: str):
-    return "/".join(name.replace("\\", "/").split("/")[:-1])
-
-
-def get_module_name(insp: ModuleType):
-    pref = "custom." if to_linux(insp.__file__).endswith("modules") else "core"
-    module = pref + insp.__name__
-    return module
+from helper.cmd import get_module_name
 
 
 class Database:
