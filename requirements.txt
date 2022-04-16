@@ -1,2 +1,4 @@
 Pyrogram>=1.4.15
 environs>=9.5.0
+pathlib>=1.0.1
+psutil>=5.9.0

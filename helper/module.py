@@ -23,12 +23,12 @@ def module(*filters, **params):
 
     Parameters:
         filters (``Any``, *optional*):
-            Pyrogram filters to be used for the command. (Dont use if you want to create command module)
-        commands (``list | str``, *required if filters is not used*):
+            Pyrogram filters to be used for the command. (Dont use if you want to create command module).
+        commands (``list or str``, *required if filters is not used*):
             List of commands to be handled by the module or single command.
         description (``str``, *optional*):
             Description of the module.
-        args (``list | str``, *optional*):
+        args (``list or str``, *optional*):
             Args to be passed to the module.
     """
 
