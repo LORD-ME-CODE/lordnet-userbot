@@ -1,6 +1,6 @@
 #!/bin/bash
 if command -v termux-setup-storage; then
-  echo For termux, please use https://raw.githubusercontent.com/LORD-ME-CODE/lordnet-userbot/main/termux-install.sh
+  echo "Termux Installer: https://raw.githubusercontent.com/LORD-ME-CODE/lordnet-userbot/main/termux.sh"
   exit 1
 fi
 
@@ -25,7 +25,7 @@ else
   cd lordnet-userbot || exit 2
 fi
 
-if [[ -f ".env.dist" ]] && [[ -f "lordnet.session" ]]; then
+if [[ -f ".env" ]] && [[ -f "lordnet.session" ]]; then
   echo "It seems that lordnet-uerbot is already installed. Exiting..."
   exit
 fi
@@ -70,7 +70,7 @@ case $install_type in
       su -c "pm2 startup" $SUDO_USER
       env PATH=$PATH:/usr/bin /usr/lib/node_modules/pm2/bin/pm2 startup systemd -u $SUDO_USER --hp /home/$SUDO_USER
     fi
-    su -c "pm2 start main.py --name lordnet --interpreter python3" $SUDO_USER
+    su -c "pm2 start run.py --name lordnet --interpreter python3" $SUDO_USER
     su -c "pm2 save" $SUDO_USER
 
     echo
