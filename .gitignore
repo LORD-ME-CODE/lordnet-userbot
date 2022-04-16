@@ -131,6 +131,9 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# Other
 /lordnet.session
 /lordnet.sqlite3
 /lordnet.session-journal
+custom_modules/
