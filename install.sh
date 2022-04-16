@@ -10,7 +10,7 @@ if [[ $UID != 0 ]]; then
 fi
 
 apt update -y
-apt install python3 python3-pip git wget gnupg -y || exit 2
+apt install python3 python3-pip git wget -y || exit 2
 
 su -c "python3 -m pip install -U pip" $SUDO_USER
 su -c "python3 -m pip install -U setuptools wheel" $SUDO_USER
@@ -73,10 +73,11 @@ case $install_type in
     su -c "pm2 start run.py --name lordnet --interpreter python3" $SUDO_USER
     su -c "pm2 save" $SUDO_USER
 
+    echo
     echo "                                      "
     echo "  _               _            _      "
     echo " | | ___  _ __ __| |_ __   ___| |_    "
-    echo " | |/ _ \| '__/ _` | '_ \ / _ | __|   "
+    echo " | |/ _ \| '__/ _' | '_ \ / _ | __|   "
     echo " | | (_) | | | (_| | | | |  __| |_    "
     echo " |_|\___/|_|  \__,_|_|_|_|\___|\___   "
     echo "  _   _ ___  ___ _ __| |__   ___ | |_ "
@@ -109,10 +110,11 @@ EOL
     systemctl start lordnet
     systemctl enable lordnet
 
+    echo
     echo "                                      "
     echo "  _               _            _      "
     echo " | | ___  _ __ __| |_ __   ___| |_    "
-    echo " | |/ _ \| '__/ _` | '_ \ / _ | __|   "
+    echo " | |/ _ \| '__/ _' | '_ \ / _ | __|   "
     echo " | | (_) | | | (_| | | | |  __| |_    "
     echo " |_|\___/|_|  \__,_|_|_|_|\___|\___   "
     echo "  _   _ ___  ___ _ __| |__   ___ | |_ "
@@ -127,10 +129,11 @@ EOL
     echo "============================"
     ;;
   *)
+    echo
     echo "                                      "
     echo "  _               _            _      "
     echo " | | ___  _ __ __| |_ __   ___| |_    "
-    echo " | |/ _ \| '__/ _` | '_ \ / _ | __|   "
+    echo " | |/ _ \| '__/ _' | '_ \ / _ | __|   "
     echo " | | (_) | | | (_| | | | |  __| |_    "
     echo " |_|\___/|_|  \__,_|_|_|_|\___|\___   "
     echo "  _   _ ___  ___ _ __| |__   ___ | |_ "
