@@ -1,3 +1,4 @@
+import asyncio
 import inspect
 import logging
 import os
@@ -75,8 +76,10 @@ def module(*filters, **params):
     return sub_decorator
 
 
-def load_modules():
+def load_modules(first: bool = False):
     modules_dict.clear()
+    if not first:
+        modules_dict.client.restart()
 
     for path in sorted(sorted((Path("modules")).rglob("*.py")), key=os.path.getmtime):
         module_path = ".".join(path.parent.parts + (path.stem,))
