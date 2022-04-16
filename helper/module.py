@@ -1,4 +1,3 @@
-import asyncio
 import inspect
 import logging
 import os
@@ -6,6 +5,8 @@ from importlib import import_module
 from pathlib import Path
 
 import pyrogram
+# noinspection PyUnresolvedReferences
+from pyrogram.types import Message  # Shortcut for modules
 
 from helper.cmd import get_module_name
 from helper.misc import modules_dict, prefix
@@ -15,7 +16,22 @@ def get_commands(x: tuple):
     return x[0] if len(x) > 0 and isinstance(x[0], list) else None
 
 
+# noinspection PyIncorrectDocstring
 def module(*filters, **params):
+    """
+    Decorator for handling lordnet-userbot
+
+    Parameters:
+        filters (``Any``, *optional*):
+            Pyrogram filters to be used for the command. (Dont use if you want to create command module)
+        commands (``list | str``, *required if filters is not used*):
+            List of commands to be handled by the module or single command.
+        description (``str``, *optional*):
+            Description of the module.
+        args (``list | str``, *optional*):
+            Args to be passed to the module.
+    """
+
     if not params and not filters:
         raise IndexError("None of the arguments are specified")
 
