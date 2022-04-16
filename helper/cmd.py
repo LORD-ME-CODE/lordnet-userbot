@@ -3,7 +3,9 @@ import os
 import asyncio
 import subprocess
 import sys
+import traceback
 from types import ModuleType
+from pyrogram import errors
 
 
 def restart():
@@ -14,10 +16,18 @@ def get_module_name(insp: ModuleType):
     return insp.__name__
 
 
+default_text = "<b>Error! (Report this to @lordnetchat)</b>"
+
+
 def exception_str(e: Exception):
-    classname = e.__class__.__name__.replace("<", "").replace(">", "")
-    ex = str(e).replace("<", "").replace(">", "")
-    return f"<b>{classname}</b>: <code>{ex}</code>"
+    traceback.print_exc()
+    if isinstance(e, errors.RPCError):
+        return (
+            f"{default_text}\n"
+            f"<code>[{e.CODE} {e.ID or e.NAME}] - {e.MESSAGE}</code>"
+        )
+    else:
+        return f"{default_text}\n" f"<code>{e.__class__.__name__}: {e}</code>"
 
 
 def import_library(library_name: str, package_name: str = None):
