@@ -25,7 +25,7 @@ async def help_cmd(_: Client, message: Message):
                 )
             else:
                 text += "<i>No commands</i>\n"
-        text += f"\nThe number of modules in the userbot: {len(modules_dict)}</b>"
+        text += f"\n<b><i>The number of modules in the userbot:</i> {len(modules_dict)}</b>"
         if len(text) >= 2048:
             await message.edit(text[:2048], disable_web_page_preview=True)
             text = text[2048:]
