@@ -34,15 +34,13 @@ async def update_cmd(_, message: Message):
         await message.edit("<b>✇ Updating pip...</b> (<code>25%</code>)")
         subprocess.run([sys.executable, "-m", "pip", "install", "-U", "pip"])
         await message.edit(
-            "<b>✇ Updating setuptools and wheel...</b>"
-            " (<code>50%</code>)"
+            "<b>✇ Updating setuptools and wheel...</b>" " (<code>50%</code>)"
         )
         subprocess.run(
             [sys.executable, "-m", "pip", "install", "-U", "setuptools", "wheel"]
         )
         await message.edit(
-            "<b>✇ Updating userbot from git...</b>"
-            " (<code>75%</code>)"
+            "<b>✇ Updating userbot from git...</b>" " (<code>75%</code>)"
         )
         subprocess.run(["git", "pull"])
         await message.edit(
