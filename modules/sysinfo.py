@@ -1,7 +1,6 @@
 import platform
 
-from helper.misc import python_version, __version__
-from helper.module import module, Message
+from helper import Message, module, python_version, __version__
 import psutil
 import os
 import subprocess
@@ -56,10 +55,10 @@ async def sysinfo_cmd(_, message: Message):
         round(psutil.virtual_memory().percent),
     ]
     try:
-        if os.name == 'posix':
+        if os.name == "posix":
             system = os.popen("cat /etc/*release").read()
             b = system.find('DISTRIB_DESCRIPTION="') + 21
-            system = system[b: system.find('"', b)]
+            system = system[b : system.find('"', b)]
             system = system.replace("<", "").replace(">", "")
         else:
             system = None
