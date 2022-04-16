@@ -8,7 +8,10 @@ from helper.module import module
 @module(command="help", description="Help command", args=["module"])
 async def help_cmd(_: Client, message: Message):
     if len(message.command) == 1:
-        text = "<b>List of all available commands:</b>\n"
+        text = (
+            "<b>★ List of all available commands (lordnet-userbot)\n"
+            "Help on a specific module: <code>{prefix}help <b>[module]</b></code></b>\n\n"
+        )
         for module_name, module_obj in modules_dict.items():
             commands = module_obj["commands"]
             text += f"<b>☭ {module_name.split('.')[-1].capitalize()}:  </b>"
