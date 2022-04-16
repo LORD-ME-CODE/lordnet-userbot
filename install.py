@@ -22,4 +22,12 @@ if __name__ == "__main__":
 
     app.start()
 
+    try:
+        text = (
+            "lordnet-userbot started successfully\n"
+            "Type: <code>{}</code> to reload it"
+        )
+        app.send_message("me", text.format(restart))
+    except:
+        pass
     app.stop()
