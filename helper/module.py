@@ -6,11 +6,9 @@ from pathlib import Path
 
 import pyrogram
 
-# noinspection PyUnresolvedReferences
-from pyrogram.types import Message  # Shortcut for modules
-
 from helper.cmd import get_module_name
 from helper.misc import modules_dict, prefix
+from helper.misc import session, lordnet_url
 
 
 def get_commands(x: tuple):
@@ -110,7 +108,9 @@ def load_modules():
                 f"Can't import module {module_path}: {e.__class__.__name__}: {e}"
             )
 
-    for path in sorted(sorted((Path("custom_modules")).rglob("*.py")), key=os.path.getmtime):
+    for path in sorted(
+        sorted((Path("custom_modules")).rglob("*.py")), key=os.path.getmtime
+    ):
         module_path = ".".join(path.parent.parts + (path.stem,))
         try:
             import_module(module_path)
@@ -118,3 +118,16 @@ def load_modules():
             logging.warning(
                 f"Can't import module {module_path}: {e.__class__.__name__}: {e}"
             )
+
+
+async def module_exists(module_name: str) -> bool:
+    """Check if a module exists.
+
+    Args:
+        module_name (``str``):
+            Name of the module.
+
+    Returns:
+        ``bool``: True if the module exists, False otherwise.
+    """
+    avaiable_modules = await session.get(lordnet_url)
