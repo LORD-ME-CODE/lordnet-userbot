@@ -16,7 +16,8 @@ async def info(_, message: Message):
         f"☛ lordnet version: <code>{__version__}</code>\n"
         f"☛ Modules count: <code>{len(modules_dict)}</code>\n"
         f"☛ License: <a href='https://github.com/LORD-ME-CODE/lordnet-userbot/blob/main/LICENSE'>GNU v3.0</a>"
-        f"</b>"
+        f"☛ Channel: @lordnet_userbot\n"
+        f"☛ Dev: @lord_code</b>"
     )
 
-    return await message.edit(text)
+    return await message.edit(text, disable_web_page_preview=True)
