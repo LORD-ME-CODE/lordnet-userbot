@@ -5,7 +5,10 @@ from helper.module import module
 from helper.cmd import restart
 
 
-@module(commands=["setprefix", "setprefix_lordnet"], description="Set prefix for lordnet-userbot")
+@module(
+    commands=["setprefix", "setprefix_lordnet"],
+    description="Set prefix for lordnet-userbot",
+)
 def prefix_cmd(_, message: Message):
     if len(message.command) > 1:
         pref = message.command[1]
