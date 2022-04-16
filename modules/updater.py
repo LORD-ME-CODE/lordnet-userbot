@@ -1,8 +1,10 @@
 import os
+import subprocess
 import sys
 
 from pyrogram.types import Message
 
+from helper.cmd import exception_str
 from helper.module import module
 
 
@@ -24,3 +26,27 @@ def restart(message: Message, restart_type):
 async def restart_cmd(_, message: Message):
     await message.edit("<b>✇ Restarting...</b>")
     restart(message, "restart")
+
+
+@module(commands=["update"], desc="Update the lordnet-userbot")
+async def update_cmd(_, message: Message):
+    try:
+        await message.edit("<b>✇ Updating pip...</b>")
+        subprocess.run([sys.executable, "-m", "pip", "install", "-U", "pip"])
+        await message.edit("<b>✇ Updating setuptools and wheel...</b>")
+        subprocess.run(
+            [sys.executable, "-m", "pip", "install", "-U", "setuptools", "wheel"]
+        )
+        await message.edit("<b>✇ Updating userbot from git...</b>")
+        subprocess.run(["git", "pull"])
+        await message.edit("<b>✇ Updating from requirements.txt<code>...</code></b>")
+        subprocess.run(
+            [sys.executable, "-m", "pip", "install", "-U", "-r", "requirements.txt"]
+        )
+        await message.edit(
+            "<b>✔ Update completed successfully, restarting userbot...</b>"
+        )
+    except Exception as e:
+        await message.edit(exception_str(e))
+    else:
+        restart(message, "update")

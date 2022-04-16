@@ -38,16 +38,22 @@ if __name__ == "__main__":
         app.start()
         modules_dict.client = app
     except sqlite3.OperationalError as e:
-        if str(e) == "database is locked" and os.name == "posix":
-            logging.warning(
-                "Session file is locked. Trying to kill blocking process..."
-            )
-            output = subprocess.run(
-                ["fuser", "lordnet.session"], capture_output=True
-            ).stdout.decode()
-            pid = output.split()[0]
-            subprocess.run(["kill", pid])
-            os.execvp("python3", ["python3", "run.py"])
+        if str(e) == "database is locked":
+            if os.name == "posix":
+                logging.warning(
+                    "Session file is locked. Trying to kill blocking process..."
+                )
+                output = subprocess.run(
+                    ["fuser", "lordnet.session"], capture_output=True
+                ).stdout.decode()
+                pid = output.split()[0]
+                subprocess.run(["kill", pid])
+                os.execvp("python3", ["python3", "run.py"])
+            else:
+                logging.warning(
+                    "Session file is locked. Kill it manually in the task manager."
+                )
+                sys.exit(-1)
         raise e from None
     except (errors.NotAcceptable, errors.Unauthorized) as e:
         logging.error(
