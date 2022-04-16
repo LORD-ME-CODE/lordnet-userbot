@@ -59,7 +59,10 @@ async def sysinfo_cmd(_, message: Message):
         system = os.popen("cat /etc/*release").read()
         b = system.find('DISTRIB_DESCRIPTION="') + 21
         system = system[b : system.find('"', b)]
-        info.append(system.replace("<", "").replace(">", ""))
+        system = system.replace("<", "").replace(">", "")
+        if not system:
+            raise Exception
+        info.append(system)
     except Exception:
         try:
             system = platform.system()
