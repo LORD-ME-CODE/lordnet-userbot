@@ -26,7 +26,7 @@ else
 fi
 
 if [[ -f ".env" ]] && [[ -f "lordnet.session" ]]; then
-  echo "It seems that lordnet-uerbot is already installed. Exiting..."
+  echo "It seems that lordnet-userbot is already installed. Exiting..."
   exit
 fi
 
