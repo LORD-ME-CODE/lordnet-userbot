@@ -1,4 +1,3 @@
 Pyrogram
 environs
-pathlib
 psutil
