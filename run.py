@@ -4,6 +4,7 @@ import platform
 import sqlite3
 import subprocess
 import sys
+from threading import Thread
 
 from pyrogram import Client, errors, idle
 
@@ -56,7 +57,7 @@ if __name__ == "__main__":
         os.rename("./lordnet.session", "./lordnet.session-old")
         os.execvp("python3", ["python3", "run.py"])
 
-    load_modules()
+    thread = Thread(target=load_modules).start()
 
     if len(sys.argv) == 4:
         restart_type = sys.argv[3]
