@@ -1,4 +1,8 @@
 import inspect
+import logging
+import os
+from importlib import import_module
+from pathlib import Path
 
 import pyrogram
 
@@ -69,3 +73,16 @@ def module(*filters, **params):
         return wrapper
 
     return sub_decorator
+
+
+def load_modules():
+    modules_dict.clear()
+
+    for path in sorted(sorted((Path("modules")).rglob("*.py")), key=os.path.getmtime):
+        module_path = ".".join(path.parent.parts + (path.stem,))
+        try:
+            import_module(module_path)
+        except Exception as e:
+            logging.warning(
+                f"Can't import module {module_path}: {e.__class__.__name__}: {e}"
+            )

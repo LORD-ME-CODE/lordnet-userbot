@@ -14,6 +14,9 @@ class ModulesDict(dict):
     def get(self, key):
         return self.__dict.get(key)
 
+    def clear(self):
+        self.__dict.clear()
+
     def add_command(self, module: str, command: dict):
         self.__dict[module]["commands"].append(command)
 

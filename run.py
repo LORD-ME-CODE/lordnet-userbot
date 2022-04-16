@@ -4,10 +4,10 @@ import platform
 import sqlite3
 import subprocess
 import sys
-from importlib import import_module
-from pathlib import Path
 
 from pyrogram import Client, errors, idle
+
+from helper.module import load_modules
 
 logging.basicConfig(level=logging.INFO)
 
@@ -56,14 +56,7 @@ if __name__ == "__main__":
         os.rename("./lordnet.session", "./lordnet.session-old")
         os.execvp("python3", ["python3", "run.py"])
 
-    for path in sorted(sorted((Path("modules")).rglob("*.py")), key=os.path.getmtime):
-        module_path = ".".join(path.parent.parts + (path.stem,))
-        try:
-            module = import_module(module_path)
-        except Exception as e:
-            logging.warning(
-                f"Can't import module {module_path}: {e.__class__.__name__}: {e}"
-            )
+    load_modules()
 
     if len(sys.argv) == 4:
         restart_type = sys.argv[3]
