@@ -29,7 +29,7 @@ async def sysinfo_cmd(_, message: Message):
     await message.edit("<b>😇 Getting system info...</b>")
 
     text = (
-        "<b>Usage:\n"
+        "<b>⚙️ Usage:\n"
         "    <u>• CPU</u>: {} Cores ({}%)\n"
         "    <u>• RAM:</u> {}/{} ({}%)\n\n"
         "💻 System INFO:\n"
@@ -59,7 +59,7 @@ async def sysinfo_cmd(_, message: Message):
         if os.name == 'posix':
             system = os.popen("cat /etc/*release").read()
             b = system.find('DISTRIB_DESCRIPTION="') + 21
-            system = system[b : system.find('"', b)]
+            system = system[b: system.find('"', b)]
             system = system.replace("<", "").replace(">", "")
         else:
             system = None
