@@ -23,7 +23,7 @@ def module(*filters, **params):
 
     Parameters:
         filters (``Any``, *optional*):
-            Pyrogram filters to be used for the command. (Dont use if you want to create command module).
+            Pyrogram filters to be used for the command.
         commands (``list or str``, *required if filters is not used*):
             List of commands to be handled by the module or single command.
         description (``str``, *optional*):
@@ -68,9 +68,14 @@ def module(*filters, **params):
                 "args": params.get("args") or params.get("arguments") or [],
             },
         )
-        dec = modules_dict.client.on_message(
-            pyrogram.filters.command(commands, prefix()) & pyrogram.filters.me
-        )
+        if filters:
+            dec = modules_dict.client.on_message(
+                pyrogram.filters.command(commands, prefix()) & filters
+            )
+        else:
+            dec = modules_dict.client.on_message(
+                pyrogram.filters.command(commands, prefix()) & pyrogram.filters.me
+            )
     else:
         dec = modules_dict.client.on_message(*filters)
 
