@@ -9,7 +9,7 @@ from helper.module import module
 async def help_cmd(_: Client, message: Message):
     if len(message.command) == 1:
         text = (
-            "<b>★ List of all available commands (lordnet-userbot)\n"
+            "<b>★ List of all available commands (<a href='https://t.me/lordnet_userbot'>lordnet-userbot</a>)\n"
             f"Help on a specific module: <code>{prefix()}help <b>[module]</b></code></b>\n\n"
         )
         for module_name, module_obj in modules_dict.items():

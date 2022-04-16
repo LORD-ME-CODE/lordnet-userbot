@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from sys import version_info
+
 from git import Repo
 from pyrogram import Client
 
@@ -64,3 +66,6 @@ def set_prefix(new: str):
     db.set("prefix", new)
     global _prefix_
     _prefix_ = prefix
+
+
+python_version = f"{version_info[0]}.{version_info[1]}.{version_info[2]}"
