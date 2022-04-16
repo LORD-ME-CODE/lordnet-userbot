@@ -56,10 +56,13 @@ async def sysinfo_cmd(_, message: Message):
         round(psutil.virtual_memory().percent),
     ]
     try:
-        system = os.popen("cat /etc/*release").read()
-        b = system.find('DISTRIB_DESCRIPTION="') + 21
-        system = system[b : system.find('"', b)]
-        system = system.replace("<", "").replace(">", "")
+        if os.name == 'posix':
+            system = os.popen("cat /etc/*release").read()
+            b = system.find('DISTRIB_DESCRIPTION="') + 21
+            system = system[b : system.find('"', b)]
+            system = system.replace("<", "").replace(">", "")
+        else:
+            system = None
         if not system:
             raise Exception
         info.append(system)
