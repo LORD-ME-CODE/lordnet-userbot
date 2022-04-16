@@ -23,6 +23,7 @@ def git_python():
     return value
 
 
+# noinspection PyBroadException
 @module(commands=["sysinfo", "sys", "sinfo"])
 async def sysinfo_cmd(_, message: Message):
     await message.edit("<b>😇 Getting system info...</b>")
