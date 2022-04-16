@@ -12,8 +12,8 @@ async def info(_, message: Message):
 
     text = (
         '<b><a href="https://t.me/lordnet_userbot">✉ lordnet-userbot</a> INFO:\n\n'
+        f"☛ lordnet version: <code>{__version__}</code>\n\n"
         f"☛ Python version: <code>{python_version}</code>\n"
-        f"☛ lordnet version: <code>{__version__}</code>\n"
         f"☛ Modules count: <code>{len(modules_dict)}</code>\n"
         f"☛ License: <a href='https://github.com/LORD-ME-CODE/lordnet-userbot/blob/main/LICENSE'>GNU v3.0</a>\n"
         f"☛ Channel: @lordnet_userbot\n"
