@@ -1,4 +1,8 @@
+from __future__ import annotations
+
 from git import Repo
+from pyrogram import Client
+
 from .db import db
 
 
@@ -6,7 +10,7 @@ class ModulesDict(dict):
     def __init__(self, **items):
         super().__init__(items)
         self.__dict = {}
-        self.client = None
+        self.client: Client | None = None
 
     def items(self):
         return self.__dict.items()
