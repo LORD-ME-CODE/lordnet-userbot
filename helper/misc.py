@@ -9,7 +9,7 @@ class ModulesDict(dict):
         self.client = None
 
     def items(self):
-        return sorted(self.__dict.items(), key=lambda x: x[0].lower())
+        return self.__dict.items()
 
     def get(self, key):
         return self.__dict.get(key)
