@@ -22,7 +22,7 @@ async def spam_cmd(_, message: Message):
 
     cooldown = cooldowns[cmd]
 
-    text = message.text.split(maxsplit=1)[1]
+    text = message.text.split(maxsplit=2)[2]
     reply = message.reply_to_message.message_id if message.reply_to_message else None
 
     if cooldown:
