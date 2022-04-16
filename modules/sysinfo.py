@@ -61,7 +61,11 @@ async def sysinfo_cmd(_, message: Message):
         system = system[b : system.find('"', b)]
         info.append(system.replace("<", "").replace(">", ""))
     except Exception:
-        info.append("n/a")
+        try:
+            system = platform.system()
+            info.append(system)
+        except Exception:
+            info.append("n/a")
     try:
         info.append(platform.release().replace("<", "").replace(">", ""))
     except Exception:
