@@ -5,6 +5,7 @@ from importlib import import_module
 from pathlib import Path
 
 import pyrogram
+
 # noinspection PyUnresolvedReferences
 from pyrogram.types import Message  # Shortcut for modules
 
