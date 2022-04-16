@@ -17,6 +17,8 @@ async def info(_, message: Message):
         f"☛ Modules count: <code>{len(modules_dict)}</code>\n"
         f"☛ License: <a href='https://github.com/LORD-ME-CODE/lordnet-userbot/blob/main/LICENSE'>GNU v3.0</a>\n"
         f"☛ Channel: @lordnet_userbot\n"
+        f"☛ Chat: @lordnetchat\n"
+        f"☛ Repository: <a href='https://github.com/LORD-ME-CODE/lordnet-userbot'>lordnet-userbot</a>\n"
         f"☛ Dev: @lord_code</b>"
     )
 

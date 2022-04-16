@@ -2,6 +2,7 @@ import sys
 
 from pyrogram import Client
 import config
+from helper import __version__, python_version, modules_dict
 
 
 if __name__ == "__main__":
@@ -24,8 +25,16 @@ if __name__ == "__main__":
 
     try:
         text = (
-            "lordnet-userbot started successfully\n"
-            "Type: <code>{}</code> to reload it"
+            '<b><a href="https://t.me/lordnet_userbot">✉ lordnet-userbot</a> Started successfully!\n\n'
+            f"☛ lordnet version: <code>{__version__}</code>\n\n"
+            f"☛ Python version: <code>{python_version}</code>\n"
+            f"☛ Modules count: <code>{len(modules_dict)}</code>\n"
+            f"☛ License: <a href='https://github.com/LORD-ME-CODE/lordnet-userbot/blob/main/LICENSE'>GNU v3.0</a>\n"
+            f"☛ Channel: @lordnet_userbot\n"
+            f"☛ Chat: @lordnetchat\n"
+            f"☛ Repository: <a href='https://github.com/LORD-ME-CODE/lordnet-userbot'>lordnet-userbot</a>\n"
+            f"☛ Dev: @lord_code</b>\n\n"
+            f"☛ Use this to restart the bot:\n<code>{restart}</code></b>"
         )
         app.send_message("me", text.format(restart))
     except:
