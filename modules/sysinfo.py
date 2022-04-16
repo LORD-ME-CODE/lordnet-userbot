@@ -30,7 +30,7 @@ async def sysinfo_cmd(_, message: Message):
 
     text = (
         "<b>Usage:\n"
-        "    <u>• CPU</u>: {} ({}%)\n"
+        "    <u>• CPU</u>: {} Cores ({}%)\n"
         "    <u>• RAM:</u> {}/{} ({}%)\n\n"
         "💻 System INFO:\n"
         "    <u>• OS:</u> {}\n"
@@ -51,9 +51,8 @@ async def sysinfo_cmd(_, message: Message):
             (psutil.virtual_memory().total - psutil.virtual_memory().available)
             / 1024
             / 1024,
-            1,
         ),
-        round(psutil.virtual_memory().total / 1024 / 1024, 1),
+        round(psutil.virtual_memory().total / 1024 / 1024),
         round(psutil.virtual_memory().percent),
     ]
     try:
