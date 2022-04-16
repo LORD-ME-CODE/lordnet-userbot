@@ -2,7 +2,6 @@ import sys
 
 from pyrogram import Client
 import config
-from helper import __version__, python_version, modules_dict
 
 
 if __name__ == "__main__":
@@ -25,8 +24,10 @@ if __name__ == "__main__":
 
     # noinspection PyPep8
     try:
+        from helper import __version__, python_version, modules_dict
+
         text = (
-            '<b><a href="https://t.me/lordnet_userbot">✉ lordnet-userbot</a> Started successfully!\n\n'
+            '<b><a href="https://t.me/lordnet_userbot">✉ lordnet-userbot</a> loaded successfully!\n\n'
             f"☛ lordnet version: <code>{__version__}</code>\n\n"
             f"☛ Python version: <code>{python_version}</code>\n"
             f"☛ Modules count: <code>{len(modules_dict)}</code>\n"
