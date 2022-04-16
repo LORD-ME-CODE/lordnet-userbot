@@ -14,8 +14,8 @@ async def help_cmd(_: Client, message: Message):
             text += f"<b>☭ {module_name.split('.')[-1].capitalize()}:  </b>"
             if len(commands) > 0:
                 text += (
-                    ", ".join(
-                        f'{", ".join(f"<code>{prefix}" + c + "</code>" for c in cmd["name"])}'
+                    " ".join(
+                        f'{" ".join(f"<code>{prefix}" + c + "</code>" for c in cmd["name"])}'
                         for cmd in commands
                     )
                     + "\n"
@@ -32,7 +32,7 @@ async def help_cmd(_: Client, message: Message):
             if len(commands) > 0:
                 text += (
                     "\n".join(
-                        f'<b>{", ".join(f"<code>{prefix}"+c+"</code>" for c in cmd["name"])}'
+                        f'<b>{" ".join(f"<code>{prefix}"+c+"</code>" for c in cmd["name"])}'
                         f' {" ".join("["+c+"]" for c in cmd["args"])}</b>'
                         f'</code> - <i>{cmd["desc"]}</i>'
                         for cmd in commands
