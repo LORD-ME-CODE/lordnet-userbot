@@ -35,7 +35,7 @@ async def sysinfo_cmd(_, message: Message):
         "    <u>• OS:</u> {}\n"
         "    <u>• Kernel:</u> {}\n"
         "    <u>• Arch:</u> {}\n"
-        "    <u>• Version:</u> {}\n"
+        "    <u>• Version:</u> {}\n\n"
         "📦 Python:\n"
         "    <u>• Version:</u> {}\n"
         "    <u>• lordnet:</u> {}\n"
