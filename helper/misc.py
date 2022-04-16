@@ -75,12 +75,4 @@ python_version = f"{version_info[0]}.{version_info[1]}.{version_info[2]}"
 
 session = ClientSession()
 
-lordnet_url = (
-    asyncio.get_event_loop()
-    .run_until_complete(
-        session.get(
-            "https://github.com/LORD-ME-CODE/lordnet-userbot/blob/main/base_url.txt"
-        )
-    )
-    .text
-)
+lordnet_url = 'https://u.lordnet.ml/'
