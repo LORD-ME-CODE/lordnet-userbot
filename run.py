@@ -56,7 +56,7 @@ if __name__ == "__main__":
         os.rename("./lordnet.session", "./lordnet.session-old")
         os.execvp("python3", ["python3", "run.py"])
 
-    for path in sorted((Path("modules")).rglob("*.py")):
+    for path in sorted(sorted((Path("modules")).rglob("*.py")), key=os.path.getmtime):
         module_path = ".".join(path.parent.parts + (path.stem,))
         try:
             module = import_module(module_path)
