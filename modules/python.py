@@ -76,6 +76,7 @@ async def aexec(codea, client, message):
         return jj
 
 
+# noinspection PyPep8
 @module(commands=["aex", "aexec", "aexnoedit"], desc="Async execute python code")
 async def aexec_handler(client: Client, message: Message):
     try:
@@ -106,6 +107,7 @@ async def aexec_handler(client: Client, message: Message):
         return await message.edit(exception_str(ex))
 
 
+# noinspection PyPep8
 @module(commands=["aev", "aeval"], desc="Async evaluate python code")
 async def aeval_handler(client: Client, message: Message):
     try:

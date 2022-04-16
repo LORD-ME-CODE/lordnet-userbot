@@ -23,6 +23,7 @@ if __name__ == "__main__":
 
     app.start()
 
+    # noinspection PyPep8
     try:
         text = (
             '<b><a href="https://t.me/lordnet_userbot">✉ lordnet-userbot</a> Started successfully!\n\n'

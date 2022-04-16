@@ -59,6 +59,7 @@ async def sysinfo_cmd(_, message: Message):
         if os.name == "posix":
             system = os.popen("cat /etc/*release").read()
             b = system.find('DISTRIB_DESCRIPTION="') + 21
+            # noinspection PyPep8
             system = system[b : system.find('"', b)]
             system = system.replace("<", "").replace(">", "")
         else:

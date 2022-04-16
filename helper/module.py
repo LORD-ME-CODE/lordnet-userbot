@@ -120,7 +120,7 @@ def load_modules():
             )
 
 
-async def module_exists(module_name: str) -> bool:
+async def module_exists(module_name: str):
     """Check if a module exists.
 
     Args:
