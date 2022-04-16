@@ -10,7 +10,7 @@ async def help_cmd(_: Client, message: Message):
     if len(message.command) == 1:
         text = (
             "<b>★ List of all available commands (lordnet-userbot)\n"
-            f"Help on a specific module: <code>{prefix}help <b>[module]</b></code></b>\n\n"
+            f"Help on a specific module: <code>{prefix()}help <b>[module]</b></code></b>\n\n"
         )
         for module_name, module_obj in modules_dict.items():
             commands = module_obj["commands"]
@@ -18,7 +18,7 @@ async def help_cmd(_: Client, message: Message):
             if len(commands) > 0:
                 text += (
                     " ".join(
-                        f'{" ".join(f"<code>{prefix}" + c + "</code>" for c in cmd["name"])}'
+                        f'{" ".join(f"<code>{prefix()}" + c + "</code>" for c in cmd["name"])}'
                         for cmd in commands
                     )
                     + "\n"
@@ -43,7 +43,7 @@ async def help_cmd(_: Client, message: Message):
             if len(commands) > 0:
                 text += (
                     "\n".join(
-                        f'<b>{" ".join(f"<code>{prefix}"+c+"</code>" for c in cmd["name"])}'
+                        f'<b>{" ".join(f"<code>{prefix()}"+c+"</code>" for c in cmd["name"])}'
                         f' {" ".join("["+c+"]" for c in cmd["args"])}</b>'
                         f'</code> - <i>{cmd["desc"]}</i>'
                         for cmd in commands

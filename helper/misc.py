@@ -46,4 +46,14 @@ ver = int((result % 1000) // 100)
 bottom = int((result % 1000) % 100)
 __version__ = f"{top}.{ver}.{bottom}"
 
-prefix = db.get("prefix", ",")
+_prefix_ = db.get("prefix", ",")
+
+
+def prefix():
+    return _prefix_
+
+
+def set_prefix(new: str):
+    db.set("prefix", new)
+    global _prefix_
+    _prefix_ = prefix
