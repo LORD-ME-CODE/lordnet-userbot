@@ -133,7 +133,7 @@ def load_modules():
 
 async def module_exists(module_name: str):
     try:
-        avaiable_modules = await session.get(lordnet_url + "modules.txt")
+        avaiable_modules = await session.get(lordnet_url + "all")
         return module_name in await avaiable_modules.text()
     except:
         return False

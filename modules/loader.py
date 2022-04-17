@@ -65,7 +65,23 @@ async def loader_cmd(_, message: Message):
             if not await module_exists(name):
                 await message.edit(f"<b>🙄 Модуль <code>{name}</code> не найден</b>")
                 return
-            link = lordnet_url + f"custom/{name}.py"
+            link = lordnet_url + name
+            async with session.get(link) as response:
+                if response.status != 200:
+                    await message.edit(
+                        f"<b>🙄 Модуль <code>{name}</code> не удалось установить\n"
+                        f"🔃 Проверь URL и попробуй ещё раз</b>"
+                    )
+                    return
+                data = await response.read()
+                if b"@module" not in data or b"from helper import" not in data:
+                    return await message.edit(
+                        f"<b>🙄 Модуль <code>{name}</code> не валидный.\n"
+                        f"🔃 Проверь его и попробуй ещё раз</b>"
+                    )
+                async with open(f"custom/{name}.py", "wb") as f:
+                    await f.write(data)
+                await load_module(name)
         elif is_file:
             await message.reply_to_message.download("custom/" + name + ".py")
             await load_module(name)
@@ -108,7 +124,7 @@ async def loader_cmd(_, message: Message):
             if not await module_exists(name):
                 await message.edit(f"<b>🙄 Модуль <code>{name}</code> не существует</b>")
                 return
-            link = lordnet_url + f"custom/{name}.py"
+            link = lordnet_url + name
         else:
             link = message.command[1]
         async with session.get(link) as response:
