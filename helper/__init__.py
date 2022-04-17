@@ -5,5 +5,6 @@ from .db import db
 
 # noinspection PyUnresolvedReferences
 from pyrogram import Client  # Shortcut for modules
+
 # noinspection PyUnresolvedReferences
 from pyrogram.types import Message  # Shortcut for modules

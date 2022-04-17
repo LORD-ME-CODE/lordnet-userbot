@@ -53,4 +53,6 @@ async def ddos_cmd(_, message: Message):
             )
         await sleep(delay)
 
-    await message.edit(f"<b>🌴 DDOS on {message.command[1]} completed successfully (<code>100%</code>)</b>")
+    await message.edit(
+        f"<b>🌴 DDOS on {message.command[1]} completed successfully (<code>100%</code>)</b>"
+    )
