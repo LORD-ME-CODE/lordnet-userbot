@@ -38,6 +38,7 @@ async def loader_cmd(_, message: Message):
         ):
             await message.edit("<b>🙄 Укажите модуль для загрузки</b>")
             return
+        await message.edit("👿 Устанавливаю модуль...")
         if message.reply_to_message:
             name = message.reply_to_message.document.file_name.split(".")[0]
             is_url = False
@@ -79,10 +80,8 @@ async def loader_cmd(_, message: Message):
                     )
                 async with open(f"custom/{name}.py", "wb") as f:
                     await f.write(data)
-                restart()
         elif is_file:
             await message.reply_to_message.download("custom/" + name + ".py")
-            restart()
         else:
             link = message.command[1]
             async with session.get(link) as response:
@@ -100,8 +99,9 @@ async def loader_cmd(_, message: Message):
                     )
                 async with open(f"custom/{name}.py", "wb") as f:
                     await f.write(data)
-                restart()
+                
         await message.edit(f"<b>💪 Модуль <code>{name}</code> загружён</b>")
+        restart()
     elif cmd == "updatemod":
         if len(message.command) == 1:
             await message.edit("<b>🙄 Укажите модуль для загрузки</b>")
