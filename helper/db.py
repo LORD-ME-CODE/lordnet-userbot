@@ -102,6 +102,9 @@ class Database:
         return collection
 
     def close(self):
+        module = get_module_name(inspect.getmodule(inspect.stack()[1][0]))
+        if not module.startswith(("__main__", "modules")):
+            return
         self._conn.commit()
         self._conn.close()
 
