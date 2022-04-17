@@ -99,11 +99,16 @@ def module(*filters, **params):
 def load_modules():
     modules_dict.clear()
 
+    imported = 0
+    exceptions = 0
+
     for path in sorted(sorted((Path("modules")).rglob("*.py")), key=os.path.getmtime):
         module_path = ".".join(path.parent.parts + (path.stem,))
         try:
             import_module(module_path)
+            imported += 1
         except Exception as e:
+            exceptions += 1
             logging.warning(
                 f"Can't import module {module_path}: {e.__class__.__name__}: {e}"
             )
@@ -112,10 +117,16 @@ def load_modules():
         module_path = ".".join(path.parent.parts + (path.stem,))
         try:
             import_module(module_path)
+            imported += 1
         except Exception as e:
+            exceptions += 1
             logging.warning(
                 f"Can't import module {module_path}: {e.__class__.__name__}: {e}"
             )
+
+    logging.info(f"Loaded {imported} modules")
+    if exceptions:
+        logging.warning(f"{exceptions} modules failed to load")
 
 
 async def module_exists(module_name: str):
