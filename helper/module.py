@@ -127,4 +127,4 @@ async def module_exists(module_name: str):
 
 
 async def load_module(module_name: str):
-    import_module("custom/" + module_name)
+    import_module("custom." + module_name)

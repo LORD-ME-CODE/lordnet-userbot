@@ -83,7 +83,7 @@ async def loader_cmd(_, message: Message):
                     )
                 async with open(f"custom/{name}.py", "wb") as f:
                     await f.write(data)
-                await load_module(name + ".py")
+                await load_module(name)
         await message.edit(f"<b>💪 Module <code>{name}</code> loaded</b>")
     elif cmd == "updatemod":
         if len(message.command) == 1:
@@ -102,7 +102,7 @@ async def loader_cmd(_, message: Message):
             )
             return
         if not is_url:
-            link = lordnet_url + f"modules/{name}.py"
+            link = lordnet_url + f"custom/{name}.py"
         else:
             link = message.command[1]
         async with session.get(link) as response:
@@ -120,7 +120,7 @@ async def loader_cmd(_, message: Message):
                 )
             async with open(f"custom/{name}.py", "wb") as f:
                 await f.write(data)
-            await load_module(name + ".py")
+            await load_module(name)
     else:
         if len(message.command) == 1:
             await message.edit("<b>🙄 Please specify a module to unload</b>")
