@@ -1,5 +1,4 @@
 import os
-import shutil
 import zipfile
 from io import BytesIO
 
@@ -10,7 +9,6 @@ from helper import (
     prefix,
     module_exists,
     session,
-    load_module,
     restart,
 )
 from validators import url
@@ -81,10 +79,10 @@ async def loader_cmd(_, message: Message):
                     )
                 async with open(f"custom/{name}.py", "wb") as f:
                     await f.write(data)
-                await load_module(name)
+                restart()
         elif is_file:
             await message.reply_to_message.download("custom/" + name + ".py")
-            await load_module(name)
+            restart()
         else:
             link = message.command[1]
             async with session.get(link) as response:
@@ -102,7 +100,7 @@ async def loader_cmd(_, message: Message):
                     )
                 async with open(f"custom/{name}.py", "wb") as f:
                     await f.write(data)
-                await load_module(name)
+                restart()
         await message.edit(f"<b>💪 Модуль <code>{name}</code> загружён</b>")
     elif cmd == "updatemod":
         if len(message.command) == 1:
@@ -142,7 +140,7 @@ async def loader_cmd(_, message: Message):
                 )
             async with open(f"custom/{name}.py", "wb") as f:
                 await f.write(data)
-            await load_module(name)
+            restart()
     else:
         if len(message.command) == 1:
             await message.edit("<b>🙄 Пожалуйста, укажите модуль для удаления</b>")
