@@ -38,9 +38,4 @@ if __name__ == "__main__":
     except:
         pass
 
-    if not os.path.exists("downloads"):
-        os.mkdir("downloads")
-    if not os.path.exists("custom"):
-        os.mkdir("custom")
-
     app.stop()
