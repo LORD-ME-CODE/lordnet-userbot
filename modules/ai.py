@@ -56,11 +56,11 @@ async def ai_handler_status(_, message: Message):
     raise ContinuePropagation
 
 
-@module(commands=["ai"], desc="Enable/Disable ai mode")
+@module(commands=["ai"], desc="Вкл/Выкл искуственный интеллект в текущем чате")
 async def ai_mode(_, message: Message):
     now = not status.get(str(message.chat.id))
     status[str(message.chat.id)] = now
     db.set("status", status)
     await message.edit(
-        f'<code>AI mode for this chat is now</code> <b>{"Enabled ✅" if now else "Disabled ⛔"}</b>'
+        f'<code>ИИ теперь</code> <b>{"Включён ✅" if now else "Выключен ⛔"} в этом чате</b>'
     )

@@ -8,7 +8,7 @@ from helper.module import module
 from helper.db import db
 
 
-_afk = db.get("afk", {"status": False, "reason": "Sleeping...", "start": 0})
+_afk = db.get("afk", {"status": False, "reason": "Сплю...", "start": 0})
 
 
 is_afk = filters.create(lambda _, __, ___: _afk["status"])
@@ -32,13 +32,11 @@ async def afk(_, message: Message):
         start = datetime.datetime.fromtimestamp(_afk["start"])
         end = datetime.datetime.now().replace(microsecond=0)
         afk_time = end - start
-        text = "<b>😴 I'm AFK now.\n" "I'm were in AFK: <code>{}</code></b>".format(
-            afk_time
-        )
+        text = "<b>😴 Я AFK сейчас.\n" "Уже прошло: <code>{}</code></b>".format(afk_time)
         return await message.reply(text)
 
 
-@module(commands=["afk", "unafk"], desc="Set yourself as AFK", args=["reason"])
+@module(commands=["afk", "unafk"], desc="Включить AFK", args=["причина"])
 async def afk_cmd(_, message: Message):
     now = not _afk["status"]
     _afk["status"] = now
@@ -46,17 +44,12 @@ async def afk_cmd(_, message: Message):
         _afk["reason"] = message.text.split(maxsplit=1)[1]
     if now:
         _afk["start"] = int(datetime.datetime.now().timestamp())
-        text = "<b>AFK</b> mode is now enabled\n" "Reason: <b>{}</b>".format(
-            _afk["reason"]
-        )
+        text = "<b>AFK</b> режим включён\n" "Причина: <b>{}</b>".format(_afk["reason"])
     else:
         start = datetime.datetime.fromtimestamp(_afk["start"])
         end = datetime.datetime.now().replace(microsecond=0)
         afk_time = end - start
-        text = (
-            "<b>🙂 You are no longer AFK.\n"
-            "You were in AFK: <code>{}</code></b>".format(afk_time)
-        )
+        text = "<b>🙂 Вы больше не AFK.\n" "Прошло: <code>{}</code></b>".format(afk_time)
     db.set("afk", _afk)
 
     await message.edit(text)

@@ -7,13 +7,14 @@ from helper.cmd import restart
 
 @module(
     commands=["setprefix", "setprefix_lordnet"],
-    description="Set prefix for lordnet-userbot",
+    args=["символ"],
+    description="Установить префикс для lordnet-userbot",
 )
 def prefix_cmd(_, message: Message):
     if len(message.command) > 1:
         pref = message.command[1]
         set_prefix(pref)
-        message.edit(f"<b>Prefix [ <code>{pref}</code> ] is set!</b>")
+        message.edit(f"<b>Префикс 『 <code>{pref}</code> 』 установлен!</b>")
         restart()
     else:
-        message.edit("<b>The prefix must not be empty!</b>")
+        message.edit("<b>Префикс не может быть пустым!</b>")

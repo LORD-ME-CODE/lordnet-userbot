@@ -18,21 +18,25 @@ def get_commands(x: tuple):
 # noinspection PyIncorrectDocstring
 def module(*filters, **params):
     """
-    Decorator for handling lordnet-userbot
+    Декоратор для модулей lordnet-userbot
 
     Parameters:
         filters (``Any``, *optional*):
-            Pyrogram filters to be used for the command.
+            Пирограм фильтры для модуля.
         commands (``list or str``, *required if filters is not used*):
-            List of commands to be handled by the module or single command.
+            Список команд или одна команда для модуля.
         description (``str``, *optional*):
-            Description of the module.
+            Описание команд (показывается в help)
         args (``list or str``, *optional*):
-            Args to be passed to the module.
+            Аргументы для команды (показывается в help)
     """
 
     if not params and not filters:
-        raise IndexError("None of the arguments are specified")
+        raise IndexError("Не указаны аргументы для модуля")
+    elif filters and isinstance(filters[0], str):
+        logging.warning(
+            "Вы не указали ничего в @module декораторе, проверьте пожалуйста."
+        )
 
     commands = (
         params.get("commands")
@@ -47,7 +51,7 @@ def module(*filters, **params):
     elif (
         not isinstance(commands, list) and not isinstance(commands, str) and not filters
     ):
-        raise TypeError("commands must be a list or a string")
+        raise TypeError("Команды должны быть типа строка или список")
 
     module_value = get_module_name(inspect.getmodule(inspect.stack()[1][0]))
 
@@ -63,7 +67,7 @@ def module(*filters, **params):
                 "name": commands,
                 "desc": params.get("desc")
                 or params.get("description")
-                or "Module without description",
+                or "Без описания",
                 "args": params.get("args") or params.get("arguments") or [],
             },
         )
@@ -108,7 +112,7 @@ def load_modules():
         except Exception as e:
             exceptions += 1
             logging.warning(
-                f"Can't import module {module_path}: {e.__class__.__name__}: {e}"
+                f"Не удалось импортировать {module_path}: {e.__class__.__name__}: {e}"
             )
 
     for path in sorted(sorted((Path("custom")).rglob("*.py")), key=os.path.getmtime):
@@ -119,12 +123,12 @@ def load_modules():
         except Exception as e:
             exceptions += 1
             logging.warning(
-                f"Can't import module {module_path}: {e.__class__.__name__}: {e}"
+                f"Не удалось импортировать {module_path}: {e.__class__.__name__}: {e}"
             )
 
-    logging.info(f"Loaded {imported} modules")
+    logging.info(f"Загружено {imported} модулей")
     if exceptions:
-        logging.warning(f"{exceptions} modules failed to load")
+        logging.warning(f"{exceptions} модулей не удалось загрузить")
 
 
 async def module_exists(module_name: str):

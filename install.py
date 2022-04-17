@@ -27,12 +27,12 @@ if __name__ == "__main__":
     try:
         text = (
             '<b><a href="https://t.me/lordnet_userbot">✉ lordnet-userbot</a> download success!\n\n'
-            f"☛ License: <a href='https://github.com/LORD-ME-CODE/lordnet-userbot/blob/main/LICENSE'>GNU v3.0</a>\n"
-            f"☛ Channel: @lordnet_userbot\n"
-            f"☛ Chat: @lordnetchat\n"
-            f"☛ Repository: <a href='https://github.com/LORD-ME-CODE/lordnet-userbot'>lordnet-userbot</a>\n"
-            f"☛ Dev: @lord_code</b>\n\n"
-            f"☛ Use this to restart the bot:\n<code>{restart}</code></b>"
+            f"☛ Лицензия: <a href='https://github.com/LORD-ME-CODE/lordnet-userbot/blob/main/LICENSE'>GNU v3.0</a>\n"
+            f"☛ Канал: @lordnet_userbot\n"
+            f"☛ Чат: @lordnetchat\n"
+            f"☛ Репо: <a href='https://github.com/LORD-ME-CODE/lordnet-userbot'>lordnet-userbot</a>\n"
+            f"☛ Кодер: @lord_code</b>\n\n"
+            f"☛ Используйте для старта:\n<code>{restart}</code></b>"
         )
         app.send_message("me", text.format(restart))
     except:

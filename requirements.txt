@@ -3,5 +3,4 @@ environs
 psutil
 aiohttp
 validators
-pathlib
 aiofile

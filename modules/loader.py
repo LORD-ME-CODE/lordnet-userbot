@@ -25,8 +25,8 @@ from zipfile import ZipFile
 
 @module(
     cmds=["load", "unload", "lm", "um", "updatemod"],
-    desc="Load/unload modules",
-    args=["name/link"],
+    desc="Скачать/Удалить модуль",
+    args=["название/ссылка"],
 )
 async def loader_cmd(_, message: Message):
     cmd = message.command[0]
@@ -38,7 +38,7 @@ async def loader_cmd(_, message: Message):
                 ".py"
             )
         ):
-            await message.edit("<b>🙄 Please specify a module to load</b>")
+            await message.edit("<b>🙄 Укажите модуль для загрузки</b>")
             return
         if message.reply_to_message:
             name = message.reply_to_message.document.file_name.split(".")[0]
@@ -56,16 +56,14 @@ async def loader_cmd(_, message: Message):
             "module." + name
         ):
             await message.edit(
-                f"<b>🙄 Module <code>{name}</code> already loaded\n"
-                f"🔃 Type <code>{prefix()}updatemod {name}</code> to update it</b>"
+                f"<b>🙄 Модуль <code>{name}</code> уже существует\n"
+                f"🔃 Пиши <code>{prefix()}updatemod {name}</code> для обновления</b>"
             )
             return
 
         if not is_url and not is_file:
             if not await module_exists(name):
-                await message.edit(
-                    f"<b>🙄 Module <code>{name}</code> does not exist</b>"
-                )
+                await message.edit(f"<b>🙄 Модуль <code>{name}</code> не найден</b>")
                 return
             link = lordnet_url + f"custom/{name}.py"
         elif is_file:
@@ -76,23 +74,23 @@ async def loader_cmd(_, message: Message):
             async with session.get(link) as response:
                 if response.status != 200:
                     await message.edit(
-                        f"<b>🙄 Module <code>{name}</code> does not exist\n"
-                        f"🔃 Check the link and try again</b>"
+                        f"<b>🙄 Модуль <code>{name}</code> не найден\n"
+                        f"🔃 Проверь URL и попробуй ещё раз</b>"
                     )
                     return
                 data = await response.read()
                 if b"@module" not in data or b"from helper import" not in data:
                     return await message.edit(
-                        f"<b>🙄 Module <code>{name}</code> is not a valid module\n"
-                        f"🔃 Check it and try again</b>"
+                        f"<b>🙄 Модуль <code>{name}</code> не валидный.\n"
+                        f"🔃 Проверь его и попробуй ещё раз</b>"
                     )
                 async with open(f"custom/{name}.py", "wb") as f:
                     await f.write(data)
                 await load_module(name)
-        await message.edit(f"<b>💪 Module <code>{name}</code> loaded</b>")
+        await message.edit(f"<b>💪 Модуль <code>{name}</code> загружён</b>")
     elif cmd == "updatemod":
         if len(message.command) == 1:
-            await message.edit("<b>🙄 Please specify a module to update</b>")
+            await message.edit("<b>🙄 Укажите модуль для загрузки</b>")
             return
         name = message.command[1].lower()
         if url(name):
@@ -102,15 +100,13 @@ async def loader_cmd(_, message: Message):
             is_url = False
         if not modules_dict.module_in("custom." + name):
             await message.edit(
-                f"<b>🙄 Module <code>{name}</code> not loaded\n"
-                f"🔃 Type <code>{prefix()}lm {message.command[1].lower()}</code> to load it</b>"
+                f"<b>🙄 Модуль <code>{name}</code> не загружен\n"
+                f"🔃 Пиши <code>{prefix()}lm {message.command[1].lower()}</code> чтобы загрузить</b>"
             )
             return
         if not is_url:
             if not await module_exists(name):
-                await message.edit(
-                    f"<b>🙄 Module <code>{name}</code> does not exist</b>"
-                )
+                await message.edit(f"<b>🙄 Модуль <code>{name}</code> не существует</b>")
                 return
             link = lordnet_url + f"custom/{name}.py"
         else:
@@ -118,33 +114,33 @@ async def loader_cmd(_, message: Message):
         async with session.get(link) as response:
             if response.status != 200:
                 await message.edit(
-                    f"<b>🙄 Module <code>{name}</code> does not exist\n"
-                    f"🔃 Check the link and try again</b>"
+                    f"<b>🙄 Модуль <code>{name}</code> не существует\n"
+                    f"🔃 Проверь URL и попробуй ещё раз</b>"
                 )
                 return
             data = await response.read()
             if is_url and (b"@module" not in data or b"from helper import" not in data):
                 return await message.edit(
-                    f"<b>🙄 Module <code>{name}</code> is not a valid module\n"
-                    f"🔃 Check the link and try again</b>"
+                    f"<b>🙄 Модуль <code>{name}</code> не валидный.\n"
+                    f"🔃 Проверьте URL и попробуй ещё раз</b>"
                 )
             async with open(f"custom/{name}.py", "wb") as f:
                 await f.write(data)
             await load_module(name)
     else:
         if len(message.command) == 1:
-            await message.edit("<b>🙄 Please specify a module to unload</b>")
+            await message.edit("<b>🙄 Пожалуйста, укажите модуль для удаления</b>")
             return
         name = message.command[1].split("/")[-1].replace(".py", "")
         if name + ".py" not in os.listdir("custom"):
-            await message.edit(f"<b>🙂 Module <code>{name}</code> not found.</b>")
+            await message.edit(f"<b>🙂 Модуль <code>{name}</code> не найден.</b>")
             return
         os.remove(f"custom/{name}.py")
-        await message.edit(f"<b>💪 Module <code>{name}</code> unloaded</b>")
+        await message.edit(f"<b>💪 Модуль <code>{name}</code> удалён</b>")
         restart()
 
 
-@module(cmds=["loadall", "unloadall"], desc="(Un)Load all modules")
+@module(cmds=["loadall", "unloadall"], desc="Загрузить/Удалить все модули")
 async def load_all(_, message: Message):
     if message.command[0] == "loadall":
         #  pass
@@ -156,14 +152,14 @@ async def load_all(_, message: Message):
     restart()
 
 
-@module(cmds=["bm", "backupmod"], args=["name"], desc="Backup a module")
+@module(cmds=["bm", "backupmod"], args=["название"], desc="Бэкапнуть модуль")
 async def backup_module(_, message: Message):
     if len(message.command) == 1:
-        await message.edit("<b>🙄 Please specify a module to backup</b>")
+        await message.edit("<b>🙄 Укажите название модуля для бэкапа</b>")
         return
     name = message.command[1].split("/")[-1].replace(".py", "")
     if name + ".py" not in os.listdir("custom"):
-        await message.edit(f"<b>🙂 Module <code>{name}</code> not found.</b>")
+        await message.edit(f"<b>🙂 Модуль <code>{name}</code> не найден.</b>")
         return
     await message.delete()
     async with open(f"custom/{name}.py", "rb") as f:
@@ -172,22 +168,22 @@ async def backup_module(_, message: Message):
         data.seek(0)
         await message.reply_document(
             data,
-            caption=f"<b>💪 Module <code>{name}</code> backed up</b>",
+            caption=f"<b>💪 Модуль <code>{name}</code></b>",
         )
 
 
-@module(cmds=["down", "download"], desc="Download module from zip file")
+@module(cmds=["down", "download"], desc="Выгрузить модули с бэкапа")
 async def download_modules(_, message: Message):
     if (
         not message.reply_to_message
         or not message.reply_to_message.document
         or not message.reply_to_message.document.file_name.casefold().endswith(".zip")
     ):
-        await message.edit("<b>🙄 Please reply to a zip file with modules</b>")
+        await message.edit("<b>🙄 Пожалуйста, ответьте на сообщение с .zip файлом</b>")
         return
-    await message.edit("<b>💪 Downloading zip...</b>")
+    await message.edit("<b>💪 Скачиваю архив...</b>")
     await message.reply_to_message.download("downloads/backup_mods.zip")
-    await message.edit("<b>💪 Downloading modules...</b>")
+    await message.edit("<b>💪 Скачиваю модули...</b>")
     with zipfile.ZipFile("downloads/backup_mods.zip", "r") as zip_ref:
         files = zip_ref.namelist()
         count = 0
@@ -202,12 +198,12 @@ async def download_modules(_, message: Message):
                     else:
                         count += 1
     await message.edit(
-        f"<b>✅ Downloaded all <code>{count}</code> modules from zip file.</b>"
+        f"<b>✅ Загружены все <code>{count}</code> модули из zip файла.</b>"
     )
     restart()
 
 
-@module(cmds=["bmods", "backupmods"], desc="Backup all modules")
+@module(cmds=["bmods", "backupmods"], desc="Бэкап в zip файл")
 async def backup_modules(_, message: Message):
     await message.delete()
     zip_name = "downloads/backup_mods.zip"
@@ -222,12 +218,12 @@ async def backup_modules(_, message: Message):
 
     if count == 0:
         os.remove(zip_name)
-        await message.edit("<b>🙄 No modules found</b>")
+        await message.edit("<b>🙄 Не найдено ниодного модуля</b>")
         return
 
     await message.reply_document(
         document=f"downloads/backup_mods.zip",
-        caption=f"<b>💪 All modules backed up\n"
+        caption=f"<b>💪 Все модули выгружены!\n"
         f"<code>{count}</code> modules 🔨\n"
-        f"Reply with: <code>{prefix()}down</code> command to download this modules</b>",
+        f"Ответьте с: <code>{prefix()}down</code> командой чтобы скачать все модули с архива</b>",
     )

@@ -40,9 +40,7 @@ if __name__ == "__main__":
     except sqlite3.OperationalError as e:
         if str(e) == "database is locked":
             if os.name == "posix":
-                logging.warning(
-                    "Session file is locked. Trying to kill blocking process..."
-                )
+                logging.warning("Session файл заблокирован. Пробую разблокировать...")
                 output = subprocess.run(
                     ["fuser", "lordnet.session"], capture_output=True
                 ).stdout.decode()
@@ -51,14 +49,14 @@ if __name__ == "__main__":
                 os.execvp("python3", ["python3", "run.py"])
             else:
                 logging.warning(
-                    "Session file is locked. Kill it manually in the task manager."
+                    "Session файл заблокирован. Закройте его вручную (python.*)"
                 )
                 sys.exit(-1)
         raise e from None
     except (errors.NotAcceptable, errors.Unauthorized) as e:
         logging.error(
             f"{e.__class__.__name__}: {e}\n"
-            f"Moving session file to lordnet.session-old..."
+            f"Переношу файл сессии lordnet.session-old..."
         )
         os.rename("./lordnet.session", "./lordnet.session-old")
         os.execvp("python3", ["python3", "run.py"])
@@ -68,9 +66,9 @@ if __name__ == "__main__":
     if len(sys.argv) == 4:
         restart_type = sys.argv[3]
         if restart_type == "1":
-            text = "<b>Userbot updated successfully!</b>"
+            text = "<b>🌐 lordnet обновлён успешно!</b>"
         else:
-            text = "<b>Restart completed successfully!</b>"
+            text = "<b>😋 Перезагрузка прошла успешно!</b>"
         try:
             app.send_message(
                 chat_id=sys.argv[1], text=text, reply_to_message_id=int(sys.argv[2])
@@ -78,6 +76,6 @@ if __name__ == "__main__":
         except errors.RPCError:
             app.send_message(chat_id=sys.argv[1], text=text)
 
-    logging.info("lordnet-userbot started!")
+    logging.info("lordnet-userbot запущен!")
 
     idle()

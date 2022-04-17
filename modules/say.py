@@ -2,11 +2,11 @@ from helper import module, Message, prefix
 from asyncio import sleep
 
 
-@module(commands="say", args=["delay", "text"], desc="Say with animated text")
+@module(commands="say", args=["задержка", "текст"], desc="Сказать с анимацией")
 async def say(_, message: Message):
     if len(message.command) < 3:
         return await message.edit(
-            f"<b>🎙️ Please use: <code>{prefix()}say [delay]* [text]*</code></b>"
+            f"<b>🎙️ Пожалуйста используйте: <code>{prefix()}say [задержка]* [текст]*</code></b>"
         )
     try:
         delay = float(message.command[1])

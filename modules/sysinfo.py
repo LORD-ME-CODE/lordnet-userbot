@@ -24,21 +24,21 @@ def git_python():
 
 
 # noinspection PyBroadException
-@module(commands=["sysinfo", "sys", "sinfo"])
+@module(commands=["sysinfo", "sys", "sinfo"], desc="Информация о системе")
 async def sysinfo_cmd(_, message: Message):
-    await message.edit("<b>😇 Getting system info...</b>")
+    await message.edit("<b>😇 Получаю системную инфу...</b>")
 
     text = (
-        "<b>⚙️ Usage:\n"
-        "    <u>• CPU</u>: {} Cores ({}%)\n"
-        "    <u>• RAM:</u> {}/{} ({}%)\n\n"
-        "💻 System INFO:\n"
-        "    <u>• OS:</u> {}\n"
+        "<b>⚙️ Использование:\n"
+        "    <u>• CPU</u>: {} Ядер ({}%)\n"
+        "    <u>• ОЗУ:</u> {}/{} ({}%)\n\n"
+        "💻 Система:\n"
+        "    <u>• ОС:</u> {}\n"
         "    <u>• Kernel:</u> {}\n"
-        "    <u>• Arch:</u> {}\n"
-        "    <u>• Version:</u> {}\n\n"
+        "    <u>• Арч:</u> {}\n"
+        "    <u>• Версия:</u> {}\n\n"
         "📦 Python:\n"
-        "    <u>• Version:</u> {}\n"
+        "    <u>• Версия:</u> {}\n"
         "    <u>• lordnet:</u> {}\n"
         "    <u>• GitPython:</u> {}\n"
         "    <u>• Pip:</u> {}</b>"

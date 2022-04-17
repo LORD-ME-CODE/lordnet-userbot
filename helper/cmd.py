@@ -16,7 +16,7 @@ def get_module_name(insp: ModuleType):
     return insp.__name__
 
 
-default_text = "<b>Error! (Report this to @lordnetchat)</b>"
+default_text = "<b>Ошибка! (Репортните в @lordnetchat)</b>"
 
 
 def exception_str(e: Exception):
@@ -32,8 +32,8 @@ def exception_str(e: Exception):
 
 def import_library(library_name: str, package_name: str = None):
     """
-    :param library_name: library name (import example...)
-    :param package_name: package name in PyPi (pip install example)
+    :param library_name: название модуля (import pyrogram...)
+    :param package_name: название либы в PyPi (pip install pyrogram)
     :return: module
     """
 
@@ -59,8 +59,8 @@ modules_ = {}
 
 async def aimport_library(library_name: str, package_name: str = None):
     """
-    :param library_name: library name (import example...)
-    :param package_name: package name in PyPi (pip install example)
+    :param library_name: название модуля (import pyrogram...)
+    :param package_name: название либы в PyPi (pip install pyrogram)
     :return: module
     """
 

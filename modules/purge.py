@@ -3,7 +3,7 @@ from asyncio import sleep
 from helper import module, Message, Client
 
 
-@module(cmds="del", desc="Delete message")
+@module(cmds="del", desc="Удалить сообщение (ответ или удалится сообщение выше)")
 async def del_msg(client: Client, message: Message):
     if message.reply_to_message:
         await client.delete_messages(
@@ -18,7 +18,7 @@ async def del_msg(client: Client, message: Message):
             pass
 
 
-@module(cmds="purge", args=["count"], desc="Purge messages")
+@module(cmds="purge", args=["кол-во"], desc="Массовое удаление сообщений")
 async def purge(client: Client, message: Message):
     try:
         count = int(message.command[1])

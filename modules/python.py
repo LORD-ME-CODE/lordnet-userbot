@@ -8,10 +8,12 @@ from helper.module import module
 from helper.cmd import exception_str, aimport_library
 
 
-@module(commands=["ex", "exec", "py", "exnoedit"], desc="Execute Python code")
+@module(
+    commands=["ex", "exec", "py", "exnoedit"], args=["код"], desc="Выполнить Python код"
+)
 def exec_cmd(client: Client, message: Message):
     if len(message.command) == 1:
-        message.edit("<b>✐ Please enter the code you want to run</b>")
+        message.edit("<b>✐ Вы не указали код для выполнения</b>")
         return
 
     reply = message.reply_to_message
@@ -19,15 +21,15 @@ def exec_cmd(client: Client, message: Message):
     code = message.text.split(maxsplit=1)[1]
     stdout = StringIO()
 
-    message.edit("<b>✈ Executing code...</b>")
+    message.edit("<b>✈ Выполняю код...</b>")
 
     try:
         with redirect_stdout(stdout):
             exec(code)
         text = (
-            "<b>✎ Code:</b>\n"
+            "<b>✎ Код:</b>\n"
             f"<code>{code}</code>\n\n"
-            "<b>☛ Result</b>:\n"
+            "<b>☛ Результат</b>:\n"
             f"<code>{stdout.getvalue()}</code>"
         )
         if message.command[0] == "exnoedit":
@@ -38,10 +40,10 @@ def exec_cmd(client: Client, message: Message):
         message.edit(exception_str(e))
 
 
-@module(commands=["ev", "eval"], desc="Eval Python code")
+@module(commands=["ev", "eval"], args=["код"], desc="Выполнить Python выражение")
 def eval_cmd(client: Client, message: Message):
     if len(message.command) == 1:
-        message.edit("<b>✐ Please enter an expression</b>")
+        message.edit("<b>✐ Вы не указали выражение для выполнения</b>")
         return
 
     reply = message.reply_to_message
@@ -51,9 +53,9 @@ def eval_cmd(client: Client, message: Message):
     try:
         result = eval(code)
         message.edit(
-            "<b>✎ Expression:</b>\n"
+            "<b>✎ Выражение:</b>\n"
             f"<code>{code}</code>\n\n"
-            "<b>☛ Result</b>:\n"
+            "<b>☛ Результат</b>:\n"
             f"<code>{result}</code>"
         )
     except Exception as e:
@@ -77,16 +79,20 @@ async def aexec(codea, client, message):
 
 
 # noinspection PyPep8
-@module(commands=["aex", "aexec", "aexnoedit"], desc="Async execute python code")
+@module(
+    commands=["aex", "aexec", "aexnoedit"],
+    args=["код"],
+    desc="Асинк выполнение python кода",
+)
 async def aexec_handler(client: Client, message: Message):
     try:
         code = message.text.split(maxsplit=1)[1]
     except:
         code = ""
     if not code:
-        return await message.edit("<b>✐ Please enter the code you want to run</b>")
+        return await message.edit("<b>✐ Вы не указали код для выполнения</b>")
     try:
-        await message.edit("<b>✈ Executing code...</b>")
+        await message.edit("<b>✈ Выполняю код...</b>")
         s = await aexec(code, client, message)
         s = (
             str(s).replace("<", "").replace(">", "")
@@ -94,9 +100,9 @@ async def aexec_handler(client: Client, message: Message):
             else s
         )
         text = (
-            f"<b>✎ Code:</b>\n<code>"
+            f"<b>✎ Код:</b>\n<code>"
             f'{code.replace("<", "").replace(">", "")}'
-            "</code>\n\n<b>☛ Result"
+            "</code>\n\n<b>☛ Результат"
             f":</b>\n<code>{s}</code>"
         )
         if message.command[0] == "aexnoedit":
@@ -108,20 +114,20 @@ async def aexec_handler(client: Client, message: Message):
 
 
 # noinspection PyPep8
-@module(commands=["aev", "aeval"], desc="Async evaluate python code")
+@module(
+    commands=["aev", "aeval"], args=["код"], desc="Асинк выполнение python выражения"
+)
 async def aeval_handler(client: Client, message: Message):
     try:
         code = message.text.split(maxsplit=1)[1]
     except:
         code = ""
     if not code:
-        return await message.edit(
-            "<b>✐ Please enter the expression you want to run</b>"
-        )
+        return await message.edit("<b>✐ Вы не указали выражение для выполнения</b>")
     try:
         async_eval = await aimport_library("async_eval")
         aeval = async_eval.eval
-        await message.edit("<b>✈ Executing code...</b>")
+        await message.edit("<b>✈ Выполняю выражение...</b>")
         s = aeval(
             code,
             {"message": message, "client": client, "reply": message.reply_to_message},
@@ -132,9 +138,9 @@ async def aeval_handler(client: Client, message: Message):
             else s
         )
         return await message.edit(
-            f"<b>✎ Expression:</b>\n<code>"
+            f"<b>✎ Выражение:</b>\n<code>"
             f'{code.replace("<", "").replace(">", "")}</code>'
-            "\n\n<b>☛ Result"
+            "\n\n<b>☛ Результат"
             f":</b>\n<code>{s}</code>"
         )
     except Exception as ex:

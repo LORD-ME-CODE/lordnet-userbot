@@ -1,7 +1,9 @@
 from helper import module, Message, Client
 
 
-@module(cmds=["uinfo", "userinfo", "user", "u"], desc="Get user information")
+@module(
+    cmds=["uinfo", "userinfo", "user", "u"], args=["name/id/reply"], desc="Инфа о юзере"
+)
 async def userinfo(client: Client, message: Message):
     """
     Get user information
@@ -12,28 +14,28 @@ async def userinfo(client: Client, message: Message):
         user = await client.get_users(message.command[1])
         if not user:
             return await message.edit(
-                f"<b>User <copy>{message.command[1]}</copy> not found</b>"
+                f"<b>Юзер <copy>{message.command[1]}</copy> не найден</b>"
             )
     else:
         user = message.from_user
 
     text = (
-        "<b><u>👤 User INFO</u>:\n"
-        "<b>└ Permlink:</b> {}\n"
+        "<b><u>👤 Юзер ИНФО</u>:\n"
+        "<b>└ Пермалинк:</b> {}\n"
         "<b>└ 🆔:</b> <code>{}</code>\n"
-        "<b>└ First N:</b> <code>{}</code>\n"
-        "<b>└ Last N:</b> <code>{}</code>\n"
-        "<b>└ Username:</b> <code>{}</code>\n"
-        "<b>└ Language:</b> <code>{}</code>\n"
-        "<b>└ 📞 Number:</b> {}\n"
-        "<b>└ 📍 Status:</b> <u>{}</u>\n"
-        "<b>└ 📅 Online:</b> <code>{}</code>\n"
-        "<b>└ 🤖 Bot:</b> <code>{}</code>\n"
-        "<b>└ 🔨 Restricted:</b> <code>{}</code>\n"
-        "<b>└ ✅ Verified:</b> <code>{}</code>\n"
-        "<b>└ 🧑‍💻 Support:</b> <code>{}</code>\n"
-        "<b>└ 🙈 Fake:</b> <code>{}</code>\n"
-        "<b>└ ⛔ Scam:</b> <code>{}</code>"
+        "<b>└ Имя:</b> <code>{}</code>\n"
+        "<b>└ Фамилия:</b> <code>{}</code>\n"
+        "<b>└ Ник:</b> <code>{}</code>\n"
+        "<b>└ Язык:</b> <code>{}</code>\n"
+        "<b>└ 📞 Номер:</b> {}\n"
+        "<b>└ 📍 Статус:</b> <u>{}</u>\n"
+        "<b>└ 📅 Онлайн:</b> <code>{}</code>\n"
+        "<b>└ 🤖 Бот:</b> <code>{}</code>\n"
+        "<b>└ 🔨 Ограниченный:</b> <code>{}</code>\n"
+        "<b>└ ✅ Верифнутый:</b> <code>{}</code>\n"
+        "<b>└ 🧑‍💻 Сапорт:</b> <code>{}</code>\n"
+        "<b>└ 🙈 Фейк:</b> <code>{}</code>\n"
+        "<b>└ ⛔ Скам:</b> <code>{}</code>"
     ).format(
         user.mention,
         user.id,
@@ -43,7 +45,7 @@ async def userinfo(client: Client, message: Message):
         user.language_code,
         "<code>" + str(user.phone_number) + "</code>"
         if not user.is_self
-        else "<spoiler>LMAO</spoiler>",
+        else "<spoiler>ЛОХ</spoiler>",
         user.status,
         user.last_online_date,
         user.is_bot,
@@ -60,22 +62,21 @@ async def userinfo(client: Client, message: Message):
 first_name, last_name = None, None
 
 
-@module(cmds=["cuser", "cu", "copyuser"], desc="Copy user avatar and info")
+@module(cmds=["cuser", "cu", "copyuser"], desc="Скопировать аватарку и инфу о юзере")
 async def copyuser(client: Client, message: Message):
-    global first_name, last_name, photo_id
-    """
-    Copy user avatar and info
-    """
+    global first_name, last_name
     if message.reply_to_message:
         user = message.reply_to_message.from_user
     elif len(message.command) > 1:
         user = await client.get_users(message.command[1])
         if not user:
             return await message.edit(
-                f"<b>User <copy>{message.command[1]}</copy> not found</b>"
+                f"<b>Юзер <copy>{message.command[1]}</copy> не найден</b>"
             )
     else:
-        return await message.edit("<b>🙈 Reply to a user or mention them</b>")
+        return await message.edit(
+            "<b>🙈 Ответьте на сообщение юзера или тэгните его</b>"
+        )
 
     await message.delete()
 
@@ -91,18 +92,15 @@ async def copyuser(client: Client, message: Message):
 
     await client.send_message(
         "me",
-        f"<b>📸 Copied user {user.mention} avatar and info</b>",
+        f"<b>📸 Успешно скопирован юзер {user.mention} аватарка и информация</b>",
     )
 
 
-@module(cmds=["undo"], desc="UNDO Copy user info")
+@module(cmds=["undo"], desc="Вернуть свою инфу в профиль")
 async def undo(client: Client, message: Message):
-    """
-    UNDO Copy user info
-    """
     if first_name:
         await client.update_profile(first_name=first_name, last_name=last_name)
 
     await message.edit(
-        f"<b>📸 UNDO Copied info</b>",
+        f"<b>📸 Инфа успешно сброшена</b>",
     )

@@ -6,13 +6,13 @@ from helper import module, Message, prefix
 cooldowns = {"spam": 0.15, "fastspam": 0}
 
 
-@module(commands=["spam", "fastspam"], args=["times", "text"])
+@module(commands=["spam", "fastspam"], args=["кол-во", "текст"])
 async def spam_cmd(_, message: Message):
     cmd = message.command[0]
 
     if len(message.command) < 3:
         await message.reply(
-            "<b>🙂 Usage:</b> <code>{}{}</code> <code>[times] [text]</code>".format(
+            "<b>🙂 Используйте:</b> <code>{}{}</code> <code>[кол-во] [текст]</code>".format(
                 prefix(), cmd
             )
         )

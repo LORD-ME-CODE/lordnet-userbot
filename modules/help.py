@@ -5,12 +5,12 @@ from helper.misc import modules_dict, prefix
 from helper.module import module
 
 
-@module(command=["help", "h"], description="Help command", args=["module"])
+@module(command=["help", "h"], description="Помощь по модулям", args=["модуль"])
 async def help_cmd(_: Client, message: Message):
     if len(message.command) == 1:
         text = (
-            "<b>★ List of all available commands (<a href='https://t.me/lordnet_userbot'>lordnet-userbot</a>)\n"
-            f"Help on a specific module: <code>{prefix()}help <b>[module]</b></code></b>\n\n"
+            "<b>★ Список всех модулей (<a href='https://t.me/lordnet_userbot'>lordnet-userbot</a>)\n"
+            f"Помощь к определённому модулю: <code>{prefix()}help <b>[модуль]</b></code></b>\n\n"
         )
         for module_name, module_obj in modules_dict.items():
             commands = module_obj["commands"]
@@ -24,8 +24,8 @@ async def help_cmd(_: Client, message: Message):
                     + "\n"
                 )
             else:
-                text += "<i>No commands</i>\n"
-        text += f"\n<b>⋰ <i>The number of modules in the userbot:</i> {len(modules_dict)}</b>"
+                text += "<i>Нет команд</i>\n"
+        text += f"\n<b>⋰ <i>Кол-во модулей в юзерботе:</i> {len(modules_dict)}</b>"
         if len(text) >= 2048:
             await message.edit(text[:2048], disable_web_page_preview=True)
             text = text[2048:]
@@ -36,9 +36,9 @@ async def help_cmd(_: Client, message: Message):
     else:
         value = modules_dict.get("modules." + message.command[1].lower())
         if value is None:
-            text = f"<code>Module <b>{message.command[1]}</b> not found</code>"
+            text = f"<code>Модуль <b>{message.command[1]}</b> не найден</code>"
         else:
-            text = f"Help for <b>{message.command[1]}</b> module:\n\n"
+            text = f"Помощь для <b>{message.command[1]}</b> модуля:\n\n"
             commands = value["commands"]
             if len(commands) > 0:
                 text += (
@@ -51,5 +51,5 @@ async def help_cmd(_: Client, message: Message):
                     + "\n"
                 )
             else:
-                text += "<i>No commands</i>"
+                text += "<i>Нет команд</i>"
     await message.edit(text, disable_web_page_preview=True)

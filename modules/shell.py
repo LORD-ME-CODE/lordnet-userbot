@@ -7,10 +7,10 @@ from pyrogram.types import Message
 from helper.module import module
 
 
-@module(cmds=["shell", "sh"], desc="Run shell command")
+@module(cmds=["shell", "sh"], args=["команда"], desc="Выполнить консольную команду")
 async def shell_cmd(_: Client, message: Message):
     if len(message.command) < 2:
-        return await message.edit("<b>✖ You have not entered a command.</b>")
+        return await message.edit("<b>✖ Вы не указали команду.</b>")
     cmd_text = message.text.split(maxsplit=1)[1]
     cmd_obj = Popen(
         cmd_text,
@@ -21,18 +21,18 @@ async def shell_cmd(_: Client, message: Message):
     )
     text = f"<b>≻</b> <code>{cmd_text}</code>\n\n"
 
-    await message.edit(text + "<b>Doing...</b>")
+    await message.edit(text + "<b>Выполняю...</b>")
     try:
         start_time = perf_counter()
         stdout, stderr = cmd_obj.communicate(timeout=60)
     except TimeoutExpired:
-        text += "<b>✖ TimeoutExpired (60 seconds)</b>"
+        text += "<b>✖ Таймаут (60 сек)</b>"
     else:
         stop_time = perf_counter()
         if stdout:
-            text += "<b>⌬ Output:</b>\n" f"<code>{stdout}</code>\n\n"
+            text += "<b>⌬ Вывод:</b>\n" f"<code>{stdout}</code>\n\n"
         if stderr:
-            text += "<b>✖ Error:</b>\n" f"<code>{stderr}</code>\n\n"
-        text += f"<b>Done in {round(stop_time - start_time, 5)} second(s) | Code ({cmd_obj.returncode})</b>"
+            text += "<b>✖ Ошибка:</b>\n" f"<code>{stderr}</code>\n\n"
+        text += f"<b>Выполнено за {round(stop_time - start_time, 5)} сек. | Код ({cmd_obj.returncode})</b>"
     await message.edit(text)
     cmd_obj.kill()
