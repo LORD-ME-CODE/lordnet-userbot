@@ -68,9 +68,7 @@ def module(*filters, **params):
             },
         )
         if filters:
-            dec = modules_dict.client.on_message(
-                pyrogram.filters.command(commands, prefix()) & filters
-            )
+            dec = modules_dict.client.on_message(*filters)
         else:
             dec = modules_dict.client.on_message(
                 pyrogram.filters.command(commands, prefix()) & pyrogram.filters.me
