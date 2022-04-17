@@ -26,15 +26,27 @@ from helper.misc import lordnet_url
 async def loader_cmd(_, message: Message):
     cmd = message.command[0]
     if cmd in ["load", "lm"]:
-        if len(message.command) == 1:
+        if len(message.command) == 1 and not (
+            message.reply_to_message
+            and not message.reply_to_message.document
+            and not message.reply_to_message.document.file_name.casefold().endswith(
+                ".py"
+            )
+        ):
             await message.edit("<b>🙄 Please specify a module to load</b>")
             return
-        name = message.command[1].lower()
-        if url(name):
-            name = name.split("/")[-1].replace(".py", "")
-            is_url = True
-        else:
+        if message.reply_to_message:
+            name = message.reply_to_message.document.file_name.split(".")[0]
             is_url = False
+            is_file = True
+        else:
+            is_file = False
+            name = message.command[1].lower()
+            if url(name):
+                name = name.split("/")[-1].replace(".py", "")
+                is_url = True
+            else:
+                is_url = False
         if modules_dict.module_in(name):
             await message.edit(
                 f"<b>🙄 Module <code>{name}</code> already loaded\n"
@@ -42,11 +54,13 @@ async def loader_cmd(_, message: Message):
             )
             return
 
-        if not is_url:
+        if not is_url and not is_file:
             if not await module_exists(name):
                 await message.edit(f"<b>🙄 Module <code>{name}</code> does not exist\n")
                 return
-
+        elif is_file:
+            await message.reply_to_message.download("custom/" + name + ".py")
+            await load_module(name + ".py")
         else:
             link = message.command[1]
             async with session.get(link) as response:
