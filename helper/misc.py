@@ -56,11 +56,11 @@ top = int(result // 1000)
 ver = int((result % 1000) // 100)
 bottom = int((result % 1000) % 100)
 __version__ = f"{top}.{ver}.{bottom}"
-c_hexed = repo.head.object.hexsha
-build_version = repo.git.rev_parse(c_hexed, short=True)
-c_date = repo.head.object.committed_datetime
-build_link = 'https://github.com/LORD-ME-CODE/lordnet-userbot/commit/{}'
-build_link = build_link.format(c_hexed)
+c_hexed = git.head.object.hexsha
+build_version = git.git.rev_parse(c_hexed, short=True)
+c_date = git.head.object.committed_datetime
+base_link = 'https://github.com/LORD-ME-CODE/lordnet-userbot'
+build_link = base_link + '/commit/{}'.format(c_hexed)
 
 _prefix_ = db.get("prefix", ",")
 
