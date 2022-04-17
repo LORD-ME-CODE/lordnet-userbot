@@ -4,8 +4,6 @@ from pyrogram import Client
 from helper.misc import modules_dict, prefix
 from helper.module import module
 
-from tidylib import tidy_fragment
-
 
 @module(command=["help", "h"], description="Помощь по модулям", args=["модуль"])
 async def help_cmd(_: Client, message: Message):
@@ -14,6 +12,7 @@ async def help_cmd(_: Client, message: Message):
             "<b>★ Список всех модулей (<a href='https://t.me/lordnet_userbot'>lordnet-userbot</a>)\n"
             f"Помощь к определённому модулю: <code>{prefix()}help <b>[модуль]</b></code>\n\n"
         )
+        msg_edited = False
         for module_name, module_obj in modules_dict.items():
             commands = module_obj["commands"]
             text += f"<b>☭ {module_name.split('.')[-1].capitalize()}:  </b>"
@@ -27,16 +26,19 @@ async def help_cmd(_: Client, message: Message):
                 )
             else:
                 text += "<i>Нет команд</i>\n"
-        text += f"\n<b>⋰ <i>Кол-во модулей в юзерботе:</i> {len(modules_dict)}</b>"
-        if len(text) >= 2048:
-            text = tidy_fragment(text, options=dict(show_body_only=True, drop_empty_paras=False))
-            await message.edit(text[:2048], disable_web_page_preview=True)
-            text = text[2048:]
-        while len(text) >= 2048:
-            text = tidy_fragment(text, options=dict(show_body_only=True, drop_empty_paras=False))
-            await message.reply(text[:2048], disable_web_page_preview=True)
-            text = text[2048:]
+            if len(text) >= 2048:
+                if msg_edited:
+                    await message.reply()
+                else:
+                    await message.edit(text[:2048], disable_web_page_preview=True)
+                    msg_edited = True
+                text = ""
 
+        text += f"\n<b>⋰ <i>Кол-во модулей в юзерботе:</i> {len(modules_dict)}</b>"
+        if msg_edited:
+            await message.reply(text, disable_web_page_preview=True)
+        else:
+            await message.edit(text, disable_web_page_preview=True)
     else:
         value = modules_dict.get("modules." + message.command[1].lower())
         if value is None:
