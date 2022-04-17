@@ -131,7 +131,7 @@ async def loader_cmd(_, message: Message):
 
 
 @module(cmds=["loadall", "unloadall"], desc="(Un)Load all modules")
-async def load_all(message: Message):
+async def load_all(_, message: Message):
     if message.command[0] == "loadall":
         #  pass
         await message.edit("<b>💪 All modules loaded</b>")
@@ -143,7 +143,7 @@ async def load_all(message: Message):
 
 
 @module(cmds=["bm", "backupmod"], args=["name"], desc="Backup a module")
-async def backup_module(message: Message):
+async def backup_module(_, message: Message):
     if len(message.command) == 1:
         await message.edit("<b>🙄 Please specify a module to backup</b>")
         return
