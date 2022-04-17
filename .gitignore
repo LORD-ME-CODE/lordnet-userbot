@@ -137,3 +137,5 @@ dmypy.json
 /lordnet.sqlite3
 /lordnet.session-journal
 custom/
+/upload.py
+/upload.cmd
