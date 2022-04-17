@@ -57,6 +57,7 @@ async def shell_input_cmd(_: Client, message: Message):
         shell=True,
         stdout=PIPE,
         stderr=PIPE,
+        stdin=PIPE,
         text=True,
     )
     text = f"<b>≻</b> <code>{cmd_text}</code>\n\n"
@@ -64,8 +65,7 @@ async def shell_input_cmd(_: Client, message: Message):
     await message.edit(text + "<b>Выполняю...</b>")
     try:
         start_time = perf_counter()
-        print(inp)
-        stdout, stderr = cmd_obj.communicate(input=inp)
+        stdout, stderr = cmd_obj.communicate(input=inp, timeout=60)
     except TimeoutExpired:
         text += "<b>✖ Таймаут (60 сек)</b>"
     else:
