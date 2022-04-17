@@ -57,7 +57,7 @@ async def loader_cmd(_, message: Message):
                     )
                     return
                 data = await response.read()
-                if b"from helper import " not in data:
+                if b"@module" not in data or b"from helper import" not in data:
                     return await message.edit(
                         f"<b>🙄 Module <code>{name}</code> is not a valid module\n"
                         f"🔃 Check it and try again</b>"
@@ -94,7 +94,7 @@ async def loader_cmd(_, message: Message):
                 )
                 return
             data = await response.read()
-            if is_url and b"from helper import " not in data:
+            if is_url and (b"@module" not in data or b"from helper import" not in data):
                 return await message.edit(
                     f"<b>🙄 Module <code>{name}</code> is not a valid module\n"
                     f"🔃 Check the link and try again</b>"
