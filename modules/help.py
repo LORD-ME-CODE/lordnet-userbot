@@ -28,9 +28,9 @@ async def help_cmd(_: Client, message: Message):
                 text += "<i>Нет команд</i>\n"
             if len(text) >= 2048:
                 if msg_edited:
-                    await message.reply()
+                    await message.reply(text=text, disable_web_page_preview=True)
                 else:
-                    await message.edit(text[:2048], disable_web_page_preview=True)
+                    await message.edit(text, disable_web_page_preview=True)
                     msg_edited = True
                 text = ""
 
