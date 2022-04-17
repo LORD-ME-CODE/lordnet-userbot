@@ -33,7 +33,7 @@ async def example(_, message: Message):
 
 
 # Пример использования базы данных
-@module(commands="example3", args=["text"], description="Пример базы данных")
+@module(commands="example3", args=["text"], desc="Пример базы данных")
 async def example(_, message: Message):
     text = message.text.split(maxsplit=1)[1]
     db.set(f"value", text)  # Устанавливаем значение value на text который ввёл юзер
@@ -58,7 +58,7 @@ async def example(_, message: Message):
     # Используйте асинк импорт модуль чтобы не было зависаний в юзерботе при загрузке вашего модуля
 
 
-@module(commands="error", description="Пример ошибки")
+@module(commands="error", desc="Пример ошибки")
 async def error_cmd(_, message: Message):
     try:
         raise Exception("Тестовая ошибка")
