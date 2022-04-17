@@ -61,6 +61,9 @@ def module(*filters, **params):
         }
 
     if commands:
+        args = params.get("args") or params.get("arguments") or []
+        if isinstance(args, str):
+            args = [args]
         modules_dict.add_command(
             module_value,
             {
@@ -68,7 +71,7 @@ def module(*filters, **params):
                 "desc": params.get("desc")
                 or params.get("description")
                 or "Без описания",
-                "args": params.get("args") or params.get("arguments") or [],
+                "args": args,
             },
         )
         if filters:
