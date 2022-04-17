@@ -60,7 +60,7 @@ async def loader_cmd(_, message: Message):
                 if b"from helper import " not in data:
                     return await message.edit(
                         f"<b>🙄 Module <code>{name}</code> is not a valid module\n"
-                        f"🔃 Check the link and try again</b>"
+                        f"🔃 Check it and try again</b>"
                     )
                 async with open(f"custom/{name}.py", "wb") as f:
                     await f.write(data)
