@@ -32,9 +32,7 @@ async def loader_cmd(_, message: Message):
         if len(message.command) == 1 and not (
             message.reply_to_message
             or message.reply_to_message.document
-            or message.reply_to_message.document.file_name.casefold().endswith(
-                ".py"
-            )
+            or message.reply_to_message.document.file_name.casefold().endswith(".py")
         ):
             await message.edit("<b>🙄 Укажите модуль для загрузки</b>")
             return
@@ -82,7 +80,8 @@ async def loader_cmd(_, message: Message):
                     await f.write(data)
         elif is_file:
             filename = await message.reply_to_message.download("custom/" + name + ".py")
-            data = open(filename, 'rb').read()
+            async with open(filename, "rb") as f:
+                data = await f.read()
             if b"@module" not in data or b"from helper import" not in data:
                 await message.edit(
                     f"<b>🙄 Модуль <code>{name}</code> не валидный.\n"
@@ -249,4 +248,3 @@ async def backup_modules(_, message: Message):
         f"<code>{count}</code> modules 🔨\n"
         f"Ответьте с: <code>{prefix()}down</code> командой чтобы скачать все модули с архива</b>",
     )
-
