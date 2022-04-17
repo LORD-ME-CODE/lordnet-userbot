@@ -41,7 +41,10 @@ def import_library(library_name: str, package_name: str = None):
         package_name = library_name
 
     try:
-        return modules_.get(library_name) or importlib.import_module(library_name)
+        _temp = modules_.get(library_name)
+        if not _temp:
+            _temp = importlib.import_module(library_name)
+        return _temp
     except ImportError:
         completed = subprocess.run(
             [sys.executable, "-m", "pip", "install", package_name]
@@ -65,7 +68,10 @@ async def aimport_library(library_name: str, package_name: str = None):
         package_name = library_name
 
     try:
-        return modules_.get(library_name) or importlib.import_module(library_name)
+        _temp = modules_.get(library_name)
+        if not _temp:
+            _temp = importlib.import_module(library_name)
+        return _temp
     except ImportError:
         completed = await asyncio.create_subprocess_exec(
             sys.executable,

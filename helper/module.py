@@ -121,13 +121,12 @@ def load_modules():
 
 
 async def module_exists(module_name: str):
-    """Check if a module exists.
+    try:
+        avaiable_modules = await session.get(lordnet_url + "modules.txt")
+        return module_name in await avaiable_modules.text()
+    except:
+        return False
 
-    Args:
-        module_name (``str``):
-            Name of the module.
 
-    Returns:
-        ``bool``: True if the module exists, False otherwise.
-    """
-    avaiable_modules = await session.get(lordnet_url)
+async def load_module(module_name: str):
+    import_module("custom/" + module_name)

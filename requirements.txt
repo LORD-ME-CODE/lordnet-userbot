@@ -1,3 +1,7 @@
 Pyrogram
 environs
 psutil
+aiohttp
+validators
+pathlib
+aiofile

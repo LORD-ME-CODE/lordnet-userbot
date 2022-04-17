@@ -1,6 +1,6 @@
-from .module import module, modules_dict, module_exists
+from .module import module, modules_dict, module_exists, load_module
 from .cmd import restart, import_library, aimport_library, exception_str
-from .misc import python_version, prefix, __version__
+from .misc import python_version, prefix, __version__, session
 
 # noinspection PyUnresolvedReferences
 from pyrogram.types import Message  # Shortcut for modules
