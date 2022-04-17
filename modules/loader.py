@@ -1,4 +1,5 @@
 import os
+from io import BytesIO
 
 from helper import (
     module,
@@ -130,7 +131,7 @@ async def loader_cmd(_, message: Message):
 
 
 @module(cmds=["loadall", "unloadall"], desc="(Un)Load all modules")
-async def load_all(message):
+async def load_all(message: Message):
     if message.command[0] == "loadall":
         #  pass
         await message.edit("<b>💪 All modules loaded</b>")
@@ -139,3 +140,23 @@ async def load_all(message):
             os.remove(f"custom/{name}")
         await message.edit("<b>💪 All modules unloaded</b>")
     restart()
+
+
+@module(cmds=["bm", "backupmod"], args=["name"], desc="Backup a module")
+async def backup_module(message: Message):
+    if len(message.command) == 1:
+        await message.edit("<b>🙄 Please specify a module to backup</b>")
+        return
+    name = message.command[1].split("/")[-1].replace(".py", "")
+    if name + ".py" not in os.listdir("custom"):
+        await message.edit(f"<b>🙂 Module <code>{name}</code> not found.</b>")
+        return
+    await message.delete()
+    async with open(f"custom/{name}.py", "rb") as f:
+        data = BytesIO(await f.read())
+        data.name = f"{name}.py"
+        data.seek(0)
+        await message.reply_document(
+            data,
+            caption=f"<b>💪 Module <code>{name}</code> backed up</b>",
+        )
