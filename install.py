@@ -24,13 +24,8 @@ if __name__ == "__main__":
 
     # noinspection PyPep8
     try:
-        from helper import __version__, python_version, modules_dict
-
         text = (
-            '<b><a href="https://t.me/lordnet_userbot">✉ lordnet-userbot</a> loaded successfully!\n\n'
-            f"☛ lordnet version: <code>{__version__}</code>\n\n"
-            f"☛ Python version: <code>{python_version}</code>\n"
-            f"☛ Modules count: <code>{len(modules_dict)}</code>\n"
+            '<b><a href="https://t.me/lordnet_userbot">✉ lordnet-userbot</a> download success!\n\n'
             f"☛ License: <a href='https://github.com/LORD-ME-CODE/lordnet-userbot/blob/main/LICENSE'>GNU v3.0</a>\n"
             f"☛ Channel: @lordnet_userbot\n"
             f"☛ Chat: @lordnetchat\n"
