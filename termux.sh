@@ -34,8 +34,8 @@ echo "Leave empty to use defaults"
 read -r -p "API_ID > " api_id
 
 if [[ $api_id = "" ]]; then
-  api_id="5"
-  api_hash="1c5c96d5edd401b1ed40db3fb5633e2d"
+  api_id="14895435"
+  api_hash="e8205235cc85f4d3b9b8733a24954950"
 else
   read -r -p "API_HASH > " api_hash
 fi
