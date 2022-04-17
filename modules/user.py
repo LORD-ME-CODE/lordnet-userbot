@@ -57,8 +57,12 @@ async def userinfo(client: Client, message: Message):
     return await message.edit(text)
 
 
+first_name, last_name = None, None
+
+
 @module(cmds=["cuser", "cu", "copyuser"], desc="Copy user avatar and info")
 async def copyuser(client: Client, message: Message):
+    global first_name, last_name, photo_id
     """
     Copy user avatar and info
     """
@@ -75,6 +79,12 @@ async def copyuser(client: Client, message: Message):
 
     await message.delete()
 
+    if not first_name:
+        me = await client.get_me()
+        first_name = me.first_name
+        last_name = me.last_name
+        photo_id = me.photo.big_file_id
+
     await client.update_profile(first_name=user.first_name, last_name=user.last_name)
     await client.download_media(user.photo.big_file_id, "downloads/copyuser.jpg")
     await client.set_profile_photo(photo="downloads/copyuser.jpg")
@@ -82,4 +92,17 @@ async def copyuser(client: Client, message: Message):
     await client.send_message(
         "me",
         f"<b>📸 Copied user {user.mention} avatar and info</b>",
+    )
+
+
+@module(cmds=["undo"], desc="UNDO Copy user info")
+async def undo(client: Client, message: Message):
+    """
+    UNDO Copy user info
+    """
+    if first_name:
+        await client.update_profile(first_name=first_name, last_name=last_name)
+
+    await message.edit(
+        f"<b>📸 UNDO Copied info</b>",
     )
