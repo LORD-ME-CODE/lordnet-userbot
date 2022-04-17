@@ -31,14 +31,14 @@ async def loader_cmd(_, message: Message):
     if cmd in ["load", "lm"]:
         if len(message.command) == 1 and not (
             message.reply_to_message
-            and not message.reply_to_message.document
-            and not message.reply_to_message.document.file_name.casefold().endswith(
+            or message.reply_to_message.document
+            or message.reply_to_message.document.file_name.casefold().endswith(
                 ".py"
             )
         ):
             await message.edit("<b>🙄 Укажите модуль для загрузки</b>")
             return
-        await message.edit("👿 Устанавливаю модуль...")
+        await message.edit("<b>👿 Устанавливаю модуль...</b>")
         if message.reply_to_message:
             name = message.reply_to_message.document.file_name.split(".")[0]
             is_url = False
