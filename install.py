@@ -1,4 +1,3 @@
-import os.path
 import sys
 
 from pyrogram import Client
