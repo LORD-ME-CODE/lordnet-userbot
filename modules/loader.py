@@ -48,8 +48,9 @@ async def loader_cmd(_, message: Message):
                 is_url = True
             else:
                 is_url = False
-
-        if modules_dict.module_in(name):
+        if modules_dict.module_in("custom." + name) or modules_dict.module_in(
+            "module." + name
+        ):
             await message.edit(
                 f"<b>🙄 Module <code>{name}</code> already loaded\n"
                 f"🔃 Type <code>{prefix()}updatemod {name}</code> to update it</b>"
@@ -94,7 +95,7 @@ async def loader_cmd(_, message: Message):
             is_url = True
         else:
             is_url = False
-        if not modules_dict.module_in(name):
+        if not modules_dict.module_in("custom." + name):
             await message.edit(
                 f"<b>🙄 Module <code>{name}</code> not loaded\n"
                 f"🔃 Type <code>{prefix()}lm {message.command[1].lower()}</code> to load it</b>"
