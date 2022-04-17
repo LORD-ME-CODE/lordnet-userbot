@@ -1,4 +1,6 @@
 import os
+import shutil
+import zipfile
 from io import BytesIO
 
 from helper import (
@@ -17,6 +19,8 @@ from validators import url
 from aiofile import async_open as open
 
 from helper.misc import lordnet_url
+
+from zipfile import ZipFile
 
 
 @module(
@@ -170,3 +174,60 @@ async def backup_module(_, message: Message):
             data,
             caption=f"<b>💪 Module <code>{name}</code> backed up</b>",
         )
+
+
+@module(cmds=["down", "download"], desc="Download module from zip file")
+async def download_modules(_, message: Message):
+    if (
+        not message.reply_to_message
+        or not message.reply_to_message.document
+        or not message.reply_to_message.document.file_name.casefold().endswith(".zip")
+    ):
+        await message.edit("<b>🙄 Please reply to a zip file with modules</b>")
+        return
+    await message.edit("<b>💪 Downloading zip...</b>")
+    await message.reply_to_message.download("downloads/backup_mods.zip")
+    await message.edit("<b>💪 Downloading modules...</b>")
+    with zipfile.ZipFile("downloads/backup_mods.zip", "r") as zip_ref:
+        files = zip_ref.namelist()
+        count = 0
+        for file in files:
+            if file.endswith(".py"):
+                zip_ref.extract(file, "custom")
+                async with open(f"custom/{file}", "rb") as f:
+                    data = await f.read()
+                    if b"@module" not in data or b"from helper import" not in data:
+                        await f.close()
+                        os.remove(f"custom/{file}")
+                    else:
+                        count += 1
+    await message.edit(
+        f"<b>✅ Downloaded all <code>{count}</code> modules from zip file.</b>"
+    )
+    restart()
+
+
+@module(cmds=["bmods", "backupmods"], desc="Backup all modules")
+async def backup_modules(_, message: Message):
+    await message.delete()
+    zip_name = "downloads/backup_mods.zip"
+    fantasy_zip = ZipFile(zip_name, "w")
+    root = "custom"
+    count = 0
+    for file in os.listdir(root):
+        if file.endswith(".py"):
+            fantasy_zip.write(file)
+            count += 1
+    fantasy_zip.close()
+
+    if count == 0:
+        os.remove(zip_name)
+        await message.edit("<b>🙄 No modules found</b>")
+        return
+
+    await message.reply_document(
+        document=f"downloads/backup_mods.zip",
+        caption=f"<b>💪 All modules backed up\n"
+        f"<code>{count}</code> modules 🔨\n"
+        f"Reply with: <code>{prefix()}down</code> command to download this modules</b>",
+    )
