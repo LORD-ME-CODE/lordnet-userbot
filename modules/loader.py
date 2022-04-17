@@ -63,9 +63,10 @@ async def loader_cmd(_, message: Message):
                     f"<b>🙄 Module <code>{name}</code> does not exist</b>"
                 )
                 return
+            link = lordnet_url + f"custom/{name}.py"
         elif is_file:
             await message.reply_to_message.download("custom/" + name + ".py")
-            await load_module(name + ".py")
+            await load_module(name)
         else:
             link = message.command[1]
             async with session.get(link) as response:
@@ -102,6 +103,11 @@ async def loader_cmd(_, message: Message):
             )
             return
         if not is_url:
+            if not await module_exists(name):
+                await message.edit(
+                    f"<b>🙄 Module <code>{name}</code> does not exist</b>"
+                )
+                return
             link = lordnet_url + f"custom/{name}.py"
         else:
             link = message.command[1]
