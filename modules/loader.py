@@ -48,6 +48,7 @@ async def loader_cmd(_, message: Message):
                 is_url = True
             else:
                 is_url = False
+
         if modules_dict.module_in(name):
             await message.edit(
                 f"<b>🙄 Module <code>{name}</code> already loaded\n"
@@ -57,7 +58,9 @@ async def loader_cmd(_, message: Message):
 
         if not is_url and not is_file:
             if not await module_exists(name):
-                await message.edit(f"<b>🙄 Module <code>{name}</code> does not exist\n")
+                await message.edit(
+                    f"<b>🙄 Module <code>{name}</code> does not exist</b>"
+                )
                 return
         elif is_file:
             await message.reply_to_message.download("custom/" + name + ".py")
