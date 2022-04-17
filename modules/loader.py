@@ -99,7 +99,7 @@ async def loader_cmd(_, message: Message):
                     )
                 async with open(f"custom/{name}.py", "wb") as f:
                     await f.write(data)
-                
+
         await message.edit(f"<b>💪 Модуль <code>{name}</code> загружён</b>")
         restart()
     elif cmd == "updatemod":
