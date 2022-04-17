@@ -49,6 +49,12 @@ class ModulesDict(dict):
 modules_dict = ModulesDict()
 
 
+if not os.path.exists("downloads"):
+    os.mkdir("downloads")
+if not os.path.exists("custom"):
+    os.mkdir("custom")
+
+
 git = Repo(".")
 commits_from_repo = list(git.iter_commits())
 result = len(commits_from_repo)
@@ -57,6 +63,7 @@ ver = int((result % 1000) // 100)
 bottom = int((result % 1000) % 100)
 __version__ = f"{top}.{ver}.{bottom}"
 c_hexed = git.head.object.hexsha
+
 build_version = git.git.rev_parse(c_hexed, short=True)
 c_date = git.head.object.committed_datetime
 base_link = "https://github.com/LORD-ME-CODE/lordnet-userbot"
