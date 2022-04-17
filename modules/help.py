@@ -4,7 +4,7 @@ from pyrogram import Client
 from helper.misc import modules_dict, prefix
 from helper.module import module
 
-from bs4 import BeautifulSoup
+from tidylib import tidy_fragment
 
 
 @module(command=["help", "h"], description="Помощь по модулям", args=["модуль"])
@@ -29,11 +29,11 @@ async def help_cmd(_: Client, message: Message):
                 text += "<i>Нет команд</i>\n"
         text += f"\n<b>⋰ <i>Кол-во модулей в юзерботе:</i> {len(modules_dict)}</b>"
         if len(text) >= 2048:
-            text = BeautifulSoup(text, "html.parser").prettify()
+            text = tidy_fragment(text, options=dict(show_body_only=True, drop_empty_paras=False))
             await message.edit(text[:2048], disable_web_page_preview=True)
             text = text[2048:]
         while len(text) >= 2048:
-            text = BeautifulSoup(text, "html.parser").prettify()
+            text = tidy_fragment(text, options=dict(show_body_only=True, drop_empty_paras=False))
             await message.reply(text[:2048], disable_web_page_preview=True)
             text = text[2048:]
 

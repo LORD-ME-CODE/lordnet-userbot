@@ -5,3 +5,4 @@ aiohttp
 validators
 aiofile
 GitPython
+pytidylib
