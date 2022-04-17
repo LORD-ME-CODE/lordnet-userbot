@@ -108,9 +108,7 @@ def load_modules():
                 f"Can't import module {module_path}: {e.__class__.__name__}: {e}"
             )
 
-    for path in sorted(
-        sorted((Path("custom_modules")).rglob("*.py")), key=os.path.getmtime
-    ):
+    for path in sorted(sorted((Path("custom")).rglob("*.py")), key=os.path.getmtime):
         module_path = ".".join(path.parent.parts + (path.stem,))
         try:
             import_module(module_path)
