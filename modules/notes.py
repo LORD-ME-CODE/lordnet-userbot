@@ -18,7 +18,7 @@ async def save_note(client: Client, message: Message):
         chat = await client.get_chat(db.get("chat_id", 0))
     except (errors.RPCError, ValueError, KeyError):
         chat = await client.create_supergroup(
-            "lordnet-userbot заметки|фильтры",
+            "🧛‍♂️ lordnet-userbot заметки",
             "Не трогайте этот чат пожалуйста и не удаляйте его!",
         )
         db.set("chat_id", chat.id)
