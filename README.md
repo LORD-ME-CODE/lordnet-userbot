@@ -16,7 +16,7 @@ wget -O lordnet_installer.sh https://raw.githubusercontent.com/LORD-ME-CODE/lord
 bash lordnet_installer.sh
 ```
 
-# [Custom модули](/modules/README.md)
+# [Создание модулей](/modules/README.md)
 
 <h2 align="center">Написано на Pyrogram</h2>
 <p align="center">
