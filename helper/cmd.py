@@ -38,7 +38,7 @@ def import_library(library_name: str, package_name: str = None):
     """
 
     if package_name is None:
-        package_name = library_name
+        package_name = library_name.replace("_", "-")
 
     try:
         _temp = modules_.get(library_name)
@@ -65,7 +65,7 @@ async def aimport_library(library_name: str, package_name: str = None):
     """
 
     if package_name is None:
-        package_name = library_name
+        package_name = library_name.replace("_", "-")
 
     try:
         _temp = modules_.get(library_name)

@@ -4,3 +4,4 @@ psutil
 aiohttp
 validators
 aiofile
+GitPython
