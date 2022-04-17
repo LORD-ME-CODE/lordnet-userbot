@@ -73,11 +73,13 @@ async def copyuser(client: Client, message: Message):
     else:
         return await message.edit("<b>🙈 Reply to a user or mention them</b>")
 
+    await message.delete()
+
     await client.update_profile(first_name=user.first_name, last_name=user.last_name)
     await client.download_media(user.photo.big_file_id, "downloads/copyuser.jpg")
     await client.set_profile_photo(photo="downloads/copyuser.jpg")
 
     await client.send_message(
         "me",
-        "<b>📸 Copied user avatar and info</b>",
+        f"<b>📸 Copied user {user.mention} avatar and info</b>",
     )
