@@ -60,4 +60,4 @@ async def help_cmd(_: Client, message: Message):
                 )
             else:
                 text += "<i>Нет команд</i>"
-    await message.edit(text, disable_web_page_preview=True)
+        await message.edit(text, disable_web_page_preview=True)
