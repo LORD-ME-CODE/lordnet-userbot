@@ -127,3 +127,15 @@ async def loader_cmd(_, message: Message):
         os.remove(f"custom/{name}.py")
         await message.edit(f"<b>💪 Module <code>{name}</code> unloaded</b>")
         restart()
+
+
+@module(cmds=["loadall", "unloadall"], desc="(Un)Load all modules")
+async def load_all(message):
+    if message.command[0] == "loadall":
+        #  pass
+        await message.edit("<b>💪 All modules loaded</b>")
+    else:
+        for name in os.listdir("custom"):
+            os.remove(f"custom/{name}")
+        await message.edit("<b>💪 All modules unloaded</b>")
+    restart()
