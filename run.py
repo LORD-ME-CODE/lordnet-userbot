@@ -66,7 +66,7 @@ if __name__ == "__main__":
     if len(sys.argv) == 4:
         restart_type = sys.argv[3]
         if restart_type == "1":
-            text = "<b>🌐 lordnet обновлён успешно!</b>"
+            text = "<b>💚 lordnet обновлён успешно!</b>"
         else:
             text = "<b>😋 Перезагрузка прошла успешно!</b>"
         try:
