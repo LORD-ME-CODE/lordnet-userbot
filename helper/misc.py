@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import asyncio
 from sys import version_info
 
 from git import Repo
