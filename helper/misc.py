@@ -9,6 +9,8 @@ from .db import db
 
 from aiohttp import ClientSession
 
+import os.path
+
 
 class ModulesDict(dict):
     def __init__(self, **items):
