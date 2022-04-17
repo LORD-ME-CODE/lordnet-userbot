@@ -5,7 +5,7 @@ from helper.misc import modules_dict, prefix
 from helper.module import module
 
 
-@module(command="help", description="Help command", args=["module"])
+@module(command=["help", "h"], description="Help command", args=["module"])
 async def help_cmd(_: Client, message: Message):
     if len(message.command) == 1:
         text = (

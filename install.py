@@ -1,3 +1,4 @@
+import os.path
 import sys
 
 from pyrogram import Client
@@ -36,4 +37,10 @@ if __name__ == "__main__":
         app.send_message("me", text.format(restart))
     except:
         pass
+
+    if not os.path.exists("downloads"):
+        os.mkdir("downloads")
+    if not os.path.exists("custom"):
+        os.mkdir("custom")
+
     app.stop()
