@@ -147,3 +147,7 @@ async def module_exists(module_name: str):
 
 async def load_module(module_name: str):
     import_module("custom." + module_name)
+
+
+def escape_html(text: str) -> str:
+    return text.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
