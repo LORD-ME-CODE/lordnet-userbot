@@ -64,4 +64,7 @@ async def error_cmd(_, message: Message):
         raise Exception("Тестовая ошибка")
     except Exception as e:
         await message.edit(exception_str(e))
+
+        
+made_by = "@lord_code"  # Можно указать автора модуля (не обязательно)
 ```

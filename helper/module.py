@@ -111,6 +111,7 @@ def load_modules():
         module_path = ".".join(path.parent.parts + (path.stem,))
         try:
             import_module(module_path)
+            modules_dict[module_path]["made_by"] = "@lordnet_userbot"
             imported += 1
         except Exception as e:
             exceptions += 1
@@ -121,7 +122,9 @@ def load_modules():
     for path in sorted(sorted((Path("custom")).rglob("*.py")), key=os.path.getmtime):
         module_path = ".".join(path.parent.parts + (path.stem,))
         try:
-            import_module(module_path)
+            mod = import_module(module_path)
+            made_by = getattr(mod, "made_by", "@Неизвестный")[:64]
+            modules_dict[module_path]["made_by"] = made_by
             imported += 1
         except Exception as e:
             exceptions += 1

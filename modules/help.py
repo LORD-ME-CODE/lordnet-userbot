@@ -59,5 +59,6 @@ async def help_cmd(_: Client, message: Message):
                     + "\n"
                 )
             else:
-                text += "<i>Нет команд</i>"
+                text += "<i>Нет команд</i>\n"
+            text += f'\n<b>🍂 Автор:</b> {value["made_by"]}'
         await message.edit(text, disable_web_page_preview=True)
