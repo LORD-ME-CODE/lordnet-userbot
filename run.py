@@ -19,9 +19,11 @@ logging.basicConfig(level=logging.INFO)
 
 
 async def error_handler(_, error: Exception, message: Message):
+    trace = inspect.trace()
     txt = exception_str(
         error,
-        get_module_name(inspect.getmodule(inspect.trace()[-1][0])),
+        get_module_name(inspect.getmodule(trace[-1][0])),
+        trace.lineno,
         " ".join(message.command),
     )
     try:
