@@ -24,8 +24,8 @@ default_text = (
 
 
 def exception_str(e: Exception, module_name: str = None, command: str = "Неизвестная"):
-    line = str(traceback.extract_stack()[-1][1])
     traceback.print_exc()
+    line = sys.exc_info()[2].tb_lineno
 
     if not module_name:
         module_name = get_module_name(inspect.getmodule(inspect.stack()[1][0]))
