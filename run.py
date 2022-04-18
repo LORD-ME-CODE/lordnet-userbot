@@ -20,7 +20,9 @@ logging.basicConfig(level=logging.INFO)
 
 async def error_handler(_, error: Exception, message: Message):
     txt = exception_str(
-        error, get_module_name(inspect.getmodule(inspect.trace()[-1][0]))
+        error,
+        get_module_name(inspect.getmodule(inspect.trace()[-1][0])),
+        " ".join(message.command),
     )
     try:
         return await message.edit(txt)
