@@ -23,7 +23,7 @@ async def error_handler(_, error: Exception, message: Message):
     txt = exception_str(
         error,
         get_module_name(inspect.getmodule(trace[-1][0])),
-        trace[-1][0].lineno,
+        trace[-1][0].td_lineno,
         " ".join(message.command),
     )
     try:
