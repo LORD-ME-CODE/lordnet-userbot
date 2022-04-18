@@ -21,13 +21,13 @@ from zipfile import ZipFile
 
 
 @module(
-    cmds=["load", "unload", "lm"],
+    cmds=["load", "unload", "lm", "um", "loadmod", "unloadmod"],
     desc="Скачать/Удалить модуль",
     args=["название/ссылка"],
 )
 async def loader_cmd(_, message: Message):
     cmd = message.command[0]
-    if cmd in ["load", "lm"]:
+    if cmd in ["load", "lm", "loadmod"]:
         if len(message.command) == 1 and not (
             message.reply_to_message
             or message.reply_to_message.document
