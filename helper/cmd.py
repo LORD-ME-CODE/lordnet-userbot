@@ -17,7 +17,7 @@ def get_module_name(insp: ModuleType):
     return insp.__name__
 
 
-default_text = "<b>Ошибка в модуле <u>{}</u>! (Репортните в @lordnetchat)</b>\n\n"
+default_text = "<b>Ошибка в модуле <u>{}</u>! (Репортните в @lordnetchat)</b>\n"
 
 
 def exception_str(e: Exception):
