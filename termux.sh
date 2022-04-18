@@ -10,6 +10,7 @@ apt install python3 git clang wget libjpeg-turbo libcrypt ndk-sysroot zlib -y ||
 
 python3 -m pip install -U pip
 LDFLAGS="-L${PREFIX}/lib/" CFLAGS="-I${PREFIX}/include/" pip3 install --upgrade wheel pillow
+pip3 uninstall pyrogram
 
 if [[ -d "lordnet-userbot" ]]; then
   cd lordnet-userbot
