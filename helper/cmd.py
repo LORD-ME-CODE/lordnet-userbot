@@ -17,22 +17,23 @@ def get_module_name(insp: ModuleType):
     return insp.__name__
 
 
-default_text = "<b>Ошибка в модуле <u>{}</u>! (Репортните в @lordnetchat)</b>"
+default_text = "<b>Ошибка в модуле <u>{}</u>! (Репортните в @lordnetchat)</b>\n\n"
 
 
 def exception_str(e: Exception):
+    line = str(traceback.extract_stack()[-1][1])
     traceback.print_exc()
 
     module_name = get_module_name(inspect.getmodule(inspect.stack()[1][0]))
     if isinstance(e, errors.RPCError):
         return (
             f"{default_text.format(module_name)}\n"
-            f"<code>[{e.CODE} {e.ID or e.NAME}] - {e.MESSAGE}</code>"
+            f"<code>[{e.CODE} {e.ID or e.NAME}] - {e.MESSAGE}</code>  <b>(Строка {line})</b>"
         )
     else:
         return (
             f"{default_text.format(module_name)}\n"
-            f"<code>{e.__class__.__name__}: {e}</code>"
+            f"<code>{e.__class__.__name__}: {e}</code>  <b>(Строка {line})</b>"
         )
 
 
