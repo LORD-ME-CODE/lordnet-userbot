@@ -125,8 +125,8 @@ async def load_all(_, message: Message):
         await message.edit("<b>💪 All modules loaded</b>")
     else:
         for name in os.listdir("custom"):
-                if name.endswith('.py'):
-                    os.remove(f"custom/{name}")
+            if name.endswith('.py'):
+                os.remove(f"custom/{name}")
         await message.edit("<b>💪 All modules unloaded</b>")
     restart()
 
