@@ -4,7 +4,7 @@ from contextlib import redirect_stdout
 from pyrogram import Client
 from pyrogram.types import Message
 
-from helper.module import module
+from helper.module import module, escape_html
 from helper.cmd import exception_str, aimport_library
 
 
@@ -30,7 +30,7 @@ def exec_cmd(client: Client, message: Message):
             "<b>✎ Код:</b>\n"
             f"<code>{code}</code>\n\n"
             "<b>☛ Результат</b>:\n"
-            f"<code>{stdout.getvalue()}</code>"
+            f"<code>{escape_html(stdout.getvalue())}</code>"
         )
         if message.command[0] == "exnoedit":
             message.reply(text)
@@ -56,7 +56,7 @@ def eval_cmd(client: Client, message: Message):
             "<b>✎ Выражение:</b>\n"
             f"<code>{code}</code>\n\n"
             "<b>☛ Результат</b>:\n"
-            f"<code>{result}</code>"
+            f"<code>{escape_html(result)}</code>"
         )
     except Exception as e:
         message.edit(exception_str(e))
@@ -94,11 +94,7 @@ async def aexec_handler(client: Client, message: Message):
     try:
         await message.edit("<b>✈ Выполняю код...</b>")
         s = await aexec(code, client, message)
-        s = (
-            str(s).replace("<", "").replace(">", "")
-            if type(s) == str or "<" in str(s) or ">" in str(s)
-            else s
-        )
+        s = escape_html(str(s))
         text = (
             f"<b>✎ Код:</b>\n<code>"
             f'{code.replace("<", "").replace(">", "")}'
@@ -132,11 +128,7 @@ async def aeval_handler(client: Client, message: Message):
             code,
             {"message": message, "client": client, "reply": message.reply_to_message},
         )
-        s = (
-            str(s).replace("<", "").replace(">", "")
-            if type(s) == str or "<" in str(s) or ">" in str(s)
-            else s
-        )
+        s = escape_html(str(s))
         return await message.edit(
             f"<b>✎ Выражение:</b>\n<code>"
             f'{code.replace("<", "").replace(">", "")}</code>'
