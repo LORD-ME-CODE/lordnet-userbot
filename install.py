@@ -1,6 +1,8 @@
 import sys
 
 from pyrogram import Client
+from pyrogram.errors import RPCError
+
 import config
 
 
@@ -37,9 +39,9 @@ if __name__ == "__main__":
         try:
             app.join_chat("lordnet_userbot")
             app.join_chat("lordnetchat")
-        except:
+        except RPCError:
             pass
-    except:
+    except RPCError:
         pass
 
     app.stop()
