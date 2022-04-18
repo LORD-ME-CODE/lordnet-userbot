@@ -9,6 +9,7 @@ import pyrogram
 from helper.cmd import get_module_name
 from helper.misc import modules_dict, prefix
 from helper.misc import session, lordnet_url
+from typing import Any
 
 
 def get_commands(x: tuple):
@@ -149,5 +150,5 @@ async def load_module(module_name: str):
     import_module("custom." + module_name)
 
 
-def escape_html(text: str) -> str:
-    return text.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+def escape_html(text: Any) -> str:
+    return str(text).replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
