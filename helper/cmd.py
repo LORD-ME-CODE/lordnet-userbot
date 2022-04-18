@@ -3,6 +3,7 @@ import os
 import asyncio
 import subprocess
 import sys
+import inspect
 import traceback
 from types import ModuleType
 from pyrogram import errors
@@ -16,18 +17,23 @@ def get_module_name(insp: ModuleType):
     return insp.__name__
 
 
-default_text = "<b>Ошибка! (Репортните в @lordnetchat)</b>"
+default_text = "<b>Ошибка в модуле <u>{}</u>! (Репортните в @lordnetchat)</b>"
 
 
 def exception_str(e: Exception):
     traceback.print_exc()
+
+    module_name = get_module_name(inspect.getmodule(inspect.stack()[1][0]))
     if isinstance(e, errors.RPCError):
         return (
-            f"{default_text}\n"
+            f"{default_text.format(module_name)}\n"
             f"<code>[{e.CODE} {e.ID or e.NAME}] - {e.MESSAGE}</code>"
         )
     else:
-        return f"{default_text}\n" f"<code>{e.__class__.__name__}: {e}</code>"
+        return (
+            f"{default_text.format(module_name)}\n"
+            f"<code>{e.__class__.__name__}: {e}</code>"
+        )
 
 
 def import_library(library_name: str, package_name: str = None):
