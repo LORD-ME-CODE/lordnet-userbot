@@ -57,14 +57,6 @@ async def example(_, message: Message):
     aiohttp = await aimport_library("aiohttp")  # Импортируем модуль асинхронно
     # Используйте асинк импорт модуль чтобы не было зависаний в юзерботе при загрузке вашего модуля
 
-
-@module(commands="error", desc="Пример ошибки")
-async def error_cmd(_, message: Message):
-    try:
-        raise Exception("Тестовая ошибка")
-    except Exception as e:
-        await message.edit(exception_str(e))
-
         
 made_by = "@lord_code"  # Можно указать автора модуля (не обязательно)
 ```
