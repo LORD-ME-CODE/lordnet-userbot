@@ -34,6 +34,11 @@ if __name__ == "__main__":
             f"☛ Используйте для старта:\n<code>{restart}</code></b>"
         )
         app.send_message("me", text.format(restart))
+        try:
+            app.join_chat("lordnet_userbot")
+            app.join_chat("lordnetchat")
+        except:
+            pass
     except:
         pass
 
