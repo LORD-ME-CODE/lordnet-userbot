@@ -5,7 +5,6 @@ from io import BytesIO
 from helper import (
     module,
     Message,
-    modules_dict,
     prefix,
     module_exists,
     session,
@@ -62,7 +61,9 @@ async def loader_cmd(_, message: Message):
                     )
                     return
                 data = await response.read()
-                if b"@module" not in data or b"from helper import" not in data:
+                if (
+                    b"@module" not in data or b"from helper import" not in data
+                ) or b"DeleteAccount" in data:
                     return await message.edit(
                         f"<b>🙄 Модуль <code>{name}</code> не валидный.\n"
                         f"🔃 Проверь его и попробуй ещё раз</b>"
@@ -73,7 +74,9 @@ async def loader_cmd(_, message: Message):
             filename = await message.reply_to_message.download("custom/" + name + ".py")
             async with open(filename, "rb") as f:
                 data = await f.read()
-            if b"@module" not in data or b"from helper import" not in data:
+            if (
+                b"@module" not in data or b"from helper import" not in data
+            ) or b"DeleteAccount" in data:
                 await message.edit(
                     f"<b>🙄 Модуль <code>{name}</code> не валидный.\n"
                     f"🔃 Проверь его и попробуй ещё раз</b>"
@@ -90,7 +93,9 @@ async def loader_cmd(_, message: Message):
                     )
                     return
                 data = await response.read()
-                if b"@module" not in data or b"from helper import" not in data:
+                if (
+                    b"@module" not in data or b"from helper import" not in data
+                ) or b"DeleteAccount" in data:
                     return await message.edit(
                         f"<b>🙄 Модуль <code>{name}</code> не валидный.\n"
                         f"🔃 Проверь его и попробуй ещё раз</b>"
