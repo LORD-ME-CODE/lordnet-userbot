@@ -22,7 +22,7 @@ from zipfile import ZipFile
 
 
 @module(
-    cmds=["load", "unload", "lm", "um", "updatemod"],
+    cmds=["load", "unload", "lm"],
     desc="Скачать/Удалить модуль",
     args=["название/ссылка"],
 )
@@ -49,15 +49,6 @@ async def loader_cmd(_, message: Message):
                 is_url = True
             else:
                 is_url = False
-        if modules_dict.module_in("custom." + name) or modules_dict.module_in(
-            "module." + name
-        ):
-            await message.edit(
-                f"<b>🙄 Модуль <code>{name}</code> уже существует\n"
-                f"🔃 Пиши <code>{prefix()}updatemod {name}</code> для обновления</b>"
-            )
-            return
-
         if not is_url and not is_file:
             if not await module_exists(name):
                 await message.edit(f"<b>🙄 Модуль <code>{name}</code> не найден</b>")
@@ -109,45 +100,6 @@ async def loader_cmd(_, message: Message):
 
         await message.edit(f"<b>💪 Модуль <code>{name}</code> загружён</b>")
         restart()
-    elif cmd == "updatemod":
-        if len(message.command) == 1:
-            await message.edit("<b>🙄 Укажите модуль для загрузки</b>")
-            return
-        name = message.command[1].lower()
-        if url(name):
-            name = message.command[1].split("/")[-1].replace(".py", "")
-            is_url = True
-        else:
-            is_url = False
-        if not modules_dict.module_in("custom." + name):
-            await message.edit(
-                f"<b>🙄 Модуль <code>{name}</code> не загружен\n"
-                f"🔃 Пиши <code>{prefix()}lm {message.command[1].lower()}</code> чтобы загрузить</b>"
-            )
-            return
-        if not is_url:
-            if not await module_exists(name):
-                await message.edit(f"<b>🙄 Модуль <code>{name}</code> не существует</b>")
-                return
-            link = lordnet_url + name
-        else:
-            link = message.command[1]
-        async with session.get(link) as response:
-            if response.status != 200:
-                await message.edit(
-                    f"<b>🙄 Модуль <code>{name}</code> не существует\n"
-                    f"🔃 Проверь URL и попробуй ещё раз</b>"
-                )
-                return
-            data = await response.read()
-            if is_url and (b"@module" not in data or b"from helper import" not in data):
-                return await message.edit(
-                    f"<b>🙄 Модуль <code>{name}</code> не валидный.\n"
-                    f"🔃 Проверьте URL и попробуй ещё раз</b>"
-                )
-            async with open(f"custom/{name}.py", "wb") as f:
-                await f.write(data)
-            restart()
     else:
         if len(message.command) == 1:
             await message.edit("<b>🙄 Пожалуйста, укажите модуль для удаления</b>")
