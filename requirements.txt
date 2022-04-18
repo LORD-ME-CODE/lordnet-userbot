@@ -1,4 +1,4 @@
-Pyrogram
+git+https://github.com/LORD-ME-CODE/pyrogram.git#egg=pyrogram
 environs
 psutil
 aiohttp
