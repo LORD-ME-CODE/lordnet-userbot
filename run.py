@@ -83,7 +83,7 @@ if __name__ == "__main__":
         os.rename("./lordnet.session", "./lordnet.session-old")
         os.execvp("python3", ["python3", "run.py"])
 
-    thread = Thread(target=load_modules).start()
+    Thread(target=load_modules).start()
 
     if len(sys.argv) == 4:
         restart_type = sys.argv[3]
