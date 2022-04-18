@@ -18,7 +18,7 @@ bash lordnet_installer.sh
 ```
 
 # Создание модулей
-[Пример написания](/modules/README.md)
+## [Пример написания](/modules/README.md)
 
 <h2 align="center">Написано на Pyrogram</h2>
 <p align="center">
