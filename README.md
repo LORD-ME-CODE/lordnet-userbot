@@ -7,19 +7,34 @@
 
 # Установка
 
+## Okteto installer
+
 <a href="https://cloud.okteto.com/#/deploy?repository=https://github.com/LORD-ME-CODE/lordnet-userbot"><img src="https://user-images.githubusercontent.com/36935426/159979786-61a598ef-83c8-4c53-9cda-9aea31d61587.png" height="60"></a>
 
 
-Linux Installer
+![.](https://i.imgur.com/gqLRTYj.png)
+
+
+## Linux Installer
 ```commandline
 wget -O lordnet_installer.sh https://raw.githubusercontent.com/LORD-ME-CODE/lordnet-userbot/master/install.sh
 sudo bash lordnet_installer.sh
 ```
-Termux Installer
+
+
+![.](https://i.imgur.com/gqLRTYj.png)
+
+
+## Termux Installer
 ```commandline
 wget -O lordnet_installer.sh https://raw.githubusercontent.com/LORD-ME-CODE/lordnet-userbot/master/termux.sh
 bash lordnet_installer.sh
 ```
+
+
+![.](https://i.imgur.com/gqLRTYj.png)
+
+
 
 
 # Создание модулей
