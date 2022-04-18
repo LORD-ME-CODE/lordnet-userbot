@@ -14,6 +14,7 @@ apt install python3 python3-pip git wget -y || exit 2
 
 su -c "python3 -m pip install -U pip" $SUDO_USER
 su -c "python3 -m pip install -U setuptools wheel" $SUDO_USER
+su -c "python3 -m pip uninstall pyrogram" $SUDO_USER
 
 if [[ -d "lordnet-userbot" ]]; then
   # shellcheck disable=SC2164
