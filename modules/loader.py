@@ -185,7 +185,7 @@ async def download_modules(_, message: Message):
 
 @module(cmds=["bmods", "backupmods"], desc="Бэкап в zip файл")
 async def backup_modules(_, message: Message):
-    await message.delete()
+    await message.edit("🍞 Испекаю zip с модулями...")
     zip_name = "downloads/backup_mods.zip"
     fantasy_zip = ZipFile(zip_name, "w")
     root = "custom"
@@ -207,3 +207,4 @@ async def backup_modules(_, message: Message):
         f"<code>{count}</code> modules 🔨\n"
         f"Ответьте с: <code>{prefix()}down</code> командой чтобы скачать все модули с архива</b>",
     )
+    await message.delete()
