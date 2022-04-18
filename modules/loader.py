@@ -141,7 +141,8 @@ async def backup_module(_, message: Message):
         data.seek(0)
         await message.reply_document(
             data,
-            caption=f"<b>💪 Модуль <code>{name}</code></b>",
+            caption=f"<b>💪 Модуль <code>{name}</code>\n"
+            f"🥥 Напиши: <code>{prefix()}lm</code> в ответ на это сообщение, чтобы загрузить его</b>",
         )
 
 
