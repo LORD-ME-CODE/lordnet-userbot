@@ -6,6 +6,7 @@ from importlib import import_module
 from pathlib import Path
 
 import pyrogram
+from pyrogram.handlers import MessageHandler
 
 from helper.cmd import get_module_name
 from helper.misc import modules_dict, prefix
@@ -14,7 +15,7 @@ from typing import Any
 
 
 def get_commands(x: tuple):
-    return x[0] if len(x) > 0 and isinstance(x[0], list) else None
+    return x[0] if len(x) > 0 and isinstance(x[0], (list, tuple)) else None
 
 
 # noinspection PyIncorrectDocstring
@@ -76,29 +77,28 @@ def module(*filters, **params):
                 "args": args,
             },
         )
-        if filters:
-            dec = modules_dict.client.on_message(*filters)
-        else:
-            dec = modules_dict.client.on_message(
-                pyrogram.filters.command(commands, prefix()) & pyrogram.filters.me
-            )
-    else:
-        dec = modules_dict.client.on_message(*filters)
+        if not filters:
+            filters = pyrogram.filters.command(commands, prefix()) & pyrogram.filters.me
+
+    if isinstance(filters, (list, tuple)) and len(filters) < 2:
+        filters = filters[0]
 
     def sub_decorator(func):
         if inspect.iscoroutinefunction(func):
 
-            @dec
             async def wrapper(*args, **kwargs):
                 return await func(*args, **kwargs)
 
         else:
 
-            @dec
             def wrapper(*args, **kwargs):
                 return func(*args, **kwargs)
 
-        return wrapper
+        handler = MessageHandler(wrapper, filters)
+        if "handlers" not in modules_dict[module_value]:
+            modules_dict[module_value]["handlers"] = []
+        modules_dict.client.add_handler(handler)
+        modules_dict[module_value]["handlers"].append(handler)
 
     return sub_decorator
 
@@ -144,6 +144,13 @@ async def load_module(module_name: str):
     mod = import_module(module_name)
     made_by = getattr(mod, "made_by", "@Неизвестный")[:64]
     modules_dict[module_name]["made_by"] = made_by
+
+
+async def unload_module(module_name: str):
+    handlers = modules_dict[module_name]["handlers"]
+    modules_dict.remove(module_name)
+    for handler in handlers:
+        modules_dict.client.remove_handler(handler)
 
 
 async def module_exists(module_name: str):

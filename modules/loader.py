@@ -20,7 +20,7 @@ from helper.misc import lordnet_url, modules_dict
 
 from zipfile import ZipFile
 
-from helper.module import load_module
+from helper.module import load_module, unload_module
 
 
 @module(
@@ -120,15 +120,14 @@ async def loader_cmd(_, message: Message):
         if len(message.command) == 1:
             await message.edit("<b>🙄 Пожалуйста, укажите модуль для удаления</b>")
             return
+        await message.edit("<b>🙄 Удаляю модуль...</b>")
         name = message.command[1].split("/")[-1].replace(".py", "")
         if name + ".py" not in os.listdir("custom"):
             await message.edit(f"<b>🙂 Модуль <code>{name}</code> не найден.</b>")
             return
         os.remove(f"custom/{name}.py")
-        await message.edit(
-            f"<b>💪 Модуль <code>{name}</code> удалён. Перезагружаю юб...</b>"
-        )
-        restart()
+        await unload_module(f"custom.{name}")
+        await message.edit(f"<b>💪 Модуль <code>{name}</code> удалён успешно.</b>")
 
 
 @module(cmds=["loadall", "unloadall"], desc="Загрузить/Удалить все модули")
@@ -138,11 +137,15 @@ async def load_all(_, message: Message):
         await message.edit("<b>💪 Все модули загружены (НЕТ)</b>")
         return
     else:
+        await message.edit("<b>🦆 Удаляю все модули...</b>")
         for name in os.listdir("custom"):
             if name.endswith(".py"):
                 os.remove(f"custom/{name}")
-        await message.edit("<b>💪 Все модули были удалены. Перезагружаю юб...</b>")
-        restart()
+                try:
+                    await unload_module(f"custom.{name.replace('.py', '')}")
+                except:
+                    pass
+        await message.edit("<b>💪 Все модули были удалены успешно!</b>")
 
 
 @module(cmds=["bm", "backupmod"], args=["название"], desc="Бэкапнуть модуль")
