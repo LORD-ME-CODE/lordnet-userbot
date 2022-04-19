@@ -5,3 +5,5 @@ aiohttp
 validators
 aiofile
 GitPython
+pillow
+opencv-python
