@@ -16,10 +16,10 @@ async def shell_cmd(_: Client, message: Message):
     cmd_text = message.text.split(maxsplit=1)[1]
     cmd_obj = await asyncio.create_subprocess_shell(
         cmd_text,
-        shell=True,
+        
         stdout=PIPE,
         stderr=PIPE,
-        text=True,
+        
     )
     text = f"<b>≻</b> <code>{cmd_text}</code>\n\n"
 
@@ -56,11 +56,11 @@ async def shell_input_cmd(_: Client, message: Message):
         return await message.edit("<b>✖ Вы не указали входной текст.</b>")
     cmd_obj = await asyncio.create_subprocess_shell(
         cmd_text,
-        shell=True,
+        
         stdout=PIPE,
         stderr=PIPE,
         stdin=PIPE,
-        text=True,
+        
     )
     text = f"<b>≻</b> <code>{cmd_text}</code>\n\n"
 
