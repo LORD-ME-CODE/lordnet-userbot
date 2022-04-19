@@ -7,11 +7,6 @@
 
 # Установка
 
-<h2 align="center">Okteto installer</h2>
-
-<h2 align="center"><a href="https://cloud.okteto.com/#/deploy?repository=https://github.com/LORD-ME-CODE/lordnet-userbot"><img src="https://user-images.githubusercontent.com/36935426/159979786-61a598ef-83c8-4c53-9cda-9aea31d61587.png" height="60"></a></h2>
-
-
 <h2 align="center"><img src="https://i.imgur.com/gqLRTYj.png"></h2>
 
 
@@ -38,6 +33,11 @@ bash lordnet_installer.sh
 
 
 
+<h2 align="center">Okteto installer</h2>
+
+<h2 align="center"><a href="https://cloud.okteto.com/#/deploy?repository=https://github.com/LORD-ME-CODE/lordnet-userbot"><img src="https://user-images.githubusercontent.com/36935426/159979786-61a598ef-83c8-4c53-9cda-9aea31d61587.png" height="60"></a></h2>
+
+<h2 align="center"><img src="https://i.imgur.com/gqLRTYj.png"></h2>
 
 <h1 align="center"><b>Создание модулей</b></h1>
 
