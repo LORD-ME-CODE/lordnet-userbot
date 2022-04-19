@@ -17,6 +17,7 @@ class ModulesDict(dict):
         super().__init__(items)
         self.__dict = {}
         self.client: Client | None = None
+        self.commands: dict = {}
 
     def items(self):
         return self.__dict.items()
@@ -29,6 +30,16 @@ class ModulesDict(dict):
 
     def add_command(self, module: str, command: dict):
         self.__dict[module]["commands"].append(command)
+        self.commands.update(
+            {
+                i: {
+                    "args": command["args"],
+                    "desc": command["desc"],
+                    "module": module,
+                }
+                for i in command["name"]
+            }
+        )
 
     def module_in(self, module: str) -> bool:
         return module in self.__dict

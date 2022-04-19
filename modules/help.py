@@ -44,9 +44,19 @@ async def help_cmd(_: Client, message: Message):
         if value is None:
             value = modules_dict.get("custom." + message.command[1].lower())
         if value is None:
-            text = f"<b>Модуль <code>{message.command[1]}</code> не найден</b>"
+            value = modules_dict.commands.get(message.command[1].lower())
+            if value is None:
+                text = f"<b>🧭 Модуль <code>{message.command[1]}</code> не найден</b>"
+            else:
+                text = f"🐍 Помощь для <b>{message.command[1]}</b> команды:\n\n"
+                text += (
+                    f"<b><code>{prefix()}{message.command[1]}"
+                    f'</code> {" ".join("[" + c + "]" for c in value["args"])}</b>\n'
+                    f'<i>{value["desc"]}</i>\n'
+                )
+                text += f'\n<b>🍂 Модуль: {value["module"]}</b>'
         else:
-            text = f"Помощь для <b>{message.command[1]}</b> модуля:\n\n"
+            text = f"🐍 Помощь для <b>{message.command[1]}</b> модуля:\n\n"
             commands = value["commands"]
             if len(commands) > 0:
                 text += (
