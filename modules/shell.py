@@ -36,7 +36,8 @@ async def shell_cmd(_: Client, message: Message):
             text += "<b>✖ Ошибка:</b>\n" f"<code>{stderr}</code>\n\n"
         text += f"<b>Выполнено за {round(stop_time - start_time, 5)} сек. | Код ({cmd_obj.returncode})</b>"
     await message.edit(text)
-    cmd_obj.terminate()
+    try: cmd_obj.kill()
+    except: pass
 
 
 @module(
@@ -76,4 +77,6 @@ async def shell_input_cmd(_: Client, message: Message):
             text += "<b>✖ Ошибка:</b>\n" f"<code>{stderr}</code>\n\n"
         text += f"<b>Выполнено за {round(stop_time - start_time, 5)} сек. | Код ({cmd_obj.returncode})</b>"
     await message.edit(text)
-    cmd_obj.terminate()
+    try: cmd_obj.kill()
+    except: pass
+
