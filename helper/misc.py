@@ -35,7 +35,7 @@ class ModulesDict(dict):
                 i: {
                     "args": command["args"],
                     "desc": command["desc"],
-                    "module": module,
+                    "module": module.split(".")[-1],
                 }
                 for i in command["name"]
             }
