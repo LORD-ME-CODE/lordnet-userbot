@@ -58,7 +58,7 @@ async def check_cmd(_, message: Message):
     )
     if not head.startswith(build_version):
         text = (
-            f"<b>🟠 Доступно обновление [~{__version__[:-1] + int(__version__[-1]) + 1}]!\n\n"
+            f"<b>🟠 Доступно обновление [~{__version__[:-1] + str(int(__version__[-1]) + 1)}]!\n\n"
             f"🔃 Для обновы, введите: <code>{prefix()}update</code></b>"
         )
     else:
