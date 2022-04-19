@@ -54,7 +54,7 @@ async def help_cmd(_: Client, message: Message):
                     f'</code> {" ".join("[" + c + "]" for c in value["args"])}</b>\n'
                     f'<i>{value["desc"]}</i>\n'
                 )
-                text += f'\n<b>🍂 Модуль: {value["module"]}</b>'
+                text += f'\n<b>🍂 Модуль: {value["module"].split(".")[-1]}</b>'
         else:
             text = f"🐍 Помощь для <b>{message.command[1]}</b> модуля:\n\n"
             commands = value["commands"]

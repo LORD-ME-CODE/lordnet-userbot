@@ -1,3 +1,4 @@
+import logging
 import os
 import zipfile
 from io import BytesIO
@@ -15,9 +16,11 @@ from validators import url
 # noinspection PyShadowingBuiltins
 from aiofile import async_open as open
 
-from helper.misc import lordnet_url
+from helper.misc import lordnet_url, modules_dict
 
 from zipfile import ZipFile
+
+from helper.module import load_module
 
 
 @module(
@@ -35,7 +38,7 @@ async def loader_cmd(_, message: Message):
         ):
             await message.edit("<b>🙄 Укажите модуль для загрузки</b>")
             return
-        await message.edit("<b>👿 Устанавливаю модуль...</b>")
+        await message.edit("<b>👿 Скачиваю модуль...</b>")
         if message.reply_to_message:
             name = message.reply_to_message.document.file_name.split(".")[0]
             is_url = False
@@ -48,6 +51,11 @@ async def loader_cmd(_, message: Message):
                 is_url = True
             else:
                 is_url = False
+        if modules_dict.module_in("module." + name):
+            await message.edit(
+                f"<b>🙂 Модуль <code>{name}</code> системный и не может быть загружён.</b>"
+            )
+            return
         if not is_url and not is_file:
             if not await module_exists(name):
                 await message.edit(f"<b>🙄 Модуль <code>{name}</code> не найден</b>")
@@ -103,8 +111,11 @@ async def loader_cmd(_, message: Message):
                 async with open(f"custom/{name}.py", "wb") as f:
                     await f.write(data)
 
+        await message.edit("<b>🌚 Устанавливаю модуль...</b>")
+
+        await load_module(f"custom.{name}")
+
         await message.edit(f"<b>💪 Модуль <code>{name}</code> загружён</b>")
-        restart()
     else:
         if len(message.command) == 1:
             await message.edit("<b>🙄 Пожалуйста, укажите модуль для удаления</b>")
@@ -114,7 +125,9 @@ async def loader_cmd(_, message: Message):
             await message.edit(f"<b>🙂 Модуль <code>{name}</code> не найден.</b>")
             return
         os.remove(f"custom/{name}.py")
-        await message.edit(f"<b>💪 Модуль <code>{name}</code> удалён</b>")
+        await message.edit(
+            f"<b>💪 Модуль <code>{name}</code> удалён. Перезагружаю юб...</b>"
+        )
         restart()
 
 
@@ -122,13 +135,14 @@ async def loader_cmd(_, message: Message):
 async def load_all(_, message: Message):
     if message.command[0] == "loadall":
         #  pass
-        await message.edit("<b>💪 All modules loaded</b>")
+        await message.edit("<b>💪 Все модули загружены (НЕТ)</b>")
+        return
     else:
         for name in os.listdir("custom"):
             if name.endswith(".py"):
                 os.remove(f"custom/{name}")
-        await message.edit("<b>💪 All modules unloaded</b>")
-    restart()
+        await message.edit("<b>💪 Все модули были удалены. Перезагружаю юб...</b>")
+        restart()
 
 
 @module(cmds=["bm", "backupmod"], args=["название"], desc="Бэкапнуть модуль")
@@ -176,11 +190,16 @@ async def download_modules(_, message: Message):
                         await f.close()
                         os.remove(f"custom/{file}")
                     else:
-                        count += 1
+                        try:
+                            await load_module(
+                                f'custom.{file.split("/")[-1].replace(".py", "")}'
+                            )
+                            count += 1
+                        except Exception as ex:
+                            logging.warning(ex)
     await message.edit(
         f"<b>✅ Загружены все <code>{count}</code> модули из zip файла.</b>"
     )
-    restart()
 
 
 @module(cmds=["bmods", "backupmods"], desc="Бэкап в zip файл")

@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import inspect
 from sys import version_info
 
 from git import Repo
@@ -28,6 +29,9 @@ class ModulesDict(dict):
     def clear(self):
         self.__dict.clear()
 
+    def remove(self, module: str):
+        del self.__dict[module]
+
     def add_command(self, module: str, command: dict):
         self.__dict[module]["commands"].append(command)
         self.commands.update(
@@ -35,7 +39,7 @@ class ModulesDict(dict):
                 i: {
                     "args": command["args"],
                     "desc": command["desc"],
-                    "module": module.split(".")[-1],
+                    "module": module,
                 }
                 for i in command["name"]
             }
@@ -49,7 +53,7 @@ class ModulesDict(dict):
 
     def __getitem__(self, module: str):
         if module not in self.__dict:
-            raise KeyError(f"Module {module} does not exist")
+            raise KeyError(f"Модуль {module} не найден.")
         return self.__dict[module]
 
     def __str__(self):

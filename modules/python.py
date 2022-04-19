@@ -5,7 +5,7 @@ from pyrogram import Client
 from pyrogram.types import Message
 
 from helper.module import module, escape_html
-from helper.cmd import exception_str, aimport_library
+from helper.cmd import aimport_library
 
 
 @module(

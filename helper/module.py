@@ -103,9 +103,9 @@ def module(*filters, **params):
     return sub_decorator
 
 
-def load_modules(loop):
-    asyncio.set_event_loop(loop)
-    modules_dict.clear()
+def load_modules(loop=None):
+    if loop:
+        asyncio.set_event_loop(loop)
 
     imported = 0
     exceptions = 0
@@ -138,6 +138,12 @@ def load_modules(loop):
     logging.info(f"Загружено {imported} модулей")
     if exceptions:
         logging.warning(f"{exceptions} модулей не удалось загрузить")
+
+
+async def load_module(module_name: str):
+    mod = import_module(module_name)
+    made_by = getattr(mod, "made_by", "@Неизвестный")[:64]
+    modules_dict[module_name]["made_by"] = made_by
 
 
 async def module_exists(module_name: str):
