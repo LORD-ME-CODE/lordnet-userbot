@@ -152,12 +152,23 @@ not_allowed = (
 )
 
 
+root = os.environ.get("SUDO_UID") and os.geteuid() != 0
+
+
 async def render_message(app: Client, message: types.Message) -> dict:
     async def get_file(msg) -> str:
         file_name = await app.download_media(
             message=msg,
         )
         if file_name.endswith(".tgs"):
+            if not root:
+                await app.send_message(
+                    "me",
+                    "<b>📵 Нет прав на скачивание файлов!\n"
+                    "Запустите скрипт <code>run.py</code> от sudo / root пользователя</b>",
+                )
+                logging.error("Пожалуйста, запустите этот скрипт как root!")
+                return ""
             try:
                 orig = file_name.split("\\")[-1].split("/")[-1]
                 file_name_ = orig[:-3] + "webp"
