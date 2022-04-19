@@ -6,10 +6,6 @@ from pyrogram import Client, errors, types
 
 from helper import module, session, exception_str, import_library
 
-
-pyrlottie = import_library("pyrlottie")
-conv_single_lottie = pyrlottie.convSingleLottie
-LottieFile = pyrlottie.LottieFile
 Image = import_library("PIL", "pillow").Image
 cv2 = import_library("cv2", "opencv-python")
 
@@ -161,31 +157,7 @@ async def render_message(app: Client, message: types.Message) -> dict:
             message=msg,
         )
         if file_name.endswith(".tgs"):
-            if not root:
-                await app.send_message(
-                    "me",
-                    "<b>📵 Нет прав на скачивание файлов!\n"
-                    "Запустите скрипт <code>run.py</code> от sudo / root пользователя</b>",
-                )
-                logging.error("Пожалуйста, запустите этот скрипт как root!")
-                return ""
-            try:
-                orig = file_name.split("\\")[-1].split("/")[-1]
-                file_name_ = orig[:-3] + "webp"
-                path = os.path.join("downloads", file_name_)
-                orig_path = os.path.join("downloads", orig)
-                await conv_single_lottie(LottieFile(orig_path), {path})
-                im = Image.open(path).convert("RGB")
-                img_byte_arr = BytesIO()
-                im.save(img_byte_arr, format="PNG")
-                content = img_byte_arr.getvalue()
-                try:
-                    os.remove(path)
-                except Exception as ex:
-                    logging.warning(ex)
-            except Exception as ex:
-                logging.warning(ex)
-                return ""
+            return ""
         elif file_name.endswith(".webm"):
             try:
                 vidcap = cv2.VideoCapture(file_name)
