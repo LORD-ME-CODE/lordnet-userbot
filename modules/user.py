@@ -97,7 +97,7 @@ async def copyuser(client: Client, message: Message):
     )
 
 
-@module(cmds=["undo"], desc="Вернуть свою инфу в профиль")
+@module(cmds=["undo"], desc="Вернуть свою инфу и аватарку в профиль")
 async def undo(client: Client, message: Message):
     if first_name:
         await client.update_profile(first_name=first_name, last_name=last_name)
@@ -107,5 +107,5 @@ async def undo(client: Client, message: Message):
             pass
 
     await message.edit(
-        f"<b>📸 Инфа успешно сброшена</b>",
+        f"<b>📸 Инфа и аватарка успешно восстановлена.</b>",
     )
