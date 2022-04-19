@@ -170,8 +170,8 @@ async def render_message(app: Client, message: types.Message) -> dict:
                 content = img_byte_arr.getvalue()
                 try:
                     os.remove(path)
-                except FileNotFoundError:
-                    pass
+                except Exception as ex:
+                    logging.warning(ex)
             except Exception as ex:
                 logging.warning(ex)
                 return ""
@@ -189,7 +189,6 @@ async def render_message(app: Client, message: types.Message) -> dict:
                 content = f.read()
         os.remove(file_name)
         data = base64.b64encode(content).decode()
-        print(data)
         return data
 
     if message.caption:
