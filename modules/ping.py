@@ -7,5 +7,6 @@ from helper.module import module
 async def ping_cmd(_, message: Message):
     start = perf_counter()
     await message.edit("<b>○ Понг!</b>")
-    end = round((perf_counter() - start) * 1000)
-    await message.edit(f"<b>● Понг! {end}мс</b>")
+    end = perf_counter()
+    res = round((end - start) * 0.000001, 3)
+    await message.edit(f"<b>● Понг! {res}мс</b>")

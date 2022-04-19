@@ -44,7 +44,7 @@ if __name__ == "__main__":
         os.chdir(basepath)
 
     import config
-    from helper.misc import __version__, git, modules_dict
+    from helper.misc import __version__, modules_dict, build_version
 
     app = Client(
         "lordnet",
@@ -53,7 +53,7 @@ if __name__ == "__main__":
         hide_password=True,
         workdir=basepath,
         app_version=__version__,
-        device_model=f"lordnet-userbot @ {git.head.commit.hexsha[:7]}",
+        device_model=f"lordnet-userbot @ {build_version}",
         system_version=platform.version() + " " + platform.machine(),
         sleep_threshold=30,
         parse_mode="HTML",
