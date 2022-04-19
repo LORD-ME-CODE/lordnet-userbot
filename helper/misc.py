@@ -1,9 +1,11 @@
 from __future__ import annotations
 
-import inspect
 from sys import version_info
 
 from git import Repo
+
+# noinspection PyUnresolvedReferences
+from git.cmd import Git
 from pyrogram import Client
 
 from .db import db
@@ -73,8 +75,7 @@ if not os.path.exists("custom"):
 
 
 git = Repo(".")
-commits_from_repo = list(git.iter_commits())
-result = len(commits_from_repo)
+result = int(git.git.rev_list("--count", "HEAD"))
 top = int(result // 1000)
 ver = int((result % 1000) // 100)
 bottom = int((result % 1000) % 100)

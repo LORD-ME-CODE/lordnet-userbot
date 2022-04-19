@@ -5,6 +5,7 @@ import sys
 from pyrogram.types import Message
 
 from helper.cmd import exception_str
+from helper.misc import Git, build_version, git
 from helper.module import module
 
 
@@ -55,3 +56,22 @@ async def update_cmd(_, message: Message):
         await message.edit(exception_str(e))
     else:
         restart(message, "update")
+
+
+@module(commands=["check"], desc="Проверить наличие обновления 👩‍🚀")
+async def check_cmd(_, message: Message):
+    head: str = Git().ls_remote(
+        "https://github.com/LORD-ME-CODE/lordnet-userbot.git", heads=True
+    )
+    # new_version = git.remotes[0].repo.git.rev_list(
+    #    "--count", "HEAD"
+    # )  # int(git.git.rev_list("--count", "HEAD"))
+    # print(new_version)
+    if not head.startswith(build_version):
+        text = (
+            "<b>🟠 Доступно обновление [{__version__+0.0.1}]!\n\n"
+            "🔃 Для обновы, введите: <code>{prefix()}update</code></b>"
+        )
+    else:
+        text = "<b>🟢 У вас самая актуальная версия!</b>"
+    await message.edit(text)
