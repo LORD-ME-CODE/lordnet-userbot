@@ -32,12 +32,17 @@ def exec_cmd(client: Client, message: Message):
             "<b>☛ Результат</b>:\n"
             f"<code>{escape_html(stdout.getvalue())}</code>"
         )
-        if message.command[0] == "exnoedit":
-            message.reply(text)
-        else:
-            message.edit(text)
     except Exception as e:
-        message.edit(exception_str(e))
+        text = (
+            "<b>✎ Код:</b>\n"
+            f"<code>{code}</code>\n\n"
+            "<b>✘ Ошибка</b>:\n"
+            f"<code>{e.__class__}: {escape_html(e)}</code>"
+        )
+    if message.command[0] == "exnoedit":
+        message.reply(text)
+    else:
+        message.edit(text)
 
 
 @module(commands=["ev", "eval"], args=["код"], desc="Выполнить Python выражение")
@@ -52,14 +57,20 @@ def eval_cmd(client: Client, message: Message):
 
     try:
         result = eval(code)
-        message.edit(
+        text = (
             "<b>✎ Выражение:</b>\n"
             f"<code>{code}</code>\n\n"
             "<b>☛ Результат</b>:\n"
             f"<code>{escape_html(result)}</code>"
         )
     except Exception as e:
-        message.edit(exception_str(e))
+        text = (
+            "<b>✎ Выражение:</b>\n"
+            f"<code>{code}</code>\n\n"
+            "<b>✘ Ошибка</b>:\n"
+            f"<code>{e.__class__}: {escape_html(e)}</code>"
+        )
+    message.edit(text)
 
 
 async def aexec(codea, client, message):
@@ -94,19 +105,24 @@ async def aexec_handler(client: Client, message: Message):
     try:
         await message.edit("<b>✈ Выполняю код...</b>")
         s = await aexec(code, client, message)
-        s = escape_html(str(s))
+        s = escape_html(s)
         text = (
             f"<b>✎ Код:</b>\n<code>"
-            f'{code.replace("<", "").replace(">", "")}'
+            f"{escape_html(code)}"
             "</code>\n\n<b>☛ Результат"
             f":</b>\n<code>{s}</code>"
         )
-        if message.command[0] == "aexnoedit":
-            await message.reply(text)
-        else:
-            await message.edit(text)
     except Exception as ex:
-        return await message.edit(exception_str(ex))
+        text = (
+            f"<b>✎ Код:</b>\n<code>"
+            f"{escape_html(code)}"
+            "</code>\n\n<b>✘ Ошибка"
+            f":</b>\n<code>{ex.__class__}: {escape_html(ex)}</code>"
+        )
+    if message.command[0] == "aexnoedit":
+        await message.reply(text)
+    else:
+        await message.edit(text)
 
 
 # noinspection PyPep8
@@ -128,12 +144,18 @@ async def aeval_handler(client: Client, message: Message):
             code,
             {"message": message, "client": client, "reply": message.reply_to_message},
         )
-        s = escape_html(str(s))
-        return await message.edit(
+        s = escape_html(s)
+        text = (
             f"<b>✎ Выражение:</b>\n<code>"
             f'{code.replace("<", "").replace(">", "")}</code>'
             "\n\n<b>☛ Результат"
             f":</b>\n<code>{s}</code>"
         )
     except Exception as ex:
-        return await message.edit(exception_str(ex))
+        text = (
+            f"<b>✎ Выражение:</b>\n<code>"
+            f'{code.replace("<", "").replace(">", "")}</code>'
+            "\n\n<b>✘ Ошибка"
+            f":</b>\n<code>{ex.__class__}: {escape_html(ex)}</code>"
+        )
+    await message.edit(text)
