@@ -9,7 +9,6 @@ from helper import (
     prefix,
     module_exists,
     session,
-    restart,
 )
 from validators import url
 
