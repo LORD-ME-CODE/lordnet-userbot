@@ -1,4 +1,4 @@
-from subprocess import Popen, PIPE, TimeoutExpired
+import asyncio
 from time import perf_counter
 
 from pyrogram import Client
@@ -6,13 +6,15 @@ from pyrogram.types import Message
 
 from helper.module import module
 
+PIPE, TimeoutExpired = asyncio.subprocess.PIPE, asyncio.subprocess.TimeoutExpired
+
 
 @module(cmds=["shell", "sh"], args=["команда"], desc="Выполнить консольную команду")
 async def shell_cmd(_: Client, message: Message):
     if len(message.command) < 2:
         return await message.edit("<b>✖ Вы не указали команду.</b>")
     cmd_text = message.text.split(maxsplit=1)[1]
-    cmd_obj = Popen(
+    cmd_obj = await asyncio.create_subprocess_exec(
         cmd_text,
         shell=True,
         stdout=PIPE,
@@ -24,9 +26,9 @@ async def shell_cmd(_: Client, message: Message):
     await message.edit(text + "<b>Выполняю...</b>")
     try:
         start_time = perf_counter()
-        stdout, stderr = cmd_obj.communicate(timeout=60)
+        stdout, stderr = await cmd_obj.communicate(timeout=90)
     except TimeoutExpired:
-        text += "<b>✖ Таймаут (60 сек)</b>"
+        text += "<b>✖ Таймаут (90 сек)</b>"
     else:
         stop_time = perf_counter()
         if stdout:
@@ -52,7 +54,7 @@ async def shell_input_cmd(_: Client, message: Message):
         cmd_text = cmd_text.split("input=" + inp, maxsplit=1)[0]
     except IndexError:
         return await message.edit("<b>✖ Вы не указали входной текст.</b>")
-    cmd_obj = Popen(
+    cmd_obj = await asyncio.create_subprocess_exec(
         cmd_text,
         shell=True,
         stdout=PIPE,
@@ -65,9 +67,9 @@ async def shell_input_cmd(_: Client, message: Message):
     await message.edit(text + "<b>Выполняю...</b>")
     try:
         start_time = perf_counter()
-        stdout, stderr = cmd_obj.communicate(input=inp, timeout=60)
+        stdout, stderr = await cmd_obj.communicate(input=inp, timeout=90)
     except TimeoutExpired:
-        text += "<b>✖ Таймаут (60 сек)</b>"
+        text += "<b>✖ Таймаут (90 сек)</b>"
     else:
         stop_time = perf_counter()
         if stdout:
