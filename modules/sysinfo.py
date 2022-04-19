@@ -44,17 +44,39 @@ async def sysinfo_cmd(_, message: Message):
         "    <u>• Pip:</u> {}</b>"
     )
 
-    info = [
-        psutil.cpu_count(logical=True),
-        round(psutil.cpu_percent(interval=None)),
-        round(
-            (psutil.virtual_memory().total - psutil.virtual_memory().available)
-            / 1024
-            / 1024,
-        ),
-        round(psutil.virtual_memory().total / 1024 / 1024),
-        round(psutil.virtual_memory().percent),
-    ]
+    info = []
+
+    try:
+        info.append(psutil.cpu_count(logical=True))
+    except:
+        info.append("n/a")
+
+    try:
+        info.append(round(psutil.cpu_percent(interval=None)))
+    except:
+        info.append("n/a")
+
+    try:
+        info.append(
+            round(
+                (psutil.virtual_memory().total - psutil.virtual_memory().available)
+                / 1024
+                / 1024,
+            )
+        )
+    except:
+        info.append("n/a")
+
+    try:
+        info.append(round(psutil.virtual_memory().total / 1024 / 1024))
+    except:
+        info.append("n/a")
+
+    try:
+        info.append(round(psutil.virtual_memory().percent))
+    except:
+        info.append("n/a")
+
     try:
         if os.name == "posix":
             system = os.popen("cat /etc/*release").read()
