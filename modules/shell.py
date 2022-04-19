@@ -14,7 +14,7 @@ async def shell_cmd(_: Client, message: Message):
     if len(message.command) < 2:
         return await message.edit("<b>✖ Вы не указали команду.</b>")
     cmd_text = message.text.split(maxsplit=1)[1]
-    cmd_obj = await asyncio.create_subprocess_shell(
+    cmd_obj = await asyncio.create_subprocess_exec(
         cmd_text,
         
         stdout=PIPE,
@@ -54,7 +54,7 @@ async def shell_input_cmd(_: Client, message: Message):
         cmd_text = cmd_text.split("input=" + inp, maxsplit=1)[0]
     except IndexError:
         return await message.edit("<b>✖ Вы не указали входной текст.</b>")
-    cmd_obj = await asyncio.create_subprocess_shell(
+    cmd_obj = await asyncio.create_subprocess_exec(
         cmd_text,
         
         stdout=PIPE,
