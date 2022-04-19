@@ -1,10 +1,17 @@
 import base64
+import logging
 import os
 from io import BytesIO
-
 from pyrogram import Client, errors, types
 
-from helper import module, session, exception_str
+from helper import module, session, exception_str, import_library
+
+
+pyrlottie = import_library("pyrlottie")
+conv_single_lottie = pyrlottie.convSingleLottie
+LottieFile = pyrlottie.LottieFile
+Image = import_library("PIL", "pillow").Image
+cv2 = import_library("cv2", "opencv-python")
 
 
 @module(cmds=["q", "quote"], args=["reply"], desc="Создать цитату из сообщения")
@@ -139,36 +146,67 @@ async def fake_quote_cmd(client: Client, message: types.Message):
         await message.delete()
 
 
-files_cache = {}
+not_allowed = (
+    "audio, document, video, voice,"
+    " video_note, contact, location, venue, poll, dice, game".split(", ")
+)
 
 
 async def render_message(app: Client, message: types.Message) -> dict:
-    async def get_file(file_id) -> str:
-        if file_id in files_cache:
-            return files_cache[file_id]
-
-        file_name = await app.download_media(file_id)
-        with open(file_name, "rb") as f:
-            content = f.read()
+    async def get_file(msg) -> str:
+        file_name = await app.download_media(
+            message=msg,
+        )
+        if file_name.endswith(".tgs"):
+            try:
+                orig = file_name.split("\\")[-1].split("/")[-1]
+                file_name_ = orig[:-3] + "webp"
+                path = os.path.join("downloads", file_name_)
+                orig_path = os.path.join("downloads", orig)
+                await conv_single_lottie(LottieFile(orig_path), {path})
+                im = Image.open(path).convert("RGB")
+                img_byte_arr = BytesIO()
+                im.save(img_byte_arr, format="PNG")
+                content = img_byte_arr.getvalue()
+                try:
+                    os.remove(path)
+                except FileNotFoundError:
+                    pass
+            except Exception as ex:
+                logging.warning(ex)
+                return ""
+        elif file_name.endswith(".webm"):
+            try:
+                vidcap = cv2.VideoCapture(file_name)
+                _, image = vidcap.read()
+                content = cv2.imencode(".jpg", image)[1].tobytes()
+                vidcap.release()
+            except Exception as ex:
+                logging.warning(ex)
+                return ""
+        else:
+            with open(file_name, "rb") as f:
+                content = f.read()
         os.remove(file_name)
         data = base64.b64encode(content).decode()
-        files_cache[file_id] = data
+        print(data)
         return data
 
-    if message.photo:
-        text = message.caption if message.caption else ""
+    if message.caption:
+        text = message.caption
     elif message.poll:
         text = get_poll_text(message.poll)
-    elif message.sticker:
+    elif message.media:
         text = ""
     else:
         text = get_reply_text(message)
 
-    if message.photo:
-        media = await get_file(message.photo.file_id)
-    elif message.sticker:
-        media = await get_file(message.sticker.file_id)
+    if message.media not in not_allowed:
+        media = await get_file(message)
+        if not media:
+            text = get_reply_text(message)
     else:
+        text = get_reply_text(message)
         media = ""
 
     entities = []

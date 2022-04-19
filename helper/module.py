@@ -1,3 +1,4 @@
+import asyncio
 import inspect
 import logging
 import os
@@ -102,7 +103,8 @@ def module(*filters, **params):
     return sub_decorator
 
 
-def load_modules():
+def load_modules(loop):
+    asyncio.set_event_loop(loop)
     modules_dict.clear()
 
     imported = 0
@@ -142,12 +144,8 @@ async def module_exists(module_name: str):
     try:
         avaiable_modules = await session.get(lordnet_url + "all")
         return module_name in await avaiable_modules.text()
-    except:
+    except Exception:
         return False
-
-
-async def load_module(module_name: str):
-    import_module("custom." + module_name)
 
 
 def escape_html(text: Any) -> str:
