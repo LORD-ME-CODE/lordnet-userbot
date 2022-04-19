@@ -1,4 +1,4 @@
-from helper import module, Message, Client
+from helper import module, Message, Client, escape_html
 
 
 @module(
@@ -39,8 +39,8 @@ async def userinfo(client: Client, message: Message):
     ).format(
         user.mention,
         user.id,
-        user.first_name.replace("<", "&lt;").replace(">", "&gt;"),
-        user.last_name.replace("<", "&lt;").replace(">", "&gt;"),
+        escape_html(user.first_name),
+        escape_html(user.last_name),
         user.username,
         user.language_code,
         "<code>" + str(user.phone_number) + "</code>"
@@ -85,6 +85,7 @@ async def copyuser(client: Client, message: Message):
         first_name = me.first_name
         last_name = me.last_name
         photo_id = me.photo.big_file_id
+        await client.download_media(photo_id, "downloads/copyuser_me.jpg")
 
     await client.update_profile(first_name=user.first_name, last_name=user.last_name)
     await client.download_media(user.photo.big_file_id, "downloads/copyuser.jpg")
@@ -100,6 +101,10 @@ async def copyuser(client: Client, message: Message):
 async def undo(client: Client, message: Message):
     if first_name:
         await client.update_profile(first_name=first_name, last_name=last_name)
+        try:
+            await client.set_profile_photo(photo="downloads/copyuser_me.jpg")
+        except:
+            pass
 
     await message.edit(
         f"<b>📸 Инфа успешно сброшена</b>",
