@@ -6,7 +6,7 @@ from pyrogram import Client, errors, types
 
 from helper import module, session, exception_str, import_library
 
-Image = import_library("PIL", "pillow").Image
+Image = import_library("PIL.Image", "pillow")
 cv2 = import_library("cv2", "opencv-python")
 
 
