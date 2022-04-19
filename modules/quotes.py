@@ -143,8 +143,8 @@ async def fake_quote_cmd(client: Client, message: types.Message):
 
 
 not_allowed = (
-    "audio, document, video, voice,"
-    " video_note, contact, location, venue, poll, dice, game".split(", ")
+    "audio, document, voice,"
+    " contact, location, venue, poll, dice, game".split(", ")
 )
 
 
@@ -158,7 +158,7 @@ async def render_message(app: Client, message: types.Message) -> dict:
         )
         if file_name.endswith(".tgs"):
             return ""
-        elif file_name.endswith(".webm"):
+        elif file_name.endswith((".webm", ".gif", ".mp4")):
             try:
                 vidcap = cv2.VideoCapture(file_name)
                 _, image = vidcap.read()
@@ -178,7 +178,9 @@ async def render_message(app: Client, message: types.Message) -> dict:
         text = message.caption
     elif message.poll:
         text = get_poll_text(message.poll)
-    elif message.media:
+    elif message.text:
+        text = message.text
+    elif message.media not in not_allowed:
         text = ""
     else:
         text = get_reply_text(message)
