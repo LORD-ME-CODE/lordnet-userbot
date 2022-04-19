@@ -37,7 +37,7 @@ def exec_cmd(client: Client, message: Message):
             "<b>✎ Код:</b>\n"
             f"<code>{code}</code>\n\n"
             "<b>✘ Ошибка</b>:\n"
-            f"<code>{e.__class__}: {escape_html(e)}</code>"
+            f"<code>{e.__class__.__name__}: {escape_html(e)}</code>"
         )
     if message.command[0] == "exnoedit":
         message.reply(text)
@@ -68,7 +68,7 @@ def eval_cmd(client: Client, message: Message):
             "<b>✎ Выражение:</b>\n"
             f"<code>{code}</code>\n\n"
             "<b>✘ Ошибка</b>:\n"
-            f"<code>{e.__class__}: {escape_html(e)}</code>"
+            f"<code>{e.__class__.__name__}: {escape_html(e)}</code>"
         )
     message.edit(text)
 
@@ -117,7 +117,7 @@ async def aexec_handler(client: Client, message: Message):
             f"<b>✎ Код:</b>\n<code>"
             f"{escape_html(code)}"
             "</code>\n\n<b>✘ Ошибка"
-            f":</b>\n<code>{ex.__class__}: {escape_html(ex)}</code>"
+            f":</b>\n<code>{ex.__class__.__name__}: {escape_html(ex)}</code>"
         )
     if message.command[0] == "aexnoedit":
         await message.reply(text)
@@ -156,6 +156,6 @@ async def aeval_handler(client: Client, message: Message):
             f"<b>✎ Выражение:</b>\n<code>"
             f'{code.replace("<", "").replace(">", "")}</code>'
             "\n\n<b>✘ Ошибка"
-            f":</b>\n<code>{ex.__class__}: {escape_html(ex)}</code>"
+            f":</b>\n<code>{ex.__class__.__name__}: {escape_html(ex)}</code>"
         )
     await message.edit(text)
