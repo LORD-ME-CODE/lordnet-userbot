@@ -30,13 +30,15 @@ async def restart_cmd(_, message: Message):
 
 @module(commands=["update"], desc="Обновить lordnet-userbot")
 async def update_cmd(_, message: Message):
-    await message.edit("<b>✇ Обновляю pip...</b> (<code>25%</code>)")
+    await message.edit("<b>👩‍🚀 Обновляю pip...</b> (<code>25%</code>)")
     subprocess.run([sys.executable, "-m", "pip", "install", "-U", "pip"])
-    await message.edit("<b>✇ Обновляю setuptools и wheel...</b>" " (<code>50%</code>)")
+    await message.edit(
+        "<b>👩‍🚀 Обновляю setuptools и wheel...</b>" " (<code>50%</code>)"
+    )
     subprocess.run(
         [sys.executable, "-m", "pip", "install", "-U", "setuptools", "wheel"]
     )
-    await message.edit("<b>✇ Обновляю юзербот с гитхаба...</b>" " (<code>75%</code>)")
+    await message.edit("<b>👩‍🚀 Обновляю юзербот с гитхаба...</b>" " (<code>75%</code>)")
     subprocess.run(["git", "pull"])
     await message.edit(
         "<b>✇ Обновляю либы с requirements.txt<code>...</code>" "(<code>95%</code>)</b>"
@@ -44,12 +46,13 @@ async def update_cmd(_, message: Message):
     subprocess.run(
         [sys.executable, "-m", "pip", "install", "-U", "-r", "requirements.txt"]
     )
-    await message.edit("<b>✔ Обновление завершено, перезагружаю юзербот...</b>")
+    await message.edit("<b>👩‍🚀 Обновление завершено, перезагружаю юзербот...</b>")
     restart(message, "update")
 
 
 @module(commands=["check"], desc="Проверить наличие обновления 👩‍🚀")
 async def check_cmd(_, message: Message):
+    await message.edit("<b>🧭 Проверяю наличие обновления...</b>")
     head: str = Git().ls_remote(
         "https://github.com/LORD-ME-CODE/lordnet-userbot.git", heads=True
     )
