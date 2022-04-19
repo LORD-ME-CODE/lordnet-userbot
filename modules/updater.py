@@ -34,26 +34,21 @@ async def update_cmd(_, message: Message):
     try:
         await message.edit("<b>✇ Обновляю pip...</b> (<code>25%</code>)")
         subprocess.run([sys.executable, "-m", "pip", "install", "-U", "pip"])
-        await message.edit(
-            "<b>✇ Обновляю setuptools и wheel...</b>" " (<code>50%</code>)"
-        )
+        await message.edit("<b>✇ Обновляю setuptools и wheel...</b>" " (<code>50%</code>)")
         subprocess.run(
             [sys.executable, "-m", "pip", "install", "-U", "setuptools", "wheel"]
         )
-        await message.edit(
-            "<b>✇ Обновляю юзербот с гитхаба...</b>" " (<code>75%</code>)"
-        )
+        await message.edit("<b>✇ Обновляю юзербот с гитхаба...</b>" " (<code>75%</code>)")
         subprocess.run(["git", "pull"])
         await message.edit(
-            "<b>✇ Обновляю либы с requirements.txt<code>...</code>"
-            "(<code>95%</code>)</b>"
+            "<b>✇ Обновляю либы с requirements.txt<code>...</code>" "(<code>95%</code>)</b>"
         )
         subprocess.run(
             [sys.executable, "-m", "pip", "install", "-U", "-r", "requirements.txt"]
         )
         await message.edit("<b>✔ Обновление завершено, перезагружаю юзербот...</b>")
-    except Exception as e:
-        await message.edit(exception_str(e))
+    except Exception as ex:
+        return await message.edit('123')
     else:
         restart(message, "update")
 
@@ -63,10 +58,10 @@ async def check_cmd(_, message: Message):
     head: str = Git().ls_remote(
         "https://github.com/LORD-ME-CODE/lordnet-userbot.git", heads=True
     )
-    # new_version = git.remotes[0].repo.git.rev_list(
-    #    "--count", "HEAD"
-    # )  # int(git.git.rev_list("--count", "HEAD"))
-    # print(new_version)
+    new_version = git.remotes[0].repo.git.rev_list(
+        "--count", "HEAD"
+    )
+    print(new_version)
     if not head.startswith(build_version):
         text = (
             "<b>🟠 Доступно обновление [{__version__+0.0.1}]!\n\n"
