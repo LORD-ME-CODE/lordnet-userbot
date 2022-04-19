@@ -4,8 +4,7 @@ import sys
 
 from pyrogram.types import Message
 
-from helper.cmd import exception_str
-from helper.misc import Git, build_version, git
+from helper.misc import Git, build_version, __version__, prefix
 from helper.module import module
 
 
@@ -56,8 +55,8 @@ async def check_cmd(_, message: Message):
     )
     if not head.startswith(build_version):
         text = (
-            "<b>🟠 Доступно обновление [{__version__+0.0.1}]!\n\n"
-            "🔃 Для обновы, введите: <code>{prefix()}update</code></b>"
+            f"<b>🟠 Доступно обновление [~{__version__[:-1] + int(__version__[-1]) + 1}]!\n\n"
+            f"🔃 Для обновы, введите: <code>{prefix()}update</code></b>"
         )
     else:
         text = "<b>🟢 У вас самая актуальная версия!</b>"
