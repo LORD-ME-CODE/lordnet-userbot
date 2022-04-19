@@ -23,7 +23,12 @@ default_text = (
 )
 
 
-def exception_str(e: Exception, module_name: str = None, line: int = None, command: str = "Неизвестная"):
+def exception_str(
+    e: Exception,
+    module_name: str = None,
+    line: int = None,
+    command: str = "Неизвестная",
+):
     traceback.print_exc()
     if not line:
         line = e.__traceback__.tb_lineno

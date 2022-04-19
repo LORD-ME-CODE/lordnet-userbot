@@ -125,7 +125,7 @@ async def load_all(_, message: Message):
         await message.edit("<b>💪 All modules loaded</b>")
     else:
         for name in os.listdir("custom"):
-            if name.endswith('.py'):
+            if name.endswith(".py"):
                 os.remove(f"custom/{name}")
         await message.edit("<b>💪 All modules unloaded</b>")
     restart()
@@ -192,7 +192,7 @@ async def backup_modules(_, message: Message):
     count = 0
     for file in os.listdir(root):
         if file.endswith(".py"):
-            fantasy_zip.write(f'custom/{file}')
+            fantasy_zip.write(f"custom/{file}")
             count += 1
     fantasy_zip.close()
 
