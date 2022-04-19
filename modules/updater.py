@@ -41,7 +41,8 @@ async def update_cmd(_, message: Message):
     await message.edit("<b>👩‍🚀 Обновляю юзербот с гитхаба...</b>" " (<code>75%</code>)")
     subprocess.run(["git", "pull"])
     await message.edit(
-        "<b>✇ Обновляю либы с requirements.txt<code>...</code>" "(<code>95%</code>)</b>"
+        "<b>👩‍🚀 Обновляю либы с requirements.txt<code>...</code>"
+        "(<code>95%</code>)</b>"
     )
     subprocess.run(
         [sys.executable, "-m", "pip", "install", "-U", "-r", "requirements.txt"]
