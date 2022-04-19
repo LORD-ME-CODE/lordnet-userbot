@@ -6,7 +6,7 @@ from pyrogram.types import Message
 
 from helper.module import module
 
-PIPE, TimeoutExpired = asyncio.subprocess.PIPE, asyncio.subprocess.TimeoutExpired
+PIPE = asyncio.subprocess.PIPE
 
 
 @module(cmds=["shell", "sh"], args=["команда"], desc="Выполнить консольную команду")
@@ -26,9 +26,9 @@ async def shell_cmd(_: Client, message: Message):
     await message.edit(text + "<b>Выполняю...</b>")
     try:
         start_time = perf_counter()
-        stdout, stderr = await cmd_obj.communicate(timeout=90)
-    except TimeoutExpired:
-        text += "<b>✖ Таймаут (90 сек)</b>"
+        stdout, stderr = await cmd_obj.communicate()
+    except Exception as ex:
+        text += "<b>✖ Error:\n<code>{ex}</code></b>"
     else:
         stop_time = perf_counter()
         if stdout:
@@ -67,9 +67,9 @@ async def shell_input_cmd(_: Client, message: Message):
     await message.edit(text + "<b>Выполняю...</b>")
     try:
         start_time = perf_counter()
-        stdout, stderr = await cmd_obj.communicate(input=inp, timeout=90)
-    except TimeoutExpired:
-        text += "<b>✖ Таймаут (90 сек)</b>"
+        stdout, stderr = await cmd_obj.communicate(input=inp)
+    except Exception as ex:
+        text += "<b>✖ Error:\n<code>{ex}</code></b>"
     else:
         stop_time = perf_counter()
         if stdout:
