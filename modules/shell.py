@@ -31,9 +31,9 @@ async def shell_cmd(_: Client, message: Message):
     else:
         stop_time = perf_counter()
         if stdout:
-            text += "<b>⌬ Вывод:</b>\n" f"<code>{stdout}</code>\n\n"
+            text += "<b>⌬ Вывод:</b>\n" f"<code>{stdout.decode()}</code>\n\n"
         if stderr:
-            text += "<b>✖ Ошибка:</b>\n" f"<code>{stderr}</code>\n\n"
+            text += "<b>✖ Ошибка:</b>\n" f"<code>{stderr.decode()}</code>\n\n"
         text += f"<b>Выполнено за {round(stop_time - start_time, 5)} сек. | Код ({cmd_obj.returncode})</b>"
     await message.edit(text)
     try: cmd_obj.kill()
@@ -72,9 +72,9 @@ async def shell_input_cmd(_: Client, message: Message):
     else:
         stop_time = perf_counter()
         if stdout:
-            text += "<b>⌬ Вывод:</b>\n" f"<code>{stdout}</code>\n\n"
+            text += "<b>⌬ Вывод:</b>\n" f"<code>{stdout.decode()}</code>\n\n"
         if stderr:
-            text += "<b>✖ Ошибка:</b>\n" f"<code>{stderr}</code>\n\n"
+            text += "<b>✖ Ошибка:</b>\n" f"<code>{stderr.decode()}</code>\n\n"
         text += f"<b>Выполнено за {round(stop_time - start_time, 5)} сек. | Код ({cmd_obj.returncode})</b>"
     await message.edit(text)
     try: cmd_obj.kill()
