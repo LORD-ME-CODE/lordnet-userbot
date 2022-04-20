@@ -1,3 +1,5 @@
+raise Exception('В разработке...')
+
 import random
 
 from helper import module, Message
