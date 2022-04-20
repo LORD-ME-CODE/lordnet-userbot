@@ -7,10 +7,11 @@ termux-wake-lock
 
 apt update -y
 apt install python3 git clang wget libjpeg-turbo libcrypt ndk-sysroot zlib -y || exit 2
-pkg install opencv-python
 
 python3 -m pip install -U pip
 LDFLAGS="-L${PREFIX}/lib/" CFLAGS="-I${PREFIX}/include/" pip3 install --upgrade wheel pillow
+pkg install libopencv-contrib opencv-python -y
+
 pip3 uninstall pyrogram
 
 if [[ -d "lordnet-userbot" ]]; then
