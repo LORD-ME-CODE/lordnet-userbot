@@ -26,7 +26,10 @@ async def say(_, message: Message):
     async def edit(chunx):
         nonlocal text
         text += chunx
-        await message.edit(text)
+        try:
+            await message.edit(text)
+        except:
+            pass
 
     for chunk in chunks:
         await edit(chunk)
