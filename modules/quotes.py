@@ -144,8 +144,7 @@ async def fake_quote_cmd(client: Client, message: types.Message):
 
 not_allowed = (
     "audio, document, voice,"
-    " contact, location, venue, poll, dice, game".split(", ")
-    + [None]
+    " contact, location, venue, poll, dice, game".split(", ") + [None]
 )
 
 
