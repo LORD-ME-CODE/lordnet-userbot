@@ -26,7 +26,7 @@ async def shell_cmd(_: Client, message: Message):
         start_time = perf_counter()
         stdout, stderr = await cmd_obj.communicate()
     except Exception as ex:
-        text += "<b>✖ Error:\n<code>{ex}</code></b>"
+        text += f"<b>✖ Error:\n<code>{ex}</code></b>"
     else:
         stop_time = perf_counter()
         if stdout:
@@ -37,7 +37,7 @@ async def shell_cmd(_: Client, message: Message):
     await message.edit(text)
     try:
         cmd_obj.kill()
-    except:
+    except Exception:
         pass
 
 
@@ -66,9 +66,9 @@ async def shell_input_cmd(_: Client, message: Message):
     await message.edit(text + "<b>Выполняю...</b>")
     try:
         start_time = perf_counter()
-        stdout, stderr = await cmd_obj.communicate(input=inp)
+        stdout, stderr = await cmd_obj.communicate(input=inp.encode())
     except Exception as ex:
-        text += "<b>✖ Error:\n<code>{ex}</code></b>"
+        text += f"<b>✖ Error:\n<code>{ex}</code></b>"
     else:
         stop_time = perf_counter()
         if stdout:
@@ -79,5 +79,5 @@ async def shell_input_cmd(_: Client, message: Message):
     await message.edit(text)
     try:
         cmd_obj.kill()
-    except:
+    except Exception:
         pass
