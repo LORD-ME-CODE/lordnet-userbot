@@ -11,14 +11,6 @@ apt install python3 git clang wget libjpeg-turbo libcrypt ndk-sysroot zlib -y ||
 python3 -m pip install -U pip
 LDFLAGS="-L${PREFIX}/lib/" CFLAGS="-I${PREFIX}/include/" pip3 install --upgrade wheel pillow
 
-pkg install libpng cmake pkg-config -y
-git clone https://github.com/opencv/opencv && cd opencv
-mkdir build && cd build
-LDFLAGS=" -llog -lpython3" cmake -DCMAKE_BUILD_TYPE=RELEASE -DCMAKE_INSTALL_PREFIX=$PREFIX -DBUILD_opencv_python3=on -DBUILD_opencv_python2=off -DWITH_QT=OFF -DWITH_GTK=OFF ..
-make
-make install
-cd ..
-
 pip3 uninstall pyrogram
 
 if [[ -d "lordnet-userbot" ]]; then
