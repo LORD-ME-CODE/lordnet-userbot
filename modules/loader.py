@@ -22,6 +22,17 @@ from zipfile import ZipFile
 from helper.module import load_module, unload_module
 
 
+async def get_raw(base: str) -> str:
+    part1 = base.split('/blob', maxsplit=1)[0]
+    part2 = base.split(part1)[1].split('/', maxsplit=3)[3]
+    result = part1.replace('github.com', 'raw.githubusercontent.com') + '/master/' + part2
+    return result
+
+
+def check_raw(base: str) -> bool:
+    return 'github.com/' in base
+
+
 @module(
     cmds=["load", "unload", "lm", "um", "loadmod", "unloadmod"],
     desc="Скачать/Удалить модуль",
@@ -92,6 +103,10 @@ async def loader_cmd(_, message: Message):
                 return
         else:
             link = message.command[1]
+            if not link.startswith('http'):
+                link = 'http://' + link
+            if check_raw(link):
+                link = await get_raw(link)
             async with session.get(link) as response:
                 if response.status != 200:
                     await message.edit(
