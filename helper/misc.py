@@ -32,7 +32,7 @@ class ModulesDict(dict):
         self.__dict.clear()
 
     def remove(self, module: str):
-        self.__dict.pop(module)
+        del self.__dict[module]
 
     def add_command(self, module: str, command: dict):
         self.__dict[module]["commands"].append(command)
