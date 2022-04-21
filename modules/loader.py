@@ -49,7 +49,7 @@ async def loader_cmd(_, message: Message):
             await message.edit("<b>🙄 Укажите модуль для загрузки</b>")
             return
         await message.edit("<b>👿 Скачиваю модуль...</b>")
-        if message.reply_to_message:
+        if message.reply_to_message and message.reply_to_message.document:
             name = message.reply_to_message.document.file_name.split(".")[0]
             is_url = False
             is_file = True
@@ -127,6 +127,8 @@ async def loader_cmd(_, message: Message):
 
         await message.edit("<b>🌚 Устанавливаю модуль...</b>")
 
+        if modules_dict.module_in(f"custom.{name}"):
+            await unload_module(f"custom.{name}")
         await load_module(f"custom.{name}")
 
         await message.edit(f"<b>💪 Модуль <code>{name}</code> загружён</b>")
