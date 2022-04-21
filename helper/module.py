@@ -147,10 +147,13 @@ async def load_module(module_name: str):
 
 
 async def unload_module(module_name: str):
-    handlers = modules_dict[module_name]["handlers"]
-    modules_dict.remove(module_name)
-    for handler in handlers:
-        modules_dict.client.remove_handler(handler)
+    try:
+        handlers = modules_dict[module_name]["handlers"]
+        modules_dict.remove(module_name)
+        for handler in handlers:
+            modules_dict.client.remove_handler(handler)
+    except KeyError:
+        pass
 
 
 async def module_exists(module_name: str):
