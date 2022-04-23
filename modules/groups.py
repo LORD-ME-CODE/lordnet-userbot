@@ -300,7 +300,7 @@ async def untmute_cmd(client: Client, message: Message):
     user, _ = await find_user_in_message(client, message)
 
     if f"{message.chat.id}_tmutes" not in db_cache:
-        return await message.edit("<b>🙃 Нет мутов</b>")
+        return await message.edit("<b>🙃 Нет мутов в этом чате!</b>")
     elif user.id not in db_cache[f"{message.chat.id}_tmutes"]:
         return await message.edit("<b>🙃 Пользователь не замуТчен</b>")
 
@@ -308,6 +308,20 @@ async def untmute_cmd(client: Client, message: Message):
     db.set(f"{message.chat.id}_tmutes", db_cache[f"{message.chat.id}_tmutes"])
 
     await message.edit(f"<b>🔇 Вы успешно разТмутили пользователя {user.mention}</b>")
+
+
+@module(
+    cmds="tmutes",
+    desc="Список пользователей в тмуте",
+)
+async def tmutes_list(_, message: Message):
+    if f"{message.chat.id}_tmutes" not in db_cache:
+        return await message.edit("<b>🙃 Нет мутов в этом чате!</b>")
+    tmutes = db_cache[f"{message.chat.id}_tmutes"]
+    text = "✨ Список Тмутов в этом чате:\n\n" + "\n".join(
+        f"{index}. <a href='tg://user?id={uid}'>{uid}</a>" for uid in tmutes
+    )
+    await message.edit(text[:4096])
 
 
 @module(
