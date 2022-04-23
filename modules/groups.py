@@ -319,7 +319,8 @@ async def tmutes_list(_, message: Message):
         return await message.edit("<b>🙃 Нет мутов в этом чате!</b>")
     tmutes = db_cache[f"{message.chat.id}_tmutes"]
     text = "✨ Список Тмутов в этом чате:\n\n" + "\n".join(
-        f"{index}. <a href='tg://user?id={uid}'>{uid}</a>" for uid in tmutes
+        f"{index}. <a href='tg://user?id={uid}'>{uid}</a>"
+        for index, uid in enumerate(tmutes, start=1)
     )
     await message.edit(text[:4096])
 
