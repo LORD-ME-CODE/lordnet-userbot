@@ -272,15 +272,18 @@ async def demote_cmd(client: Client, message: Message):
 @module(
     cmds="tmute",
     desc="Мут (удаление сообщений)",
-    args=["reply/user", "время(1н/1д/1ч/1м)", "причина"],
+    args=["reply/user", "причина"],
 )
 async def tmute_cmd(client: Client, message: Message):
     user, text = await find_user_in_message(client, message)
-    time, reason = await get_args(text)
+    _, reason = await get_args(text, True)
 
-    if message.chat.id not in db_cache:
-        db_cache[message.chat.id] = {"tmutes": []}
-    db_cache[message.chat.id]["tmutes"].append(user.id)
+    if f"{message.chat.id}_tmutes" not in db_cache:
+        db_cache[f"{message.chat.id}_tmutes"] = [user.id]
+    else:
+        db_cache[f"{message.chat.id}_tmutes"].append(user.id)
+
+    db.set(f"{message.chat.id}_tmutes", db_cache[f"{message.chat.id}_tmutes"])
 
     await message.edit(
         f"<b>🔇 Вы успешно заТмутили пользователя {user.mention}</b>\n"
