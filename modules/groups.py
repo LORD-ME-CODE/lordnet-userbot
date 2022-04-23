@@ -110,10 +110,10 @@ async def get_args(query: str, pass_time: bool = False):
                     )
             else:
                 match = default_match
-            try:
-                return res, query[match.end() :]
-            except IndexError:
-                raise ContinuePropagation
+        try:
+            return res, query[match.end() :]
+        except IndexError:
+            raise ContinuePropagation
     else:
         try:
             return query.split(maxsplit=1)[1]
@@ -276,7 +276,7 @@ async def demote_cmd(client: Client, message: Message):
 )
 async def tmute_cmd(client: Client, message: Message):
     user, text = await find_user_in_message(client, message)
-    _, reason = await get_args(text, True)
+    reason = await get_args(text, True)
 
     if f"{message.chat.id}_tmutes" not in db_cache:
         db_cache[f"{message.chat.id}_tmutes"] = [user.id]
