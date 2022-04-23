@@ -299,6 +299,8 @@ async def tmute_cmd(client: Client, message: Message):
 
     if f"{message.chat.id}_tmutes" not in db_cache:
         db_cache[f"{message.chat.id}_tmutes"] = [user.id]
+    elif user.id in db_cache[f"{message.chat.id}_tmutes"]:
+        return await message.edit('<b>🤫 {user.mention} Уже замьючен..</b>')
     else:
         db_cache[f"{message.chat.id}_tmutes"].append(user.id)
 
