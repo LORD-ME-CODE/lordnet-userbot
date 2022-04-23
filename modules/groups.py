@@ -1,9 +1,10 @@
 import re
 from contextlib import suppress
+from typing import Any
 
 from pyrogram import ContinuePropagation, filters
 from pyrogram.errors import UserAdminInvalid, ChatAdminRequired, RPCError
-from pyrogram.types import ChatPermissions, User
+from pyrogram.types import ChatPermissions
 
 from helper import module, Message, db, Client, escape_html
 from time import time as unixtime_1
@@ -14,7 +15,7 @@ def unixtime() -> int:
 
 
 class MyUser:
-    def __init__(self, user: User):
+    def __init__(self, user: Any):
         self.id: int = user.id
         self.username: str = user.username
         self.first_name: str = escape_html(user.first_name)
