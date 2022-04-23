@@ -330,17 +330,17 @@ async def antiraid_cmd(_: Client, message: Message):
     args=["текст/off"],
 )
 async def welcome_cmd(_: Client, message: Message):
-    text = message.text.split(maxsplit=1)[1]
-    if f"welcome{message.chat.id}" not in db_cache:
-        db_cache[f"welcome{message.chat.id}"] = text
-        return await message.edit("<b>🔇 Вы успешно включили приветствие</b>")
+    if len(message.command) == 1:
+        text = "off"
     else:
-        db_cache[f"welcome{message.chat.id}"] = text
-        return await message.edit(
-            "<b>🔇 Вы успешно выключили приветствие</b>"
-            if text == "off"
-            else "<b>🔇 Вы успешно включили приветствие</b>"
-        )
+        text = message.text.split(maxsplit=1)[1]
+    db_cache[f"welcome{message.chat.id}"] = text
+    db.set(f"welcome{message.chat.id}", text)
+    return await message.edit(
+        "<b>🔇 Вы успешно выключили приветствие</b>"
+        if text == "off"
+        else "<b>🔇 Вы успешно включили приветствие</b>"
+    )
 
 
 @module(filters.group & ~filters.me & ~filters.edited)
