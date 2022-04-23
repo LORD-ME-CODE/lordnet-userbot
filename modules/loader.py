@@ -9,6 +9,7 @@ from helper import (
     prefix,
     module_exists,
     session,
+    restart,
 )
 from validators import url
 
@@ -23,14 +24,16 @@ from helper.module import load_module, unload_module
 
 
 async def get_raw(base: str) -> str:
-    part1 = base.split('/blob', maxsplit=1)[0]
-    part2 = base.split(part1)[1].split('/', maxsplit=3)[3]
-    result = part1.replace('github.com', 'raw.githubusercontent.com') + '/master/' + part2
+    part1 = base.split("/blob", maxsplit=1)[0]
+    part2 = base.split(part1)[1].split("/", maxsplit=3)[3]
+    result = (
+        part1.replace("github.com", "raw.githubusercontent.com") + "/master/" + part2
+    )
     return result
 
 
 def check_raw(base: str) -> bool:
-    return 'github.com/' in base
+    return "github.com/" in base
 
 
 @module(
@@ -78,16 +81,8 @@ async def loader_cmd(_, message: Message):
                         f"🔃 Проверь URL и попробуй ещё раз</b>"
                     )
                     return
-                data = await response.read()
-                if (
-                    b"@module" not in data or b"from helper import" not in data
-                ) or b"DeleteAccount" in data:
-                    return await message.edit(
-                        f"<b>🙄 Модуль <code>{name}</code> не валидный.\n"
-                        f"🔃 Проверь его и попробуй ещё раз</b>"
-                    )
                 async with open(f"custom/{name}.py", "wb") as f:
-                    await f.write(data)
+                    await f.write(await response.read())
         elif is_file:
             filename = await message.reply_to_message.download("custom/" + name + ".py")
             async with open(filename, "rb") as f:
@@ -103,8 +98,8 @@ async def loader_cmd(_, message: Message):
                 return
         else:
             link = message.command[1]
-            if not link.startswith('http'):
-                link = 'http://' + link
+            if not link.startswith("http"):
+                link = "http://" + link
             if check_raw(link):
                 link = await get_raw(link)
             async with session.get(link) as response:
@@ -128,7 +123,11 @@ async def loader_cmd(_, message: Message):
         await message.edit("<b>🌚 Устанавливаю модуль...</b>")
 
         if modules_dict.module_in(f"custom.{name}"):
-            await unload_module(f"custom.{name}")
+            await message.edit(
+                f"<b>💪 Модуль <code>{name}</code> загружён</b>... Перезагружаю, потому-что вы его уже "
+                f"устанавливали/удаляли "
+            )
+            restart()
         await load_module(f"custom.{name}")
 
         await message.edit(f"<b>💪 Модуль <code>{name}</code> загружён</b>")

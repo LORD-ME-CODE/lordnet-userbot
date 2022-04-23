@@ -29,4 +29,4 @@ async def webshot_cmd(_, message: Message):
         image = BytesIO(await response.read())
         image.name = "screen.jpg"
         image.seek(0)
-    await message.reply_photo(photo=image)
+    await message.reply_document(document=image)

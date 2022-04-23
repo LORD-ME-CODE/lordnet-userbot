@@ -1,4 +1,4 @@
-raise Exception('В разработке...')
+raise Exception("В разработке...")
 
 import random
 

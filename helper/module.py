@@ -86,13 +86,13 @@ def module(*filters, **params):
     def sub_decorator(func):
         if inspect.iscoroutinefunction(func):
 
-            async def wrapper(*args, **kwargs):
-                return await func(*args, **kwargs)
+            async def wrapper(*xds, **kwargs):
+                return await func(*xds, **kwargs)
 
         else:
 
-            def wrapper(*args, **kwargs):
-                return func(*args, **kwargs)
+            def wrapper(*xds, **kwargs):
+                return func(*xds, **kwargs)
 
         handler = MessageHandler(wrapper, filters)
         if "handlers" not in modules_dict[module_value]:
@@ -141,7 +141,7 @@ def load_modules(loop=None):
 
 
 async def load_module(module_name: str):
-    mod = import_module(module_name)
+    mod = import_module(module_name, package="__main__")
     made_by = getattr(mod, "made_by", "@Неизвестный")[:64]
     modules_dict[module_name]["made_by"] = made_by
 
@@ -157,11 +157,10 @@ async def unload_module(module_name: str):
 
 
 async def module_exists(module_name: str):
-    try:
-        avaiable_modules = await session.get(lordnet_url + "all")
-        return module_name in await avaiable_modules.text()
-    except Exception:
+    avaiable_modules = await session.get(lordnet_url + "all")
+    if not avaiable_modules.ok:
         return False
+    return module_name in await avaiable_modules.text()
 
 
 def escape_html(text: Any) -> str:
