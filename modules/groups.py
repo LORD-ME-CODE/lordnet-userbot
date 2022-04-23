@@ -56,10 +56,10 @@ async def find_user_in_message(client: Client, message: Message):
                 break
             elif ms.type == "mention":
                 try:
-                    user = client.get_users(str(ms))
+                    user = await client.get_users(str(ms))
                 except RPCError:
                     try:
-                        user = client.get_users(
+                        user = await client.get_users(
                             message.text[ms.offset :].split("@")[1].split()[0]
                         )
                     except RPCError:
