@@ -63,6 +63,8 @@ def module(*filters, **params):
             "commands": [],
         }
 
+    insp = False
+
     if commands:
         args = params.get("args") or params.get("arguments") or []
         if isinstance(args, str):
@@ -79,12 +81,55 @@ def module(*filters, **params):
         )
         if not filters:
             filters = pyrogram.filters.command(commands, prefix()) & pyrogram.filters.me
+        else:
+            insp = True
+    else:
+        insp = True
 
-    if isinstance(filters, (list, tuple)) and len(filters) < 2:
+    if isinstance(filters, (list, tuple)) and len(filters) == 1:
         filters = filters[0]
 
     def sub_decorator(func):
-        if inspect.iscoroutinefunction(func):
+        is_coroutine = inspect.iscoroutinefunction(func)
+        if insp:
+            lines = inspect.getsource(func)
+            if (
+                "ContinuePropagation" not in lines
+                and ".continue_propagation" not in lines
+            ):
+                if is_coroutine:
+
+                    async def wrapper(*xds, **kwargs):
+                        await func(*xds, **kwargs)
+                        raise pyrogram.ContinuePropagation
+
+                else:
+
+                    def wrapper(*xds, **kwargs):
+                        func(*xds, **kwargs)
+                        raise pyrogram.ContinuePropagation
+
+                return wrapper
+
+            elif "StopPropagation" in lines:
+                if is_coroutine:
+
+                    async def wrapper(*xds, **kwargs):
+                        try:
+                            await func(*xds, **kwargs)
+                        except pyrogram.StopPropagation:
+                            return
+
+                else:
+
+                    def wrapper(*xds, **kwargs):
+                        try:
+                            func(*xds, **kwargs)
+                        except pyrogram.StopPropagation:
+                            return
+
+                return wrapper
+        if is_coroutine:
 
             async def wrapper(*xds, **kwargs):
                 return await func(*xds, **kwargs)
@@ -125,9 +170,7 @@ def load_modules(loop=None):
     for path in sorted(sorted((Path("custom")).rglob("*.py")), key=os.path.getmtime):
         module_path = ".".join(path.parent.parts + (path.stem,))
         try:
-            mod = import_module(module_path)
-            made_by = getattr(mod, "made_by", "@Неизвестный")[:64]
-            modules_dict[module_path]["made_by"] = made_by
+            load_module(module_path)
             imported += 1
         except Exception as e:
             exceptions += 1
@@ -140,7 +183,7 @@ def load_modules(loop=None):
         logging.warning(f"{exceptions} модулей не удалось загрузить")
 
 
-async def load_module(module_name: str):
+def load_module(module_name: str):
     mod = import_module(module_name, package="__main__")
     made_by = getattr(mod, "made_by", "@Неизвестный")[:64]
     modules_dict[module_name]["made_by"] = made_by

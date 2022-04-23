@@ -129,7 +129,7 @@ async def loader_cmd(_, message: Message):
                 f"устанавливали/удаляли"
             )
             restart(message, "restart")
-        await load_module(f"custom.{name}")
+        load_module(f"custom.{name}")
 
         await message.edit(f"<b>💪 Модуль <code>{name}</code> загружён</b>")
     else:
@@ -163,7 +163,7 @@ async def load_all(_, message: Message):
                     if not restarte:
                         restarte = True
                 else:
-                    await load_module(f"custom.{modname}")
+                    load_module(f"custom.{modname}")
         text = "<b>💪 Все модули загружены успешно!</b>"
         if restarte:
             text += "\n🌚 Перезагружаю, потому-что вы уже устанавливали/удаляли какой-то из модулей"
@@ -235,7 +235,7 @@ async def download_modules(_, message: Message):
                             if modules_dict.module_in(name):
                                 restarte = True
                             else:
-                                await load_module(name)
+                                load_module(name)
                             count += 1
                         except Exception as ex:
                             logging.warning(ex)
