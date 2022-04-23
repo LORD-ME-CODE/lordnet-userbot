@@ -311,17 +311,14 @@ async def untmute_cmd(client: Client, message: Message):
     desc="Анти-рейд в чате (вкл/выкл)",
 )
 async def antiraid_cmd(_: Client, message: Message):
-    if f"antiraid{message.chat.id}" not in db_cache:
-        db_cache[f"antiraid{message.chat.id}"] = True
-        return await message.edit("<b>🔇 Вы успешно включили Анти-рейд в чате</b>")
-    else:
-        now = not db_cache[f"antiraid{message.chat.id}"]
-        db_cache[f"antiraid{message.chat.id}"] = now
-        return await message.edit(
-            "<b>🔇 Вы успешно выключили Анти-рейд в чате</b>"
-            if not now
-            else "<b>🔇 Вы успешно включили Анти-рейд в чате</b>"
-        )
+    now = not db_cache.get(f"antiraid{message.chat.id}", False)
+    db_cache[f"antiraid{message.chat.id}"] = now
+    db.set(f"antiraid{message.chat.id}", now)
+    return await message.edit(
+        "<b>🔇 Вы успешно выключили Анти-рейд в чате</b>"
+        if not now
+        else "<b>🔇 Вы успешно включили Анти-рейд в чате</b>"
+    )
 
 
 @module(
