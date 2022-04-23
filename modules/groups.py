@@ -49,12 +49,31 @@ async def find_user_in_message(client: Client, message: Message):
     elif message.reply_to_message and message.reply_to_message.sender_chat:
         user = message.reply_to_message.sender_chat
         text = message.text
-    elif message.mentioned:
-        user = message.entities[0].user
+    elif message.mentioned or "@" in message.text:
+        for ms in message.entities:
+            if ms.type == "text_mention":
+                user = ms.user
+                break
+            elif ms.type == "mention":
+                try:
+                    user = client.get_users(str(ms))
+                except RPCError:
+                    try:
+                        user = client.get_users(
+                            message.text[ms.offset :].split("@")[1].split()[0]
+                        )
+                    except RPCError:
+                        await message.edit(
+                            "<b>🧭 Не удалось найти пользователя в вашем сообщении</b>"
+                        )
+                        raise ContinuePropagation
         text = message.text.split(user.username, maxsplit=1)[1]
-    elif args[0].isdigit():
-        user = await client.get_users(int(args[0]))
-        text = message.text.split(args[0], maxsplit=1)[1]
+    elif len(args) > 1 and args[1].isdigit():
+        user = await client.get_users(int(args[1]))
+        try:
+            text = message.text.split(args[1], maxsplit=1)[1]
+        except:
+            text = ""
     else:
         await message.edit("<b>🧭 Не удалось найти пользователя в вашем сообщении</b>")
         raise ContinuePropagation
