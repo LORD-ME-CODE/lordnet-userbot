@@ -156,11 +156,16 @@ async def unload_module(module_name: str):
         pass
 
 
-async def module_exists(module_name: str):
+async def all_off_modules():
     avaiable_modules = await session.get(lordnet_url + "all")
     if not avaiable_modules.ok:
-        return False
-    return module_name in await avaiable_modules.text()
+        return []
+    text = await avaiable_modules.text()
+    return text.strip().split("\n")
+
+
+async def module_exists(module_name: str):
+    return module_name in await all_off_modules()
 
 
 def escape_html(text: Any) -> str:

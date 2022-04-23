@@ -9,9 +9,10 @@ from helper import (
     prefix,
     module_exists,
     session,
-    restart,
 )
 from validators import url
+
+from .updater import restart
 
 # noinspection PyShadowingBuiltins
 from aiofile import async_open as open
@@ -20,7 +21,7 @@ from helper.misc import lordnet_url, modules_dict
 
 from zipfile import ZipFile
 
-from helper.module import load_module, unload_module
+from helper.module import load_module, unload_module, all_off_modules
 
 
 async def get_raw(base: str) -> str:
@@ -124,10 +125,10 @@ async def loader_cmd(_, message: Message):
 
         if modules_dict.module_in(f"custom.{name}"):
             await message.edit(
-                f"<b>💪 Модуль <code>{name}</code> загружён</b>... Перезагружаю, потому-что вы его уже "
-                f"устанавливали/удаляли "
+                f"<b>💪 Модуль <code>{name}</code> загружён</b>...\n🌚 Перезагружаю, потому-что вы его уже "
+                f"устанавливали/удаляли"
             )
-            restart()
+            restart(message, "restart")
         await load_module(f"custom.{name}")
 
         await message.edit(f"<b>💪 Модуль <code>{name}</code> загружён</b>")
@@ -148,8 +149,28 @@ async def loader_cmd(_, message: Message):
 @module(cmds=["loadall", "unloadall"], desc="Загрузить/Удалить все модули")
 async def load_all(_, message: Message):
     if message.command[0] == "loadall":
-        #  pass
-        await message.edit("<b>💪 Все модули загружены (НЕТ)</b>")
+        await message.edit("<b>🌚 Загружаю все модули...</b>")
+        restarte = False
+        modules = await all_off_modules()
+        for modname in modules:
+            link = lordnet_url + modname
+            async with session.get(link) as response:
+                if response.status != 200:
+                    continue
+                async with open(f"custom/{modname}.py", "wb") as f:
+                    await f.write(await response.read())
+                if modules_dict.module_in(f"custom.{modname}"):
+                    if not restarte:
+                        restarte = True
+                else:
+                    await load_module(f"custom.{modname}")
+        text = "<b>💪 Все модули загружены успешно!</b>"
+        if restarte:
+            text += "\n🌚 Перезагружаю, потому-что вы уже устанавливали/удаляли какой-то из модулей"
+            await message.edit(text)
+            restart(message, "restart")
+        else:
+            await message.edit(text)
         return
     else:
         await message.edit("<b>🦆 Удаляю все модули...</b>")
@@ -196,6 +217,7 @@ async def download_modules(_, message: Message):
     await message.edit("<b>💪 Скачиваю архив...</b>")
     await message.reply_to_message.download("downloads/backup_mods.zip")
     await message.edit("<b>💪 Скачиваю модули...</b>")
+    restarte = False
     with zipfile.ZipFile("downloads/backup_mods.zip", "r") as zip_ref:
         files = zip_ref.namelist()
         count = 0
@@ -209,15 +231,21 @@ async def download_modules(_, message: Message):
                         os.remove(f"custom/{file}")
                     else:
                         try:
-                            await load_module(
-                                f'custom.{file.split("/")[-1].replace(".py", "")}'
-                            )
+                            name = "custom." + file.split("/")[-1].replace(".py", "")
+                            if modules_dict.module_in(name):
+                                restarte = True
+                            else:
+                                await load_module(name)
                             count += 1
                         except Exception as ex:
                             logging.warning(ex)
-    await message.edit(
-        f"<b>✅ Загружены все <code>{count}</code> модули из zip файла.</b>"
-    )
+    text = f"<b>✅ Загружены все <code>{count}</code> модули из zip файла.</b>"
+    if restarte:
+        text += "\n🌚 Перезагружаю, потому-что вы уже устанавливали/удаляли какой-то из модулей"
+        await message.edit(text)
+        restart(message, "restart")
+    else:
+        await message.edit(text)
 
 
 @module(cmds=["bmods", "backupmods"], desc="Бэкап в zip файл")
