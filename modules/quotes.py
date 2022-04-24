@@ -31,13 +31,11 @@ async def quote_cmd(client: Client, message: types.Message):
         msg
         async for msg in client.get_chat_history(
             message.chat.id,
-            offset_id=-message.reply_to_message_id
-            if count == 1 else message.reply_to_message_id,
+            offset_id=message.reply_to_message_id,
             limit=count + 1,
         )
     ]
-    if count == 1:
-        msgs = msgs[::-1]
+    # msgs = msgs[::-1]
     print(len(msgs))
     for msg in msgs:
         if msg.empty:
