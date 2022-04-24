@@ -8,6 +8,7 @@ from helper.module import module, escape_html
 from helper.cmd import aimport_library
 
 
+# noinspection PyUnusedLocal
 @module(
     commands=["ex", "exec", "py", "exnoedit"], args=["код"], desc="Выполнить Python код"
 )
@@ -16,6 +17,7 @@ def exec_cmd(client: Client, message: Message):
         message.edit("<b>✐ Вы не указали код для выполнения</b>")
         return
 
+    # noinspection PyUnusedLocal
     reply = message.reply_to_message
 
     code = message.text.split(maxsplit=1)[1]
@@ -45,12 +47,14 @@ def exec_cmd(client: Client, message: Message):
         message.edit(text)
 
 
+# noinspection PyUnusedLocal
 @module(commands=["ev", "eval"], args=["код"], desc="Выполнить Python выражение")
 def eval_cmd(client: Client, message: Message):
     if len(message.command) == 1:
         message.edit("<b>✐ Вы не указали выражение для выполнения</b>")
         return
 
+    # noinspection PyUnusedLocal
     reply = message.reply_to_message
 
     code = message.text.split(maxsplit=1)[1]

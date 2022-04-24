@@ -16,8 +16,6 @@ su -c "python3 -m pip install -U pip" $SUDO_USER
 su -c "python3 -m pip install -U setuptools wheel" $SUDO_USER
 su -c "python3 -m pip install -U pillow opencv-python" $SUDO_USER
 
-su -c "python3 -m pip uninstall pyrogram" $SUDO_USER
-
 if [[ -d "lordnet-userbot" ]]; then
   # shellcheck disable=SC2164
   cd lordnet-userbot

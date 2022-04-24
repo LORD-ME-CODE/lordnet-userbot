@@ -16,7 +16,7 @@ def restart(message: Message, restart_type):
             sys.executable,
             "run.py",
             f"{message.chat.id}",
-            f" {message.message_id}",
+            f" {message.id}",
             f"{text}",
         ],
     )
@@ -24,7 +24,7 @@ def restart(message: Message, restart_type):
 
 @module(commands=["restart", "reload"], desc="Перезагрузить lordnet-userbot")
 async def restart_cmd(_, message: Message):
-    await message.edit("<b>✇ Перезагружаю...</b>")
+    await message.edit("<b>🤗 Перезагружаю lordnet..</b>")
     restart(message, "restart")
 
 

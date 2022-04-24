@@ -1,5 +1,4 @@
 import asyncio
-import inspect
 import logging
 import os
 from importlib import import_module
@@ -7,11 +6,10 @@ from pathlib import Path
 
 import pyrogram
 from pyrogram.handlers import MessageHandler
-
-from helper.cmd import get_module_name
 from helper.misc import modules_dict, prefix
 from helper.misc import session, lordnet_url
 from typing import Any
+from errors import *
 
 
 def get_commands(x: tuple):
@@ -96,28 +94,38 @@ def module(*filters, **params):
 
                 async def wrapper(*xds, **kwargs):
                     try:
-                        await func(*xds, **kwargs)
+                        return await func(*xds, **kwargs)
                     except (pyrogram.ContinuePropagation, pyrogram.StopPropagation):
                         raise pyrogram.ContinuePropagation
+                    except Exception as ex:
+                        return await error_handler_async(error=ex, *xds, **kwargs)
 
             else:
 
                 def wrapper(*xds, **kwargs):
                     try:
-                        func(*xds, **kwargs)
+                        return func(*xds, **kwargs)
                     except (pyrogram.ContinuePropagation, pyrogram.StopPropagation):
                         raise pyrogram.ContinuePropagation
+                    except Exception as ex:
+                        return error_handler_async(error=ex, *xds, **kwargs)
 
             return wrapper
         if is_coroutine:
 
             async def wrapper(*xds, **kwargs):
-                return await func(*xds, **kwargs)
+                try:
+                    return await func(*xds, **kwargs)
+                except Exception as ex:
+                    return await error_handler_async(error=ex, *xds, **kwargs)
 
         else:
 
             def wrapper(*xds, **kwargs):
-                return func(*xds, **kwargs)
+                try:
+                    return func(*xds, **kwargs)
+                except Exception as ex:
+                    return error_handler_async(error=ex, *xds, **kwargs)
 
         handler = MessageHandler(wrapper, filters)
         if "handlers" not in modules_dict[module_value]:

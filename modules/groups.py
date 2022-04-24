@@ -1,10 +1,11 @@
 import re
 from contextlib import suppress
+from datetime import datetime
 from typing import Any
 
 from pyrogram import ContinuePropagation, filters
 from pyrogram.errors import UserAdminInvalid, ChatAdminRequired, RPCError
-from pyrogram.types import ChatPermissions
+from pyrogram.types import ChatPermissions, ChatPrivileges
 
 from helper import module, Message, db, Client, escape_html
 from time import time as unixtime_1
@@ -50,9 +51,12 @@ async def find_user_in_message(client: Client, message: Message):
         user = message.reply_to_message.sender_chat
         text = message.text
     elif message.mentioned or "@" in message.text:
+        user = None
+        text = message.text
         for ms in message.entities:
             if ms.type == "text_mention":
                 user = ms.user
+                text = message.text[ms.offset + 1 :]
                 break
             elif ms.type == "mention":
                 try:
@@ -60,14 +64,15 @@ async def find_user_in_message(client: Client, message: Message):
                 except RPCError:
                     try:
                         user = await client.get_users(
-                            message.text[ms.offset :].split("@")[1].split()[0]
+                            message.text[ms.offset + 1 :].split()[0]
                         )
                     except RPCError:
                         await message.edit(
                             "<b>🧭 Не удалось найти пользователя в вашем сообщении</b>"
                         )
                         raise ContinuePropagation
-        text = message.text.split(user.username, maxsplit=1)[1]
+                text = message.text.split(user.username, maxsplit=1)[1]
+                break
     elif len(args) > 1 and args[1].isdigit():
         user = await client.get_users(int(args[1]))
         try:
@@ -163,6 +168,9 @@ async def mute_cmd(client: Client, message: Message):
     )
 
 
+null = datetime.fromtimestamp(0)
+
+
 @module(
     cmds="unmute",
     desc="Размьютить пользователя",
@@ -174,7 +182,7 @@ async def unmute_cmd(client: Client, message: Message):
         return await message.edit("<b>🙃 Нельзя размьютить администратора</b>")
     try:
         await message.chat.restrict_member(
-            user.id, until_date=0, permissions=message.chat.permissions
+            user.id, until_date=null, permissions=message.chat.permissions
         )
     except (UserAdminInvalid, ChatAdminRequired):
         await message.edit("<b>👽 У вас нет прав, вы фемка</b>")
@@ -229,16 +237,15 @@ async def kick_cmd(client: Client, message: Message):
         return await message.edit("<b>🙃 Нельзя кикнуть администратора</b>")
     reason = await get_args(text, True)
     try:
-        await message.chat.ban_member(user.id, until_date=unixtime() + 31)
+        await message.chat.ban_member(
+            user.id, until_date=datetime.fromtimestamp(unixtime() + 31)
+        )
     except (UserAdminInvalid, ChatAdminRequired):
         await message.edit("<b>👽 У вас нет прав, вы фемка</b>")
     await message.edit(
         f"<b>👢 Вы успешно кикнули пользователя {user.mention}</b>\n"
         f"<b>📝 Причина:</b>\n{reason}"
     )
-
-
-promote_default = [False] * 10
 
 
 @module(
@@ -252,10 +259,12 @@ async def promote_cmd(client: Client, message: Message):
     try:
         await message.chat.promote_member(
             user.id,
-            can_delete_messages=True,
-            can_restrict_members=True,
-            can_invite_users=True,
-            can_pin_messages=True,
+            ChatPrivileges(
+                can_delete_messages=True,
+                can_restrict_members=True,
+                can_invite_users=True,
+                can_pin_messages=True,
+            ),
         )
         if prefix:
             await client.set_administrator_title(
@@ -280,7 +289,9 @@ async def promote_cmd(client: Client, message: Message):
 async def demote_cmd(client: Client, message: Message):
     user, _ = await find_user_in_message(client, message)
     try:
-        await message.chat.promote_member(user.id, *promote_default)
+        await message.chat.promote_member(
+            user.id, ChatPrivileges(can_manage_chat=False)
+        )
     except (UserAdminInvalid, ChatAdminRequired):
         await message.edit("<b>👽 У вас нет прав, вы фемка</b>")
     await message.edit(
@@ -300,7 +311,7 @@ async def tmute_cmd(client: Client, message: Message):
     if f"{message.chat.id}_tmutes" not in db_cache:
         db_cache[f"{message.chat.id}_tmutes"] = [user.id]
     elif user.id in db_cache[f"{message.chat.id}_tmutes"]:
-        return await message.edit('<b>🤫 {user.mention} Уже замьючен..</b>')
+        return await message.edit("<b>🤫 {user.mention} Уже замьючен..</b>")
     else:
         db_cache[f"{message.chat.id}_tmutes"].append(user.id)
 

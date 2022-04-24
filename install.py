@@ -1,6 +1,7 @@
 import sys
 
 from pyrogram import Client
+from pyrogram.enums import ParseMode
 from pyrogram.errors import RPCError
 
 import config
@@ -12,6 +13,7 @@ if __name__ == "__main__":
         api_id=config.api_id,
         api_hash=config.api_hash,
         hide_password=True,
+        parse_mode=ParseMode.HTML,
     )
 
     install_type = sys.argv[1] if len(sys.argv) > 1 else "3"

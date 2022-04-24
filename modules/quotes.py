@@ -27,12 +27,16 @@ async def quote_cmd(client: Client, message: types.Message):
 
     messages = []
 
-    async for msg in client.get_chat_history()(
-        message.chat.id, offset_id=message.reply_to_message.message_id, reverse=True
-    ):
+    msgs = [
+        msg
+        async for msg in client.get_chat_history(
+            message.chat.id, offset_id=message.reply_to_message.id
+        )
+    ][::-1]
+    for msg in msgs:
         if msg.empty:
             continue
-        if msg.message_id >= message.message_id:
+        if msg.id >= message.id:
             break
         if no_reply:
             msg.reply_to_message = None
@@ -100,9 +104,7 @@ async def fake_quote_cmd(client: Client, message: types.Message):
     if not fake_quote_text:
         return await message.edit("<b>🌝 Фейк сообщение не указано!</b>")
 
-    q_message = await client.get_messages(
-        message.chat.id, message.reply_to_message.message_id
-    )
+    q_message = await client.get_messages(message.chat.id, message.reply_to_message.id)
     q_message.text = fake_quote_text
     q_message.entities = None
     if no_reply:
@@ -142,6 +144,7 @@ async def fake_quote_cmd(client: Client, message: types.Message):
         await message.delete()
 
 
+# noinspection PyTypeChecker
 not_allowed = (
     "audio, document, voice,"
     " contact, location, venue, poll, dice, game".split(", ") + [None]
@@ -367,11 +370,11 @@ def get_reply_text(reply: types.Message) -> str:
         else "📍 закрепил сообщение"
         if reply.pinned_message
         else "🎤 начал новый видеочат"
-        if reply.voice_chat_started
+        if reply.video_chat_started
         else "🎤 завершил видеочат"
-        if reply.voice_chat_ended
+        if reply.video_chat_ended
         else "🎤 добавил новых участников видеочата"
-        if reply.voice_chat_members_invited
+        if reply.video_chat_members_invited
         else "👥 создал чат"
         if reply.group_chat_created or reply.supergroup_chat_created
         else "👥 создал канал"

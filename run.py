@@ -1,5 +1,4 @@
 import asyncio
-import inspect
 import os
 import logging
 import platform
@@ -9,52 +8,10 @@ import sys
 from threading import Thread
 
 from pyrogram import Client, errors, idle
-from pyrogram.errors import RPCError
-from pyrogram.handlers import ErrorHandler
-from pyrogram.types import Message
-
-from helper.cmd import get_module_name, exception_str
+from pyrogram.enums import ParseMode
 from helper.module import load_modules
 
 logging.basicConfig(level=logging.INFO)
-
-
-async def error_handler(_, error: Exception, message: Message):
-    trace = inspect.trace()
-    try:
-        name = get_module_name(inspect.getmodule(trace[-1][0]))
-        args = (
-            error,
-            name,
-            trace[-1][2],
-            " ".join(message.command),
-        )
-    except AttributeError:
-        args = (
-            error,
-            "Unknown",
-            trace[-1][2],
-            " ".join(message.command),
-        )
-    except TypeError:
-        args = (
-            error,
-            get_module_name(inspect.getmodule(trace[-1][0])),
-            trace[-1][2],
-            "",
-        )
-    except Exception:
-        args = (error, "Unknown", 0, "Unknown")
-    txt = exception_str(*args)
-    try:
-        return await message.edit(txt)
-    except RPCError as ex:
-        name = ex.ID or ex.NAME
-        if name in ["MSG_ID_INVALID", "MESSAGE_ID_INVALID"]:
-            try:
-                return await message.reply(text=txt)
-            except RPCError:
-                return
 
 
 if __name__ == "__main__":
@@ -75,14 +32,12 @@ if __name__ == "__main__":
         device_model=f"lordnet-userbot @ {build_version}",
         system_version=platform.version() + " " + platform.machine(),
         sleep_threshold=30,
-        parse_mode="HTML",
+        parse_mode=ParseMode.HTML,
     )
 
     try:
         app.start()
         modules_dict.client = app
-
-        app.add_handler(ErrorHandler(error_handler))
     except sqlite3.OperationalError as e:
         if str(e) == "database is locked":
             if os.name == "posix":

@@ -1,4 +1,4 @@
-from pyrogram import filters, errors, Client
+from pyrogram import errors, Client
 from pyrogram.types import (
     InputMediaPhoto,
     InputMediaVideo,
@@ -31,9 +31,9 @@ async def save_note(client: Client, message: Message):
             checking_note = db.get(f"note{note_name}", False)
             if not checking_note:
                 get_media_group = [
-                    _.message_id
+                    _.id
                     for _ in await client.get_media_group(
-                        message.chat.id, message.reply_to_message.message_id
+                        message.chat.id, message.reply_to_message.id
                     )
                 ]
                 try:
@@ -46,7 +46,7 @@ async def save_note(client: Client, message: Message):
                     )
                     return
                 note = {
-                    "MESSAGE_ID": str(message_id[1].message_id),
+                    "MESSAGE_ID": str(message_id[1].id),
                     "MEDIA_GROUP": True,
                     "CHAT_ID": str(chat_id),
                 }
@@ -71,7 +71,7 @@ async def save_note(client: Client, message: Message):
                         return
                 note = {
                     "MEDIA_GROUP": False,
-                    "MESSAGE_ID": str(message_id.message_id),
+                    "MESSAGE_ID": str(message_id.id),
                     "CHAT_ID": str(chat_id),
                 }
                 db.set(f"note{note_name}", note)
@@ -87,7 +87,7 @@ async def save_note(client: Client, message: Message):
             )
             note = {
                 "MEDIA_GROUP": False,
-                "MESSAGE_ID": str(message_id.message_id),
+                "MESSAGE_ID": str(message_id.id),
                 "CHAT_ID": str(chat_id),
             }
             db.set(f"note{note_name}", note)
@@ -192,7 +192,7 @@ async def note_send(client: Client, message: Message):
                     await client.send_media_group(
                         message.chat.id,
                         media_grouped_list,
-                        reply_to_message_id=message.reply_to_message.message_id,
+                        reply_to_message_id=message.reply_to_message.id,
                     )
                 else:
                     await client.send_media_group(message.chat.id, media_grouped_list)
@@ -201,7 +201,7 @@ async def note_send(client: Client, message: Message):
                     message.chat.id,
                     int(find_note["CHAT_ID"]),
                     int(find_note["MESSAGE_ID"]),
-                    reply_to_message_id=message.reply_to_message.message_id,
+                    reply_to_message_id=message.reply_to_message.id,
                 )
             else:
                 await client.copy_message(
