@@ -380,7 +380,7 @@ detect, DetectorFactory = langdetect.detect, langdetect.DetectorFactory
     cmds="antiarab",
     desc="Анти-араб в чате (вкл/выкл)",
 )
-async def antiraid_cmd(_: Client, message: Message):
+async def antiarab_cmd(_: Client, message: Message):
     now = not db_cache.get(f"antiarab{message.chat.id}", False)
     db_cache[f"antiarab{message.chat.id}"] = now
     db.set(f"antiarab{message.chat.id}", now)
