@@ -7,7 +7,7 @@ from pyrogram import ContinuePropagation, filters
 from pyrogram.errors import UserAdminInvalid, ChatAdminRequired, RPCError
 from pyrogram.types import ChatPermissions, ChatPrivileges
 
-from helper import module, Message, db, Client, escape_html
+from helper import module, Message, db, Client, escape_html, import_library
 from time import time as unixtime_1
 
 
@@ -372,6 +372,25 @@ async def antiraid_cmd(_: Client, message: Message):
     )
 
 
+langdetect = import_library("langdetect")
+detect, DetectorFactory = langdetect.detect, langdetect.DetectorFactory
+
+
+@module(
+    cmds="antiarab",
+    desc="Анти-араб в чате (вкл/выкл)",
+)
+async def antiraid_cmd(_: Client, message: Message):
+    now = not db_cache.get(f"antiarab{message.chat.id}", False)
+    db_cache[f"antiarab{message.chat.id}"] = now
+    db.set(f"antiarab{message.chat.id}", now)
+    return await message.edit(
+        "<b>🧕 Вы успешно выключили Анти-араб в чате</b>"
+        if not now
+        else "<b>🧕 Вы успешно включили Анти-араб в чате</b>"
+    )
+
+
 @module(
     cmds="welcome",
     desc="Включить/выключить приветствие",
@@ -409,11 +428,19 @@ async def tmuted_handler(_, message: Message):
                 await message.chat.ban_member(message.sender_chat.id)
 
     if message.new_chat_members:
-        welcome = db_cache.get(f"welcome{message.chat.id}", "off")
-        if welcome != "off":
-            await message.reply(
-                welcome,
-                disable_web_page_preview=True,
-            )
+        if db_cache.get(f"antiarab{message.chat.id}", False):
+            with suppress(RPCError):
+                for user in message.new_chat_members:
+                    DetectorFactory.seed = 0
+                    if detect(user.first_name + " " + user.last_name) == "ar":
+                        with suppress(RPCError):
+                            await message.chat.ban_member(user.id)
+        else
+            welcome = db_cache.get(f"welcome{message.chat.id}", "off")
+            if welcome != "off":
+                await message.reply(
+                    welcome,
+                    disable_web_page_preview=True,
+                )
 
     raise ContinuePropagation
