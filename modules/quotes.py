@@ -34,7 +34,8 @@ async def quote_cmd(client: Client, message: types.Message):
             offset_id=message.reply_to_message.id,
             limit=count + 1,
         )
-    ]
+    ][::-1]
+    print(len(msgs))
     for msg in msgs:
         if msg.empty:
             continue
