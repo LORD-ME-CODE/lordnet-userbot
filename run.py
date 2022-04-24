@@ -21,12 +21,31 @@ logging.basicConfig(level=logging.INFO)
 
 async def error_handler(_, error: Exception, message: Message):
     trace = inspect.trace()
-    txt = exception_str(
-        error,
-        get_module_name(inspect.getmodule(trace[-1][0])),
-        trace[-1][2],
-        " ".join(message.command),
-    )
+    try:
+        name = get_module_name(inspect.getmodule(trace[-1][0]))
+        args = (
+            error,
+            name,
+            trace[-1][2],
+            " ".join(message.command),
+        )
+    except AttributeError:
+        args = (
+            error,
+            "Unknown",
+            trace[-1][2],
+            " ".join(message.command),
+        )
+    except TypeError:
+        args = (
+            error,
+            get_module_name(inspect.getmodule(trace[-1][0])),
+            trace[-1][2],
+            "",
+        )
+    except Exception:
+        args = (error, "Unknown", 0, "Unknown")
+    txt = exception_str(*args)
     try:
         return await message.edit(txt)
     except RPCError as ex:

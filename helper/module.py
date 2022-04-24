@@ -92,43 +92,23 @@ def module(*filters, **params):
     def sub_decorator(func):
         is_coroutine = inspect.iscoroutinefunction(func)
         if insp:
-            lines = inspect.getsource(func)
-            if (
-                "ContinuePropagation" not in lines
-                and ".continue_propagation" not in lines
-            ):
-                if is_coroutine:
+            if is_coroutine:
 
-                    async def wrapper(*xds, **kwargs):
+                async def wrapper(*xds, **kwargs):
+                    try:
                         await func(*xds, **kwargs)
+                    except (pyrogram.ContinuePropagation, pyrogram.StopPropagation):
                         raise pyrogram.ContinuePropagation
 
-                else:
+            else:
 
-                    def wrapper(*xds, **kwargs):
+                def wrapper(*xds, **kwargs):
+                    try:
                         func(*xds, **kwargs)
+                    except (pyrogram.ContinuePropagation, pyrogram.StopPropagation):
                         raise pyrogram.ContinuePropagation
 
-                return wrapper
-
-            elif "StopPropagation" in lines:
-                if is_coroutine:
-
-                    async def wrapper(*xds, **kwargs):
-                        try:
-                            await func(*xds, **kwargs)
-                        except pyrogram.StopPropagation:
-                            return
-
-                else:
-
-                    def wrapper(*xds, **kwargs):
-                        try:
-                            func(*xds, **kwargs)
-                        except pyrogram.StopPropagation:
-                            return
-
-                return wrapper
+            return wrapper
         if is_coroutine:
 
             async def wrapper(*xds, **kwargs):
@@ -192,9 +172,9 @@ def load_module(module_name: str):
 async def unload_module(module_name: str):
     try:
         handlers = modules_dict[module_name]["handlers"]
-        modules_dict.remove(module_name)
         for handler in handlers:
             modules_dict.client.remove_handler(handler)
+        modules_dict.remove(module_name)
     except KeyError:
         pass
 
