@@ -87,35 +87,38 @@ def module(*filters, **params):
     if isinstance(filters, (list, tuple)) and len(filters) == 1:
         filters = filters[0]
 
+    print(module_value, filters.__dict__)
+
     def sub_decorator(func):
         is_coroutine = inspect.iscoroutinefunction(func)
         if insp:
             if is_coroutine:
 
                 async def wrapper(*xds, **kwargs):
+                    print(module_value)
                     try:
                         await func(*xds, **kwargs)
                     except (pyrogram.StopPropagation, pyrogram.ContinuePropagation):
                         raise pyrogram.ContinuePropagation
                     except Exception as ex:
-                        await error_handler_async(xds[0], ex, xds[1])
+                        return await error_handler_async(xds[0], ex, xds[1])
                     else:
                         raise pyrogram.ContinuePropagation
 
             else:
 
                 def wrapper(*xds, **kwargs):
+                    print(module_value)
                     try:
                         func(*xds, **kwargs)
                     except (pyrogram.StopPropagation, pyrogram.ContinuePropagation):
                         raise pyrogram.ContinuePropagation
                     except Exception as ex:
-                        error_handler_sync(xds[0], ex, xds[1])
+                        return error_handler_sync(xds[0], ex, xds[1])
                     else:
                         raise pyrogram.ContinuePropagation
 
-            return wrapper
-        if is_coroutine:
+        elif is_coroutine:
 
             async def wrapper(*xds, **kwargs):
                 try:
@@ -136,6 +139,8 @@ def module(*filters, **params):
             modules_dict[module_value]["handlers"] = []
         modules_dict.client.add_handler(handler)
         modules_dict[module_value]["handlers"].append(handler)
+
+        return wrapper
 
     return sub_decorator
 
