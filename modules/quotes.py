@@ -33,7 +33,7 @@ async def quote_cmd(client: Client, message: types.Message):
             message.chat.id,
             offset_id=-message.reply_to_message_id
             if count == 1 else message.reply_to_message_id,
-            limit=count,
+            limit=count + 1,
         )
     ][::-1]
     print(len(msgs))
