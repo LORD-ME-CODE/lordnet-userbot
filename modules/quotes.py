@@ -35,7 +35,7 @@ async def quote_cmd(client: Client, message: types.Message):
             limit=count,
         )
     ]
-    # msgs = msgs[::-1]
+    msgs = msgs[::-1]
     print(len(msgs), msgs[0].from_user.username)
     for msg in msgs:
         if msg.empty:
