@@ -8,12 +8,12 @@ from helper.cmd import get_module_name, exception_str
 async def error_handler_async(_, error: Exception, message: Message):
     txt = get_error(error, message)
     try:
-        return message.edit(txt)
+        return await message.edit(txt)
     except RPCError as ex:
         name = ex.ID or ex.NAME
         if name in ["MSG_ID_INVALID", "MESSAGE_ID_INVALID"]:
             try:
-                return message.reply(text=txt)
+                return await message.reply(text=txt)
             except RPCError:
                 return
 
@@ -51,11 +51,11 @@ def get_error(error: Exception, message: Message):
 async def error_handler_sync(_, error: Exception, message: Message):
     txt = get_error(error, message)
     try:
-        return await message.edit(txt)
+        return message.edit(txt)
     except RPCError as ex:
         name = ex.ID or ex.NAME
         if name in ["MSG_ID_INVALID", "MESSAGE_ID_INVALID"]:
             try:
-                return await message.reply(text=txt)
+                return message.reply(text=txt)
             except RPCError:
                 return

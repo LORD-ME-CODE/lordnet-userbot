@@ -94,38 +94,38 @@ def module(*filters, **params):
 
                 async def wrapper(*xds, **kwargs):
                     try:
-                        return await func(*xds, **kwargs)
+                        await func(*xds, **kwargs)
                     except (pyrogram.ContinuePropagation, pyrogram.StopPropagation):
                         raise pyrogram.ContinuePropagation
                     except Exception as ex:
-                        return await error_handler_async(error=ex, *xds, **kwargs)
+                        await error_handler_async(xds[0], ex, xds[1])
 
             else:
 
                 def wrapper(*xds, **kwargs):
                     try:
-                        return func(*xds, **kwargs)
+                        func(*xds, **kwargs)
                     except (pyrogram.ContinuePropagation, pyrogram.StopPropagation):
                         raise pyrogram.ContinuePropagation
                     except Exception as ex:
-                        return error_handler_async(error=ex, *xds, **kwargs)
+                        error_handler_sync(xds[0], ex, xds[1])
 
             return wrapper
         if is_coroutine:
 
             async def wrapper(*xds, **kwargs):
                 try:
-                    return await func(*xds, **kwargs)
+                    await func(*xds, **kwargs)
                 except Exception as ex:
-                    return await error_handler_async(error=ex, *xds, **kwargs)
+                    await error_handler_async(xds[0], ex, xds[1])
 
         else:
 
             def wrapper(*xds, **kwargs):
                 try:
-                    return func(*xds, **kwargs)
+                    func(*xds, **kwargs)
                 except Exception as ex:
-                    return error_handler_async(error=ex, *xds, **kwargs)
+                    error_handler_sync(xds[0], ex, xds[1])
 
         handler = MessageHandler(wrapper, filters)
         if "handlers" not in modules_dict[module_value]:
