@@ -37,7 +37,7 @@ async def quote_cmd(client: Client, message: types.Message):
         )
     ]
     if count == 1:
-        msgs = [::-1]
+        msgs = msgs[::-1]
     print(len(msgs))
     for msg in msgs:
         if msg.empty:
