@@ -95,20 +95,24 @@ def module(*filters, **params):
                 async def wrapper(*xds, **kwargs):
                     try:
                         await func(*xds, **kwargs)
-                    except (pyrogram.ContinuePropagation, pyrogram.StopPropagation):
+                    except (pyrogram.StopPropagation, pyrogram.ContinuePropagation):
                         raise pyrogram.ContinuePropagation
                     except Exception as ex:
                         await error_handler_async(xds[0], ex, xds[1])
+                    else:
+                        raise pyrogram.ContinuePropagation
 
             else:
 
                 def wrapper(*xds, **kwargs):
                     try:
                         func(*xds, **kwargs)
-                    except (pyrogram.ContinuePropagation, pyrogram.StopPropagation):
+                    except (pyrogram.StopPropagation, pyrogram.ContinuePropagation):
                         raise pyrogram.ContinuePropagation
                     except Exception as ex:
                         error_handler_sync(xds[0], ex, xds[1])
+                    else:
+                        raise pyrogram.ContinuePropagation
 
             return wrapper
         if is_coroutine:
