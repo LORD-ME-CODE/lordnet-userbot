@@ -435,7 +435,7 @@ async def tmuted_handler(_, message: Message):
                     if detect(user.first_name + " " + user.last_name) == "ar":
                         with suppress(RPCError):
                             await message.chat.ban_member(user.id)
-        else
+        else:
             welcome = db_cache.get(f"welcome{message.chat.id}", "off")
             if welcome != "off":
                 await message.reply(
