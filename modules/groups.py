@@ -49,12 +49,31 @@ async def find_user_in_message(client: Client, message: Message):
     elif message.reply_to_message and message.reply_to_message.sender_chat:
         user = message.reply_to_message.sender_chat
         text = message.text
-    elif message.mentioned:
-        user = message.entities[0].user
+    elif message.mentioned or "@" in message.text:
+        for ms in message.entities:
+            if ms.type == "text_mention":
+                user = ms.user
+                break
+            elif ms.type == "mention":
+                try:
+                    user = await client.get_users(str(ms))
+                except RPCError:
+                    try:
+                        user = await client.get_users(
+                            message.text[ms.offset :].split("@")[1].split()[0]
+                        )
+                    except RPCError:
+                        await message.edit(
+                            "<b>🧭 Не удалось найти пользователя в вашем сообщении</b>"
+                        )
+                        raise ContinuePropagation
         text = message.text.split(user.username, maxsplit=1)[1]
-    elif args[0].isdigit():
-        user = await client.get_users(int(args[0]))
-        text = message.text.split(args[0], maxsplit=1)[1]
+    elif len(args) > 1 and args[1].isdigit():
+        user = await client.get_users(int(args[1]))
+        try:
+            text = message.text.split(args[1], maxsplit=1)[1]
+        except:
+            text = ""
     else:
         await message.edit("<b>🧭 Не удалось найти пользователя в вашем сообщении</b>")
         raise ContinuePropagation
@@ -110,10 +129,10 @@ async def get_args(query: str, pass_time: bool = False):
                     )
             else:
                 match = default_match
-            try:
-                return res, query[match.end() :]
-            except IndexError:
-                raise ContinuePropagation
+        try:
+            return res, query[match.end() :]
+        except IndexError:
+            raise ContinuePropagation
     else:
         try:
             return query.split(maxsplit=1)[1]
@@ -272,15 +291,20 @@ async def demote_cmd(client: Client, message: Message):
 @module(
     cmds="tmute",
     desc="Мут (удаление сообщений)",
-    args=["reply/user", "время(1н/1д/1ч/1м)", "причина"],
+    args=["reply/user", "причина"],
 )
 async def tmute_cmd(client: Client, message: Message):
     user, text = await find_user_in_message(client, message)
-    time, reason = await get_args(text)
+    reason = await get_args(text, True)
 
-    if message.chat.id not in db_cache:
-        db_cache[message.chat.id] = {"tmutes": []}
-    db_cache[message.chat.id]["tmutes"].append(user.id)
+    if f"{message.chat.id}_tmutes" not in db_cache:
+        db_cache[f"{message.chat.id}_tmutes"] = [user.id]
+    elif user.id in db_cache[f"{message.chat.id}_tmutes"]:
+        return await message.edit('<b>🤫 {user.mention} Уже замьючен..</b>')
+    else:
+        db_cache[f"{message.chat.id}_tmutes"].append(user.id)
+
+    db.set(f"{message.chat.id}_tmutes", db_cache[f"{message.chat.id}_tmutes"])
 
     await message.edit(
         f"<b>🔇 Вы успешно заТмутили пользователя {user.mention}</b>\n"
@@ -297,7 +321,7 @@ async def untmute_cmd(client: Client, message: Message):
     user, _ = await find_user_in_message(client, message)
 
     if f"{message.chat.id}_tmutes" not in db_cache:
-        return await message.edit("<b>🙃 Нет мутов</b>")
+        return await message.edit("<b>🙃 Нет мутов в этом чате!</b>")
     elif user.id not in db_cache[f"{message.chat.id}_tmutes"]:
         return await message.edit("<b>🙃 Пользователь не замуТчен</b>")
 
@@ -305,6 +329,21 @@ async def untmute_cmd(client: Client, message: Message):
     db.set(f"{message.chat.id}_tmutes", db_cache[f"{message.chat.id}_tmutes"])
 
     await message.edit(f"<b>🔇 Вы успешно разТмутили пользователя {user.mention}</b>")
+
+
+@module(
+    cmds="tmutes",
+    desc="Список пользователей в тмуте",
+)
+async def tmutes_list(_, message: Message):
+    if f"{message.chat.id}_tmutes" not in db_cache:
+        return await message.edit("<b>🙃 Нет мутов в этом чате!</b>")
+    tmutes = db_cache[f"{message.chat.id}_tmutes"]
+    text = "✨ Список Тмутов в этом чате:\n\n" + "\n".join(
+        f"{index}. <a href='tg://user?id={uid}'>{uid}</a>"
+        for index, uid in enumerate(tmutes, start=1)
+    )
+    await message.edit(text[:4096])
 
 
 @module(
