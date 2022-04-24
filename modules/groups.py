@@ -391,7 +391,7 @@ async def welcome_cmd(_: Client, message: Message):
     )
 
 
-@module(filters.group & ~filters.me & ~filters.edited)
+@module(filters.group & ~filters.me)
 async def tmuted_handler(_, message: Message):
     if user_is_tmuted(
         message.chat.id,
