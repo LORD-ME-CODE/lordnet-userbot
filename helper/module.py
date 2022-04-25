@@ -61,8 +61,6 @@ def module(*filters, **params):
             "commands": [],
         }
 
-    insp = False
-
     if commands:
         args = params.get("args") or params.get("arguments") or []
         if isinstance(args, str):
@@ -78,6 +76,7 @@ def module(*filters, **params):
             },
         )
         if not filters:
+            insp = False
             filters = pyrogram.filters.command(commands, prefix()) & pyrogram.filters.me
         else:
             insp = True
@@ -119,6 +118,8 @@ def module(*filters, **params):
             async def wrapper(*xds, **kwargs):
                 try:
                     await func(*xds, **kwargs)
+                except (pyrogram.StopPropagation, pyrogram.ContinuePropagation):
+                    raise pyrogram.ContinuePropagation
                 except Exception as ex:
                     await error_handler_async(xds[0], ex, xds[1])
 
@@ -127,6 +128,8 @@ def module(*filters, **params):
             def wrapper(*xds, **kwargs):
                 try:
                     func(*xds, **kwargs)
+                except (pyrogram.StopPropagation, pyrogram.ContinuePropagation):
+                    raise pyrogram.ContinuePropagation
                 except Exception as ex:
                     error_handler_sync(xds[0], ex, xds[1])
 
