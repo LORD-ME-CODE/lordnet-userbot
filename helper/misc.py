@@ -21,6 +21,7 @@ class ModulesDict(dict):
         self.__dict = {}
         self.client: Client | None = None
         self.commands: dict = {}
+        self.deleted: list = []
 
     def items(self):
         return self.__dict.items()
