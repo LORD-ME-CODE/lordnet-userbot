@@ -14,13 +14,14 @@ async def info(_, message: Message):
     text = (
         '<b><a href="https://t.me/lordnet_userbot">✉ lordnet-userbot</a> ИНФО:\n\n'
         f"☛ lordnet версия: <code>{__version__}</code>\n"
-        f"☛ Билд: <a href='{build_link}'>{build_version}</a> ({c_date})\n\n"
-        f"☛ Python версия: <code>{python_version}</code>\n"
-        f"☛ Кол-во модулей: <code>{len(modules_dict)}</code>\n"
-        f"☛ Лицензия: <a href='https://github.com/LORD-ME-CODE/lordnet-userbot/blob/main/LICENSE'>GNU v3.0</a>\n"
+        f"🧱 Билд: <a href='{build_link}'>{build_version}</a> ({c_date})\n"
+        f"🐍 Python версия: <code>{python_version}</code>\n\n"
+        f"🎲 Модули: @lordnet_modules\n"
+        f"☛ Кол-во модулей: <code>{len(modules_dict)}</code>\n\n"
+        f"📃 Лицензия: <a href='https://github.com/LORD-ME-CODE/lordnet-userbot/blob/main/LICENSE'>GNU v3.0</a>\n"
+        f"☛ Репо: <a href='https://github.com/LORD-ME-CODE/lordnet-userbot'>lordnet-userbot</a>\n\n"
         f"☛ Канал: @lordnet_userbot\n"
         f"☛ Чат: @lordnetchat\n"
-        f"☛ Репо: <a href='https://github.com/LORD-ME-CODE/lordnet-userbot'>lordnet-userbot</a>\n"
         f"☛ Кодер: @lord_code</b>"
     )
 

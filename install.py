@@ -29,12 +29,13 @@ if __name__ == "__main__":
     # noinspection PyPep8
     try:
         text = (
-            '<b><a href="https://t.me/lordnet_userbot">✉ lordnet-userbot</a> download success!\n\n'
-            f"☛ Лицензия: <a href='https://github.com/LORD-ME-CODE/lordnet-userbot/blob/main/LICENSE'>GNU v3.0</a>\n"
+            '<b><a href="https://t.me/lordnet_userbot">✉ lordnet-userbot</a> download success:\n\n'
+            f"🎲 Модули: @lordnet_modules\n"
+            f"📃 Лицензия: <a href='https://github.com/LORD-ME-CODE/lordnet-userbot/blob/main/LICENSE'>GNU v3.0</a>\n"
+            f"☛ Репо: <a href='https://github.com/LORD-ME-CODE/lordnet-userbot'>lordnet-userbot</a>\n\n"
             f"☛ Канал: @lordnet_userbot\n"
             f"☛ Чат: @lordnetchat\n"
-            f"☛ Репо: <a href='https://github.com/LORD-ME-CODE/lordnet-userbot'>lordnet-userbot</a>\n"
-            f"☛ Кодер: @lord_code</b>\n\n"
+            f"☛ Кодер: @lord_code</b>\n"
             f"☛ Используйте для старта:\n<code>{restart}</code></b>"
         )
         app.send_message("me", text.format(restart))
