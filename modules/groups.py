@@ -54,11 +54,11 @@ async def find_user_in_message(client: Client, message: Message):
         user = None
         text = message.text
         for ms in message.entities:
-            if ms.type == "text_mention":
+            if ms.type.__str__() == "text_mention":
                 user = ms.user
                 text = message.text[ms.offset + 1 :]
                 break
-            elif ms.type == "mention":
+            elif ms.type.__str__() == "mention":
                 try:
                     user = await client.get_users(str(ms))
                 except RPCError:
