@@ -123,7 +123,7 @@ async def loader_cmd(_, message: Message):
 
         await message.edit("<b>🌚 Устанавливаю модуль...</b>")
 
-        if modules_dict.module_in(f"custom.{name}"):
+        if f"custom.{name}" in modules_dict.deleted or modules_dict.module_in(f"custom.{name}"):
             await message.edit(
                 f"<b>💪 Модуль <code>{name}</code> загружён</b>...\n🌚 Перезагружаю, потому-что вы его уже "
                 f"устанавливали/удаляли"
@@ -159,7 +159,7 @@ async def load_all(_, message: Message):
                     continue
                 async with open(f"custom/{modname}.py", "wb") as f:
                     await f.write(await response.read())
-                if modules_dict.module_in(f"custom.{modname}"):
+                if f"custom.{name}" in modules_dict.deleted or modules_dict.module_in(f"custom.{modname}"):
                     if not restarte:
                         restarte = True
                 else:
@@ -232,7 +232,7 @@ async def download_modules(_, message: Message):
                     else:
                         try:
                             name = "custom." + file.split("/")[-1].replace(".py", "")
-                            if modules_dict.module_in(name):
+                            if f"custom.{name}" in modules_dict.deleted or modules_dict.module_in(name):
                                 restarte = True
                             else:
                                 load_module(name)
