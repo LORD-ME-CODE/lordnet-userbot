@@ -23,17 +23,11 @@ async def purge(client: Client, message: Message):
     except IndexError:
         count = 0
     chunk = []
-    messages = [
-        msg
-        async for msg in client.get_chat_history(
-            chat_id=message.chat.id,
-            offset_id=message.reply_to_message.id if message.reply_to_message else None,
-            limit=count,
-        )
-    ]
-    if not bool(count):
-        messages = messages[::-1]
-    for msg in messages:
+    async for msg in client.get_chat_history(
+        chat_id=message.chat.id,
+        offset_id=message.reply_to_message_id,
+        limit=count,
+    ):
         chunk.append(msg.id)
         if len(chunk) >= 100:
             await client.delete_messages(message.chat.id, chunk)
