@@ -2,7 +2,8 @@
 
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 ![GitHub last commit](https://img.shields.io/github/last-commit/LORD-ME-CODE/lordnet-userbot)
-[![DeepSource](https://deepsource.io/gh/LORD-ME-CODE/lordnet-userbot.svg/?label=active+issues&token=4jrQ8JouQrYOLEqp41Iom-ZQ)](https://deepsource.io/gh/LORD-ME-CODE/lordnet-userbot/?ref=repository-badge)
+![GitHub issues](https://img.shields.io/github/issues-raw/LORD-ME-CODE/lordnet-userbot)
+![Black work](https://github.com/LORD-ME-CODE/lordnet-userbot/actions/workflows/black.yml/badge.svg)
 
 
 # Установка
