@@ -6,3 +6,4 @@ validators
 aiofile
 GitPython
 pillow
+tgcrypto
