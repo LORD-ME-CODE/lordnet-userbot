@@ -30,9 +30,13 @@ async def quote_cmd(client: Client, message: types.Message):
     msgs = [
         msg
         async for msg in client.get_chat_history(
-            message.chat.id, offset_id=message.reply_to_message.id
+            message.chat.id,
+            offset_id=-message.reply_to_message.id,
+            limit=count + 1,
         )
-    ][::-1]
+    ]
+    msgs = msgs[::-1][:-1]
+    print(len(msgs), msgs[0].from_user.username)
     for msg in msgs:
         if msg.empty:
             continue
@@ -203,7 +207,7 @@ async def render_message(app: Client, message: types.Message) -> dict:
                 {
                     "offset": entity.offset,
                     "length": entity.length,
-                    "type": entity.type,
+                    "type": str(entity.type),
                 }
             )
 
