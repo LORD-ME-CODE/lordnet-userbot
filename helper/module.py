@@ -183,6 +183,8 @@ def load_module(module_name: str):
     mod = import_module(module_name, package="__main__")
     made_by = getattr(mod, "made_by", "@Неизвестный")[:64]
     modules_dict[module_name]["made_by"] = made_by
+    if module_name in modules_dict.deleted:
+        modules_dict.remove(module_name)
 
 
 async def unload_module(module_name: str):
@@ -191,6 +193,7 @@ async def unload_module(module_name: str):
         for handler in handlers:
             modules_dict.client.remove_handler(handler)
         modules_dict.remove(module_name)
+        modules_dict.deleted.append(module_name)
     except KeyError:
         pass
 
