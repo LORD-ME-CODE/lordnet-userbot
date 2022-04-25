@@ -1,0 +1,3 @@
+deploy:
+  - name: Start
+    command: sudo bash install.sh
