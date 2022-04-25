@@ -4,6 +4,7 @@ from datetime import datetime
 from typing import Any
 
 from pyrogram import ContinuePropagation, filters
+from pyrogram.enums import MessageEntityType
 from pyrogram.errors import UserAdminInvalid, ChatAdminRequired, RPCError
 from pyrogram.types import ChatPermissions, ChatPrivileges
 
@@ -54,11 +55,11 @@ async def find_user_in_message(client: Client, message: Message):
         user = None
         text = message.text
         for ms in message.entities:
-            if ms.type.__str__() == "text_mention":
+            if ms.type == MessageEntityType.TEXT_MENTION:
                 user = ms.user
                 text = message.text[ms.offset + 1 :]
                 break
-            elif ms.type.__str__() == "mention":
+            elif ms.type == MessageEntityType.MENTION:
                 try:
                     user = await client.get_users(str(ms))
                 except RPCError:
@@ -73,6 +74,11 @@ async def find_user_in_message(client: Client, message: Message):
                         raise ContinuePropagation
                 text = message.text.split(user.username, maxsplit=1)[1]
                 break
+        if user is None:
+            await message.edit(
+                "<b>🧭 Не удалось найти пользователя в вашем сообщении</b>"
+            )
+            raise ContinuePropagation
     elif len(args) > 1 and args[1].isdigit():
         user = await client.get_users(int(args[1]))
         try:
