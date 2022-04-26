@@ -106,14 +106,18 @@ if __name__ == "__main__":
     print("[+] Запускаю lordnet web...\n")
 
     def main():
+        host = request.host_url
         print(
+            "\n"
             "[!] Успешно запущен lordnet web!\n"
-            "[+] Перейдите по ссылке: http://localhost:5000/\n"
+            f"[!] Для продолжения установки\n"
+            f"[+] Перейдите по ссылке: {host}"
+            f"\n"
         )
         try:
             import webbrowser
 
-            webbrowser.open("http://localhost:5000")
+            webbrowser.open(host)
         except Exception:
             pass
 
@@ -122,4 +126,4 @@ if __name__ == "__main__":
     log = logging.getLogger("werkzeug")
     log.setLevel(logging.ERROR)
 
-    app.run(debug=False, port=5000, host="localhost")
+    app.run(debug=False, port=5000, host="0.0.0.0")
