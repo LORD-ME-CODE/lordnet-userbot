@@ -20,7 +20,7 @@ if __name__ == "__main__":
     else:
         restart = "cd lordnet-userbot/ && python run.py"
 
-    app = Flask(__name__, template_folder="web", static_folder="assets")
+    app = Flask(__name__, template_folder="web", static_folder="docs/assets")
 
     @app.route("/favicon.ico")
     def favicon():
