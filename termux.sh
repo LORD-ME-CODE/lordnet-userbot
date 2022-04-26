@@ -33,7 +33,7 @@ echo "Вы можете взять их тут -> https://my.telegram.org/apps"
 echo "Не вводите ничего, чтобы использовать по умолчанию"
 read -r -p "API_ID > " api_id
 
-if ! [[ $api_id = "" ]]; then
+if [[ $api_id = "" ]]; then
   api_id="14895435"
   api_hash="e8205235cc85f4d3b9b8733a24954950"
 else
@@ -48,6 +48,11 @@ EOL
 pip3 install aioflask
 
 python3 install.py 3
+
+if ! [[ -f "lordnet.session" ]]; then
+  echo "Видимо не удалось установить юзербот..."
+  exit 1
+fi
 
 echo
 echo "                                      "
