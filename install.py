@@ -105,14 +105,25 @@ if __name__ == "__main__":
             if shutdown_func is None:
                 raise RuntimeError("Успешная установка!")
             shutdown_func()
-            return "Успешная установка! Вернитесь в консоль!"
+            return (
+                "<h2>Если вы ввели верный код, то зайдите в консоль и нажмите</h2><br>"
+                "<code>CTRL + C</code><br>А потом напишите<br><code>{}</code>".format(
+                    restart
+                )
+            )
 
     @app.errorhandler(500)
     def error_handler(e):
-        if isinstance(e, RuntimeError):
+        try:
             sys.exit(3)
-        else:
-            return f"<pre>{e}</pre>"
+        except:
+            return (
+                "<h2>Если вы ввели верный код, то зайдите в консоль и нажмите</h2><br>"
+                "<code>CTRL + C</code><br>А потом напишите<br><code>{}</code>".format(
+                    restart
+                ),
+                200,
+            )
 
     print("[+] Запускаю lordnet web...\n")
 
