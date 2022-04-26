@@ -110,12 +110,12 @@ if __name__ == "__main__":
                 pass
 
             await client.stop()
-            os._exit(0)
+
+            Timer(1, lambda: os._exit(0))
+
             return (
-                "<h2>Если вы ввели верный код, то зайдите в консоль и нажмите</h2><br>"
-                "<code>CTRL + C</code><br>А потом напишите<br><code>{}</code>".format(
-                    restart
-                )
+                "<h2>Успешный вход! Можете вернуться в консоль!</h2><br><br>"
+                "Команда для запуска юзербота: <code>{}</code>".format(restart)
             )
 
     @app.errorhandler(500)
