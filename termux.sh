@@ -6,7 +6,7 @@ fi
 termux-wake-lock
 
 apt update -y
-apt install python3 git clang wget libjpeg-turbo libcrypt ndk-sysroot zlib -y || exit 2
+apt install python3 git libjpeg-turbo zlib libwebp libffi -y || exit 2
 
 python3 -m pip install -U pip
 LDFLAGS="-L${PREFIX}/lib/" CFLAGS="-I${PREFIX}/include/" pip3 install --upgrade wheel pillow
@@ -21,16 +21,16 @@ else
 fi
 
 if [[ -f ".env" ]] && [[ -f "lordnet.session" ]]; then
-  echo "It seems that lordnet-userbot is already installed. Exiting..."
+  echo "Видимо у вас уже установлен lordnet-userbot. Выход..."
   exit
 fi
 
 python3 -m pip install -U -r requirements.txt || exit 2
 
 echo
-echo "Enter API_ID and API_HASH"
-echo "You can get it here -> https://my.telegram.org/apps"
-echo "Leave empty to use defaults"
+echo "Введите API_ID и API_HASH"
+echo "Вы можете взять их тут -> https://my.telegram.org/apps"
+echo "Не вводите ничего, чтобы использовать по умолчанию"
 read -r -p "API_ID > " api_id
 
 if [[ $api_id = "" ]]; then
@@ -48,7 +48,18 @@ EOL
 python3 install.py 3 || exit 3
 
 echo
+echo "                                      "
+echo "  _               _            _      "
+echo " | | ___  _ __ __| |_ __   ___| |_    "
+echo " | |/ _ \| '__/ _' | '_ \ / _ | __|   "
+echo " | | (_) | | | (_| | | | |  __| |_    "
+echo " |_|\___/|_|  \__,_|_|_|_|\___|\___   "
+echo "  _   _ ___  ___ _ __| |__   ___ | |_ "
+echo "| | | / __|/ _ | '__| '_ \ / _ \| __| "
+echo "| |_| \__ |  __| |  | |_) | (_) | |_  "
+echo " \__,_|___/\___|_|  |_.__/ \___/ \__|  "
+echo "                                      "
 echo "============================"
-echo "Great! lordnet-userbot installed successfully!"
-echo "Start with: \"python3 run.py\""
+echo "Отлично! lordnet-userbot установлен успешно!"
+echo "Напишите: \"python3 run.py\""
 echo "============================"

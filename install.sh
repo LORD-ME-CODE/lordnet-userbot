@@ -10,7 +10,7 @@ if [[ $UID != 0 ]]; then
 fi
 
 apt update -y
-apt install python3 python3-pip git wget python3-opencv -y || exit 2
+apt install python3 python3-pip git python3-dev libwebp-dev libz-dev libjpeg-dev libopenjp2-7 libtiff5 python3-opencv -y || exit 2
 
 su -c "python3 -m pip install -U pip" $SUDO_USER
 su -c "python3 -m pip install -U setuptools wheel" $SUDO_USER
@@ -27,16 +27,16 @@ else
 fi
 
 if [[ -f ".env" ]] && [[ -f "lordnet.session" ]]; then
-  echo "It seems that lordnet-userbot is already installed. Exiting..."
+  echo "Видимо у вас уже установлен lordnet-userbot. Выход..."
   exit
 fi
 
 su -c "python3 -m pip install -U -r requirements.txt" $SUDO_USER || exit 2
 
 echo
-echo "Enter API_ID and API_HASH"
-echo "You can get it here -> https://my.telegram.org/apps"
-echo "Leave empty to use defaults"
+echo "Введите API_ID и API_HASH"
+echo "Вы можете взять их тут -> https://my.telegram.org/apps"
+echo "Не вводите ничего, чтобы использовать по умолчанию"
 read -r -p "API_ID > " api_id
 
 if [[ $api_id = "" ]]; then
@@ -54,7 +54,7 @@ EOL
 chown -R $SUDO_USER:$SUDO_USER .
 
 echo
-echo "Choose installation type:"
+echo "Выберите тип установки:"
 echo "[1] PM2"
 echo "[2] Systemd service"
 echo "[3] Custom (default)"
@@ -86,11 +86,11 @@ case $install_type in
     echo "| |_| \__ |  __| |  | |_) | (_) | |_  "
     echo " \__,_|___/\___|_|  |_.__/ \___/ \__|  "
     echo "                                      "
-    echo "Great! lordnet-userbot installed successfully and running now!"
-    echo "Installation type: PM2"
-    echo "Start with: \"pm2 start lordnet\""
-    echo "Stop with: \"pm2 stop lordnet\""
-    echo "Process name: lordnet"
+    echo "Отлично! lordnet-userbot установлен успешно!"
+    echo "Тип установки: PM2"
+    echo "Запуск: \"pm2 start lordnet\""
+    echo "Выключить: \"pm2 stop lordnet\""
+    echo "Название процесса: lordnet"
     echo "============================"
     ;;
   2)
@@ -123,10 +123,10 @@ EOL
     echo "| |_| \__ |  __| |  | |_) | (_) | |_  "
     echo " \__,_|___/\___|_|  |_.__/ \___/ \__|  "
     echo "                                      "
-    echo "Great! lordnet-userbot installed successfully and running now!"
-    echo "Installation type: Systemd service"
-    echo "Start with: \"sudo systemctl start lordnet\""
-    echo "Stop with: \"sudo systemctl stop lordnet\""
+    echo "Отлично! lordnet-userbot установлен успешно!"
+    echo "Тип установки: Systemd service"
+    echo "Запуск: \"sudo systemctl start lordnet\""
+    echo "Выключить: \"sudo systemctl stop lordnet\""
     echo "============================"
     ;;
   *)
@@ -142,9 +142,9 @@ EOL
     echo "| |_| \__ |  __| |  | |_) | (_) | |_  "
     echo " \__,_|___/\___|_|  |_.__/ \___/ \__|  "
     echo "                                      "
-    echo "Great! lordnet-userbot installed successfully!"
-    echo "Installation type: Custom"
-    echo "Start with: \"python3 run.py\""
+    echo "Отлично! lordnet-userbot установлен успешно!"
+    echo "Тип установки: Custom"
+    echo "Запуск: \"python3 run.py\""
     echo "============================"
     ;;
 esac

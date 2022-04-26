@@ -2,9 +2,9 @@
 title: lordnet-userbot
 email: lordgrief176@gmail.com
 description: >- # this means to ignore newlines until "baseurl:"
-  Write an awesome description for your new site here. You can edit this
-  line in _config.yml. It will appear in your document head meta (for
-  Google search results) and in your feed.xml site description.
+  lordnet-userbot лучший юзербот для телеграм.
+  Удобное написание модулей, высокая скорость работы,
+  большое комьюнити.
 baseurl: "" # the subpath of your site, e.g. /blog
 domain: "docs.lordnet.ml"
 url: "https://docs.lordnet.ml" # the base hostname & protocol for your site, e.g. http://example.com
@@ -14,7 +14,18 @@ github_username:  LORD-ME-CODE
 remote_theme: just-the-docs/just-the-docs
 
 # Just-the-docs
+permalink: pretty
+
 color_scheme: dark
+
+compress_html:
+  clippings: all
+  comments: all
+  endings: all
+  startings: []
+  blanklines: false
+  profile: false
+
 
 # FOOTER
 footer_content: "Copyright &copy; 2022 lordnet. Distributed by an <a href=\"https://github.com/LORD-ME-CODE/lordnet-userbot/tree/main/LICENSE\">GNU V3.</a>"
