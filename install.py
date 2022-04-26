@@ -138,12 +138,15 @@ if __name__ == "__main__":
             try:
                 host = socket.gethostbyname(socket.gethostname())
             except Exception:
-                host = socket.gethostbyname(socket.getfqdn())
+                try:
+                    host = socket.gethostbyname(socket.getfqdn())
+                except Exception:
+                    host = "localhost"
         print(
             "\n"
             "[!] Успешно запущен lordnet web!\n"
             f"[!] Для продолжения установки\n"
-            f"[+] Перейдите по ссылке: {host + ':5000'}"
+            f"[+] Перейдите по ссылке: http://{host + ':5000'}"
             f"\n"
         )
         try:
