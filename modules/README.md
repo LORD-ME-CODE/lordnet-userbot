@@ -3,10 +3,13 @@
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 ![GitHub last commit](https://img.shields.io/github/last-commit/LORD-ME-CODE/lordnet-userbot)
 
-[@lordnet_userbot](https://t.me/lordnet_userbot)
+## Оффициальные модули: [@lordnet_userbot](https://t.me/lordnet_modules)
 
 ```python
-from helper import module, Message, db
+from helper import module, Message
+from helper import Client  # Вы можете импортировать клиент
+from helper import db  # Вы можете импортировать базу данных
+from helper import session  # Вы можете импортировать ClientSession
 
 from helper import import_library, aimport_library  # Example 4
 from helper import exception_str  # Example 5
@@ -29,7 +32,7 @@ from pyrogram import filters
 @module(filters.me & filters.group)
 async def example(_, message: Message):
     text = message.text
-    await message.edit("Привет, я модуль example2!\n" f"{text}")
+    await message.reply("Привет, я модуль example2!\n" f"{text}")
 
 
 # Пример использования базы данных
