@@ -7,7 +7,7 @@ nav_order: 4
 
 # {{ page.title }}
 
-1
+Тут собраны все способы установки для разных OS
 
 ## Debian-like Linux
 

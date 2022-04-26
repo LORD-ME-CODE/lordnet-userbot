@@ -36,6 +36,4 @@ last_edit_time_format: "%b %e %Y at %I:%M %p"
 
 gh_edit_link: false
 
-# HEADER
-heading_anchors: true
 search_enabled: true
