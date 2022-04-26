@@ -101,13 +101,18 @@ if __name__ == "__main__":
                 pass
 
             await client.stop()
-            sys.exit(3)
+            shutdown_func = request.environ.get("werkzeug.server.shutdown")
+            if shutdown_func is None:
+                raise RuntimeError("Успешная установка!")
+            shutdown_func()
+            return "Успешная установка! Вернитесь в консоль!"
 
     print("[+] Запускаю lordnet web...\n")
 
     def main():
         with app.test_request_context():
             from aioflask import request
+
             host = request.host_url
         print(
             "\n"
@@ -128,4 +133,7 @@ if __name__ == "__main__":
     log = logging.getLogger("werkzeug")
     log.setLevel(logging.ERROR)
 
-    app.run(debug=False, port=5000, host="0.0.0.0")
+    try:
+        app.run(debug=False, port=5000, host="0.0.0.0")
+    except RuntimeError as msg:
+        sys.exit(3)
