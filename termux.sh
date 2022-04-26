@@ -49,7 +49,7 @@ pip3 install aioflask
 
 python3 install.py 3
 
-if ! [[ -f "lordnet.session" ]]; then
+if [[ ! -f "lordnet.session" ]]; then
   echo "Видимо не удалось установить юзербот..."
   exit 1
 fi
