@@ -40,6 +40,7 @@ cd lordnet-userbot
 
 5. Устанавливаем зависимости
 ```
+python3 -m pip install aioflask
 python3 -m pip install -r requirements.txt
 ```
 
@@ -68,6 +69,7 @@ pip3 install -r requirements.txt
 ```
 #### Для преднастроек
 ```
+pip3 install aioflask
 python3 install.py 3
 ```
 #### Для запуска
@@ -90,6 +92,7 @@ python3 run.py
 git clone https://github.com/LORD-ME-CODE/lordnet-userbot
 cd lordnet-userbot
 python3 -m pip install -r requirements.txt
+python3 -m pip install aioflask
 python3 install.py 3
 ```
 
@@ -121,6 +124,7 @@ brew install python3  git
 git clone https://github.com/LORD-ME-CODE/lordnet-userbot
 cd lordnet-userbot
 python -m pip install -r requirements.txt
+python -m pip install aioflask
 python install.py 3
 ```
 
