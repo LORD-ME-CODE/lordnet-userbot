@@ -45,7 +45,7 @@ API_ID=${api_id}
 API_HASH=${api_hash}
 EOL
 
-pip3 install flask
+pip3 install aioflask
 
 python3 install.py 3 || exit 3
 
