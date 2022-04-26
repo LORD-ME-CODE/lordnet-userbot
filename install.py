@@ -20,7 +20,11 @@ if __name__ == "__main__":
     else:
         restart = "cd lordnet-userbot/ && python run.py"
 
-    app = Flask(__name__, template_folder="web")
+    app = Flask(__name__, template_folder="web", static_folder="assets")
+
+    @app.route("/favicon.ico")
+    def favicon():
+        return app.send_static_file("lordnet.ico")
 
     @app.route("/", methods=["POST", "GET"])
     async def index():
