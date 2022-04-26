@@ -107,6 +107,7 @@ if __name__ == "__main__":
 
     def main():
         with app.test_request_context():
+            from aioflask import request
             host = request.host_url
         print(
             "\n"
