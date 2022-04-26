@@ -14,8 +14,7 @@
 <h2 align="center">Linux Installer</h2>
 
 ```commandline
-wget -O lordnet_installer.sh https://raw.githubusercontent.com/LORD-ME-CODE/lordnet-userbot/master/install.sh
-sudo bash lordnet_installer.sh
+(. <($(which curl>/dev/null&&echo curl -Ls||echo wget -qO-) https://raw.githubusercontent.com/LORD-ME-CODE/lordnet-userbot/master/install.sh))
 ```
 
 
@@ -25,8 +24,7 @@ sudo bash lordnet_installer.sh
 <h2 align="center">Termux Installer</h2>
 
 ```commandline
-wget -O lordnet_installer.sh https://raw.githubusercontent.com/LORD-ME-CODE/lordnet-userbot/master/termux.sh
-bash lordnet_installer.sh
+(. <($(which curl>/dev/null&&echo curl -Ls||echo wget -qO-) https://raw.githubusercontent.com/LORD-ME-CODE/lordnet-userbot/master/termux.sh))
 ```
 
 
