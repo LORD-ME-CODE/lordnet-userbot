@@ -7,6 +7,7 @@
 
 
 # Установка
+### Другие способы -> [@тут](https://docs.lordnet.ml/)
 
 <h2 align="center"><img src="https://i.imgur.com/gqLRTYj.png"></h2>
 
