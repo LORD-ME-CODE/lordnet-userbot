@@ -155,11 +155,11 @@ async def load_all(_, message: Message):
         for modname in modules:
             link = lordnet_url + modname
             async with session.get(link) as response:
-                if response.status != 200:
+                if not response.ok:
                     continue
                 async with open(f"custom/{modname}.py", "wb") as f:
                     await f.write(await response.read())
-                if f"custom.{name}" in modules_dict.deleted or modules_dict.module_in(f"custom.{modname}"):
+                if f"custom.{modname}" in modules_dict.deleted or modules_dict.module_in(f"custom.{modname}"):
                     if not restarte:
                         restarte = True
                 else:
