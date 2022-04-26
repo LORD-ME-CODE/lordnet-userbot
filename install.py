@@ -1,6 +1,7 @@
 if __name__ == "__main__":
     import sys
     import logging
+    import os
     from threading import Timer
 
     from pyrogram import Client
@@ -101,10 +102,7 @@ if __name__ == "__main__":
                 pass
 
             await client.stop()
-            shutdown_func = request.environ.get("werkzeug.server.shutdown")
-            if shutdown_func is None:
-                raise RuntimeError("Успешная установка!")
-            shutdown_func()
+            os._exit(0)
             return (
                 "<h2>Если вы ввели верный код, то зайдите в консоль и нажмите</h2><br>"
                 "<code>CTRL + C</code><br>А потом напишите<br><code>{}</code>".format(
@@ -114,16 +112,13 @@ if __name__ == "__main__":
 
     @app.errorhandler(500)
     def error_handler(e):
-        try:
-            sys.exit(3)
-        except:
-            return (
-                "<h2>Если вы ввели верный код, то зайдите в консоль и нажмите</h2><br>"
-                "<code>CTRL + C</code><br>А потом напишите<br><code>{}</code>".format(
-                    restart
-                ),
-                200,
-            )
+        return (
+            "<h2>Если вы ввели верный код, то зайдите в консоль и нажмите</h2><br>"
+            "<code>CTRL + C</code><br>А потом напишите<br><code>{}</code>".format(
+                restart
+            ),
+            200,
+        )
 
     print("[+] Запускаю lordnet web...\n")
 

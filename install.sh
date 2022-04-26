@@ -62,7 +62,7 @@ read -r -p "> " install_type
 
 python3 -m pip install aioflask
 
-su -c "python3 install.py ${install_type}" $SUDO_USER || exit 3
+su -c "python3 install.py ${install_type}" $SUDO_USER
 
 case $install_type in
   1)

@@ -47,7 +47,7 @@ EOL
 
 pip3 install aioflask
 
-python3 install.py 3 || exit 3
+python3 install.py 3
 
 echo
 echo "                                      "
