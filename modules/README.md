@@ -4,6 +4,7 @@
 ![GitHub last commit](https://img.shields.io/github/last-commit/LORD-ME-CODE/lordnet-userbot)
 
 ## Оффициальные модули: [@lordnet_modules](https://t.me/lordnet_modules)
+### Документация Python3.9 - https://docs.python.org/3.9/
 
 ```python
 from helper import module, Message
