@@ -111,7 +111,7 @@ if __name__ == "__main__":
 
             await client.stop()
 
-            Timer(1, lambda: os._exit(0))
+            Timer(1, lambda: os._exit(0)).start()
 
             return (
                 "<h2>Успешный вход! Можете вернуться в консоль!</h2><br><br>"
