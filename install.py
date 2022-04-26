@@ -110,15 +110,22 @@ if __name__ == "__main__":
     print("[+] Запускаю lordnet web...\n")
 
     def main():
-        with app.app_context():
-            from aioflask import request
+        import socket
 
-            host = request.host_url
+        try:
+            s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+            s.connect(("10.255.255.255", 1))
+            host = s.getsockname()[0]
+        except Exception:
+            try:
+                host = socket.gethostbyname(socket.gethostname())
+            except Exception:
+                host = socket.gethostbyname(socket.getfqdn())
         print(
             "\n"
             "[!] Успешно запущен lordnet web!\n"
             f"[!] Для продолжения установки\n"
-            f"[+] Перейдите по ссылке: {host}"
+            f"[+] Перейдите по ссылке: {host + ':5000'}"
             f"\n"
         )
         try:
