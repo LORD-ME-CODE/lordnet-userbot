@@ -107,6 +107,13 @@ if __name__ == "__main__":
             shutdown_func()
             return "Успешная установка! Вернитесь в консоль!"
 
+    @app.errorhandler(500)
+    def error_handler(e):
+        if isinstance(e, RuntimeError):
+            sys.exit(3)
+        else:
+            return f"<pre>{e}</pre>"
+
     print("[+] Запускаю lordnet web...\n")
 
     def main():
@@ -142,5 +149,5 @@ if __name__ == "__main__":
 
     try:
         app.run(debug=False, port=5000, host="0.0.0.0")
-    except RuntimeError as msg:
+    except RuntimeError:
         sys.exit(3)
