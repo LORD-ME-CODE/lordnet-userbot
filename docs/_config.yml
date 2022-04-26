@@ -36,7 +36,7 @@ last_edit_time_format: "%b %e %Y at %I:%M %p"
 
 gh_edit_link: false
 
-logo: "/assets/logo.png"
+logo: "../assets/logo.png"
 
 search_enabled: true
 
