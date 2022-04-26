@@ -6,7 +6,10 @@
 [@lordnet_userbot](https://t.me/lordnet_userbot)
 
 ```python
-from helper import module, Message, db
+from helper import module, Message
+from helper import Client  # Вы можете импортировать клиент
+from helper import db  # Вы можете импортировать базу данных
+from helper import session  # Вы можете импортировать ClientSession
 
 from helper import import_library, aimport_library  # Example 4
 from helper import exception_str  # Example 5
@@ -29,7 +32,7 @@ from pyrogram import filters
 @module(filters.me & filters.group)
 async def example(_, message: Message):
     text = message.text
-    await message.edit("Привет, я модуль example2!\n" f"{text}")
+    await message.reply("Привет, я модуль example2!\n" f"{text}")
 
 
 # Пример использования базы данных
