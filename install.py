@@ -106,7 +106,8 @@ if __name__ == "__main__":
     print("[+] Запускаю lordnet web...\n")
 
     def main():
-        host = request.host_url
+        with app.test_request_context():
+            host = request.host_url
         print(
             "\n"
             "[!] Успешно запущен lordnet web!\n"
