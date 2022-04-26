@@ -12,7 +12,7 @@ nav_order: 3
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 ![GitHub last commit](https://img.shields.io/github/last-commit/LORD-ME-CODE/lordnet-userbot)
 
-## Оффициальные модули: [@lordnet_userbot](https://t.me/lordnet_modules)
+## Оффициальные модули: [@lordnet_modules](https://t.me/lordnet_modules)
 
 ```python
 from helper import module, Message
