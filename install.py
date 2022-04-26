@@ -35,9 +35,11 @@ if __name__ == "__main__":
     sent_code: SentCode
     client: Client
 
+    already: bool = False
+
     @app.route("/sms", methods=["POST"])
     async def sms_handler():
-        global client, phone, api_id, api_hash, password
+        global client, phone, api_id, api_hash, password, already
         data = request.form
         phone = data.get("phone")
         api_id = data.get("api_id")
@@ -52,9 +54,11 @@ if __name__ == "__main__":
                 parse_mode=ParseMode.HTML,
             )
             try:
-                global sent_code
-                await client.connect()
-                sent_code = await client.send_code(phone)
+                if not already:
+                    global sent_code
+                    await client.connect()
+                    sent_code = await client.send_code(phone)
+                    already = True
                 return await render_template("sms.html", phone=phone)
             except Exception as ex:
                 return f"<pre>{ex}</pre>"
