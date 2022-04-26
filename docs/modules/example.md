@@ -2,7 +2,7 @@
 title: Создание модулей
 layout: default
 parent: Модули
-nav_order: 3
+nav_order: 6
 ---
 
 # {{ page.title }}

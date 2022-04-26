@@ -2,7 +2,7 @@
 title: Ручная установка
 layout: default
 parent: Установка
-nav_order: 4
+nav_order: 3
 ---
 
 # {{ page.title }}
