@@ -169,8 +169,8 @@ async def load_all(_, message: Message):
                         restarte = True
                 else:
                     load_module(f"custom.{modname}")
-        text = "<b>💪 Все {len(modules)} модулей загружены успешно!</b>\n"
-        text += ", ".join(modules) + '\n'
+        text = f"<b>💪 Все {len(modules)} модулей загружены успешно!</b>\n"
+        text += ", ".join(modules) + "\n"
         if restarte:
             text += "\n🌚 Перезагружаю, потому-что вы уже устанавливали/удаляли какой-то из модулей"
             await message.edit(text)
@@ -249,7 +249,7 @@ async def download_modules(_, message: Message):
                         except Exception as ex:
                             logging.warning(ex)
     text = f"<b>✅ Загружены все <code>{len(count)}</code> модули из zip файла.</b>\n"
-    text += ", ".join(count) + '\n'
+    text += ", ".join(count) + "\n"
     if restarte:
         text += "\n🌚 Перезагружаю, потому-что вы уже устанавливали/удаляли какой-то из модулей"
         await message.edit(text)
