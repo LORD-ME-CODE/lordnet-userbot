@@ -64,6 +64,11 @@ python3 -m pip install aioflask
 
 su -c "python3 install.py ${install_type}" $SUDO_USER
 
+if ! [[ -f "lordnet.session" ]]; then
+  echo "Видимо не удалось установить юзербот..."
+  exit
+fi
+
 case $install_type in
   1)
     if ! command -v pm2; then
