@@ -161,7 +161,6 @@ async def load_all(_, message: Message):
                     continue
                 async with open(f"custom/{modname}.py", "wb") as f:
                     await f.write(await response.read())
-                count.append(modname)
                 if (
                     f"custom.{modname}" in modules_dict.deleted
                     or modules_dict.module_in(f"custom.{modname}")
@@ -170,8 +169,8 @@ async def load_all(_, message: Message):
                         restarte = True
                 else:
                     load_module(f"custom.{modname}")
-        text = "<b>💪 Все {len(count)} модулей загружены успешно!</b>\n"
-        text += ", ".join(count) + '\n'
+        text = "<b>💪 Все {len(modules)} модулей загружены успешно!</b>\n"
+        text += ", ".join(modules) + '\n'
         if restarte:
             text += "\n🌚 Перезагружаю, потому-что вы уже устанавливали/удаляли какой-то из модулей"
             await message.edit(text)
@@ -227,7 +226,7 @@ async def download_modules(_, message: Message):
     restarte = False
     with zipfile.ZipFile("downloads/backup_mods.zip", "r") as zip_ref:
         files = zip_ref.namelist()
-        count = 0
+        count = []
         for file in files:
             if file.endswith(".py"):
                 zip_ref.extract(file, "custom")
