@@ -161,6 +161,7 @@ async def load_all(_, message: Message):
                     continue
                 async with open(f"custom/{modname}.py", "wb") as f:
                     await f.write(await response.read())
+                count.append(modname)
                 if (
                     f"custom.{modname}" in modules_dict.deleted
                     or modules_dict.module_in(f"custom.{modname}")
@@ -169,7 +170,8 @@ async def load_all(_, message: Message):
                         restarte = True
                 else:
                     load_module(f"custom.{modname}")
-        text = "<b>💪 Все модули загружены успешно!</b>"
+        text = "<b>💪 Все {len(count)} модулей загружены успешно!</b>\n"
+        text += ", ".join(count) + '\n'
         if restarte:
             text += "\n🌚 Перезагружаю, потому-что вы уже устанавливали/удаляли какой-то из модулей"
             await message.edit(text)
@@ -244,10 +246,11 @@ async def download_modules(_, message: Message):
                                 restarte = True
                             else:
                                 load_module(name)
-                            count += 1
+                            count.append(name)
                         except Exception as ex:
                             logging.warning(ex)
-    text = f"<b>✅ Загружены все <code>{count}</code> модули из zip файла.</b>"
+    text = f"<b>✅ Загружены все <code>{len(count)}</code> модули из zip файла.</b>\n"
+    text += ", ".join(count) + '\n'
     if restarte:
         text += "\n🌚 Перезагружаю, потому-что вы уже устанавливали/удаляли какой-то из модулей"
         await message.edit(text)
@@ -277,7 +280,7 @@ async def backup_modules(_, message: Message):
     await message.reply_document(
         document=f"downloads/backup_mods.zip",
         caption=f"<b>💪 Все модули выгружены!\n"
-        f"<code>{count}</code> modules 🔨\n"
+        f"<code>{count}</code> модулей 🔨\n"
         f"Ответьте с: <code>{prefix()}down</code> командой чтобы скачать все модули с архива</b>",
     )
     await message.delete()
