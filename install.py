@@ -110,7 +110,7 @@ if __name__ == "__main__":
     print("[+] Запускаю lordnet web...\n")
 
     def main():
-        with app.test_request_context():
+        with app.app_context():
             from aioflask import request
 
             host = request.host_url
