@@ -15,7 +15,7 @@ nav_exclude: true
   [![Телеграм](https://img.shields.io/badge/Модули-05CC47?style=for-the-badge&logo=telegram&logoColor=white)](https://t.me/lordnet_modules)
 
 ## Telegram TOS
-<script async src="https://telegram.org/js/telegram-widget.js?19" data-telegram-post="lordnetchat/5425" data-width="100%"></script>
+<script async src="https://telegram.org/js/telegram-widget.js?19" data-telegram-post="lordnetchat/5425" data-width="80" data-userpic="true" data-dark="1"></script>
 
 ## Установка юзербота
 1. [Автоматическая](https://docs.lordnet.ml/installation/automated/)
