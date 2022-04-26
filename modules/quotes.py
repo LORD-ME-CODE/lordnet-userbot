@@ -66,7 +66,7 @@ async def quote_cmd(client: Client, message: types.Message):
     async with session.post(url, json=params) as response:
         if not response.ok:
             return await message.edit(
-                f"<b>Quotes API ошибка!</b>\n" f"<code>{response.text}</code>"
+                f"<b>Quotes API ошибка!</b>\n" f"<code>{await response.text()}</code>"
             )
         data = BytesIO(await response.read())
         data.name = "quote.png" if is_png else "quote.webp"
@@ -128,7 +128,7 @@ async def fake_quote_cmd(client: Client, message: types.Message):
     async with session.post(url, json=params) as response:
         if not response.ok:
             return await message.edit(
-                f"<b>Quotes API ошибка!</b>\n" f"<code>{response.text}</code>"
+                f"<b>Quotes API ошибка!</b>\n" f"<code>{await response.text()}</code>"
             )
         data = BytesIO(await response.read())
         data.name = "quote.png" if is_png else "quote.webp"
