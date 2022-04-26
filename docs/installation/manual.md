@@ -22,11 +22,12 @@ sudo apt install python3 python3-pip git
 ```
 
 3. Устанавливаем другие пакеты для некоторых модулей (*необязательно*)
+#### Pillow для стикеров и прочего
 ```
-# Pillow для стикеров и прочего
 sudo apt install python3-dev libwebp-dev libz-dev libjpeg-dev libopenjp2-7 libtiff5
-
-# Python opencv для видео-стикеров и прочего
+```
+#### Python opencv для видео-стикеров и прочего
+```
 sudo apt install python3-opencv
 ```
 
@@ -64,9 +65,13 @@ pkg install git python3 libjpeg-turbo zlib libwebp libffi
 git clone https://github.com/LORD-ME-CODE/lordnet-userbot
 cd lordnet-userbot
 pip3 install -r requirements.txt
-# Для преднастроек
+```
+#### Для преднастроек
+```
 python3 install.py 3
-# Для запуска
+```
+#### Для запуска
+```
 python3 run.py
 ```
 
