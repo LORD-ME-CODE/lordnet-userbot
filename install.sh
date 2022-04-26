@@ -60,6 +60,8 @@ echo "[2] Systemd service"
 echo "[3] Custom (default)"
 read -r -p "> " install_type
 
+python3 -m pip install flask
+
 su -c "python3 install.py ${install_type}" $SUDO_USER || exit 3
 
 case $install_type in

@@ -5,5 +5,4 @@ aiohttp
 validators
 aiofile
 GitPython
-pillow
 tgcrypto

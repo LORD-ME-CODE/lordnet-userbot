@@ -45,6 +45,8 @@ API_ID=${api_id}
 API_HASH=${api_hash}
 EOL
 
+pip3 install flask
+
 python3 install.py 3 || exit 3
 
 echo
