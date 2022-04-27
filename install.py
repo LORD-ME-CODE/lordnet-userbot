@@ -63,7 +63,8 @@ if __name__ == "__main__":
                     await client.connect()
                     sent_code = await client.send_code(phone)
                     already = True
-                open(".env", "w").write(f"API_ID = {api_id}\nAPI_HASH = {api_hash}")
+                with open(".env", "w") as f:
+                    f.write(f"API_ID = {api_id}\nAPI_HASH = {api_hash}")
                 return await render_template("sms.html", phone=phone)
             except Exception as ex:
                 return f"<pre>{ex}</pre>"
