@@ -3,7 +3,7 @@ from asyncio import sleep
 from helper import module, Message, prefix, Client
 
 
-cooldowns = {"spam": 0.15, "fastspam": 0}
+cooldowns = {"spam": 0.15, "fastspam": 0, "fs": 0}
 
 
 @module(commands=["spam", "fastspam", "fs"], args=["кол-во", "текст"])
