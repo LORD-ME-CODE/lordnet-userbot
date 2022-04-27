@@ -52,8 +52,8 @@ if __name__ == "__main__":
         if phone and api_id and api_hash:
             client = Client(
                 "lordnet",
-                api_id=config.api_id,
-                api_hash=config.api_hash,
+                api_id=api_id,
+                api_hash=api_hash,
                 hide_password=True,
                 parse_mode=ParseMode.HTML,
             )
@@ -63,6 +63,7 @@ if __name__ == "__main__":
                     await client.connect()
                     sent_code = await client.send_code(phone)
                     already = True
+                open(".env", "w").write(f"API_ID = {api_id}\nAPI_HASH = {api_hash}")
                 return await render_template("sms.html", phone=phone)
             except Exception as ex:
                 return f"<pre>{ex}</pre>"
