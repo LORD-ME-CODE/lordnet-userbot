@@ -18,14 +18,16 @@ async def del_msg(client: Client, message: Message):
 
 @module(cmds="purge", args=["кол-во"], desc="Массовое удаление сообщений")
 async def purge(client: Client, message: Message):
+    await message.edit("🗑️ Происходит удаление...")
     try:
         count = int(message.command[1])
     except IndexError:
         count = 0
     chunk = []
+    xaxa = message.reply_to_message_id + 1 if message.reply_to_message else message.id
     async for msg in client.get_chat_history(
         chat_id=message.chat.id,
-        offset_id=message.reply_to_message_id,
+        offset_id=xaxa,
         limit=count,
     ):
         chunk.append(msg.id)
@@ -36,3 +38,5 @@ async def purge(client: Client, message: Message):
 
     if len(chunk) > 0:
         await client.delete_messages(message.chat.id, chunk)
+
+    await message.edit("🗑️ Удаление завершено!")
