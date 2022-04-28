@@ -13,6 +13,8 @@
 
 from asyncio import sleep
 
+from pyrogram.errors import RPCError
+
 from helper import module, Message, Client
 
 
@@ -41,7 +43,7 @@ async def purge(client: Client, message: Message):
         if count:
             itera = client.get_chat_history(
                 chat_id=message.chat.id,
-                offset_id=message.reply_to_message_id,
+                offset_id=message.reply_to_message_id + 1,
                 limit=count,
             )
         else:
@@ -58,11 +60,17 @@ async def purge(client: Client, message: Message):
     async for msg in itera:
         chunk.append(msg.id)
         if len(chunk) >= 100:
-            await client.delete_messages(message.chat.id, chunk)
+            try:
+                await client.delete_messages(message.chat.id, chunk)
+            except RPCError:
+                pass
             chunk = []
             await sleep(1)
 
     if len(chunk) > 0:
-        await client.delete_messages(message.chat.id, chunk)
+        try:
+            await client.delete_messages(message.chat.id, chunk)
+        except RPCError:
+            pass
 
     await message.edit("🗑️ Удаление завершено!")
