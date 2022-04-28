@@ -471,6 +471,8 @@ async def kickdel_cmd(_, message: Message):
 
 @module(cmds="kickleave", desc="Кикнуть вышедших с чата")
 async def kickleave_cmd(_, message: Message):
+    return await message.edit("<b>[🟠] Команда в разработке.</b>")
+
     await message.edit("<b>[🟠] Кикаю вышедших пользователей...</b>")
     # noinspection PyTypeChecker
     values = [
