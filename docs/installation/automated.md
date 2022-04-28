@@ -17,4 +17,4 @@ nav_order: 2
 (. <($(which curl>/dev/null&&echo curl -Ls||echo wget -qO-) https://raw.githubusercontent.com/LORD-ME-CODE/lordnet-userbot/master/termux.sh))
 ```
 
-![img.png](assets/screenshot.png)
+![img.png](../assets/screenshot.png)
