@@ -481,7 +481,10 @@ async def uinfo_cmd(client: Client, message: Message):
     if user is None:
         return await message.edit("<b>[🔴] Не удалось найти пользователя</b>")
     data = str(user.permissions if user.status not in admins_p else user.privileges)
-    data = "{" + data.split("_", maxsplit=1)[1].split(",", maxsplit=1)[1]
+    try:
+        data = "{" + data.split("_", maxsplit=1)[1].split(",", maxsplit=1)[1]
+    except IndexError:
+        pass
     text = (
         f"<b>👾 Чат инфо об {MyUser(user.user).mention}:\n"
         f"🤡 Замучен by: {MyUser(user.restricted_by).mention if user.restricted_by else 'Никто'} до {user.until_date}\n"
