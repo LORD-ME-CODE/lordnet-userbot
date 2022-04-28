@@ -46,7 +46,7 @@ else
   read -r -p "API_HASH > " api_hash
 fi
 
-cat > .env << EOL
+cat >.env <<EOL
 API_ID=${api_id}
 API_HASH=${api_hash}
 EOL
@@ -70,38 +70,38 @@ if [[ ! -f "lordnet.session" ]]; then
 fi
 
 case $install_type in
-  1)
-    if ! command -v pm2; then
-      curl -fsSL https://deb.nodesource.com/setup_17.x | bash
-      apt install nodejs -y
-      npm install pm2 -g
-      su -c "pm2 startup" $SUDO_USER
-      env PATH=$PATH:/usr/bin /usr/lib/node_modules/pm2/bin/pm2 startup systemd -u $SUDO_USER --hp /home/$SUDO_USER
-    fi
-    su -c "pm2 start run.py --name lordnet --interpreter python3" $SUDO_USER
-    su -c "pm2 save" $SUDO_USER
+1)
+  if ! command -v pm2; then
+    curl -fsSL https://deb.nodesource.com/setup_17.x | bash
+    apt install nodejs -y
+    npm install pm2 -g
+    su -c "pm2 startup" $SUDO_USER
+    env PATH=$PATH:/usr/bin /usr/lib/node_modules/pm2/bin/pm2 startup systemd -u $SUDO_USER --hp /home/$SUDO_USER
+  fi
+  su -c "pm2 start run.py --name lordnet --interpreter python3" $SUDO_USER
+  su -c "pm2 save" $SUDO_USER
 
-    echo
-    echo "                                      "
-    echo "  _               _            _      "
-    echo " | | ___  _ __ __| |_ __   ___| |_    "
-    echo " | |/ _ \| '__/ _' | '_ \ / _ | __|   "
-    echo " | | (_) | | | (_| | | | |  __| |_    "
-    echo " |_|\___/|_|  \__,_|_|_|_|\___|\___   "
-    echo "  _   _ ___  ___ _ __| |__   ___ | |_ "
-    echo "| | | / __|/ _ | '__| '_ \ / _ \| __| "
-    echo "| |_| \__ |  __| |  | |_) | (_) | |_  "
-    echo " \__,_|___/\___|_|  |_.__/ \___/ \__|  "
-    echo "                                      "
-    echo "Отлично! lordnet-userbot установлен успешно!"
-    echo "Тип установки: PM2"
-    echo "Запуск: \"pm2 start lordnet\""
-    echo "Выключить: \"pm2 stop lordnet\""
-    echo "Название процесса: lordnet"
-    echo "============================"
-    ;;
-  2)
-    cat > /etc/systemd/system/lordnet.service << EOL
+  echo
+  echo "                                      "
+  echo "  _               _            _      "
+  echo " | | ___  _ __ __| |_ __   ___| |_    "
+  echo " | |/ _ \| '__/ _' | '_ \ / _ | __|   "
+  echo " | | (_) | | | (_| | | | |  __| |_    "
+  echo " |_|\___/|_|  \__,_|_|_|_|\___|\___   "
+  echo "  _   _ ___  ___ _ __| |__   ___ | |_ "
+  echo "| | | / __|/ _ | '__| '_ \ / _ \| __| "
+  echo "| |_| \__ |  __| |  | |_) | (_) | |_  "
+  echo " \__,_|___/\___|_|  |_.__/ \___/ \__|  "
+  echo "                                      "
+  echo "Отлично! lordnet-userbot установлен успешно!"
+  echo "Тип установки: PM2"
+  echo "Запуск: \"pm2 start lordnet\""
+  echo "Выключить: \"pm2 stop lordnet\""
+  echo "Название процесса: lordnet"
+  echo "============================"
+  ;;
+2)
+  cat >/etc/systemd/system/lordnet.service <<EOL
 [Unit]
 Description=Service for lordnet userbot
 [Service]
@@ -114,46 +114,46 @@ Group=${SUDO_USER}
 [Install]
 WantedBy=multi-user.target
 EOL
-    systemctl daemon-reload
-    systemctl start lordnet
-    systemctl enable lordnet
+  systemctl daemon-reload
+  systemctl start lordnet
+  systemctl enable lordnet
 
-    echo
-    echo "                                      "
-    echo "  _               _            _      "
-    echo " | | ___  _ __ __| |_ __   ___| |_    "
-    echo " | |/ _ \| '__/ _' | '_ \ / _ | __|   "
-    echo " | | (_) | | | (_| | | | |  __| |_    "
-    echo " |_|\___/|_|  \__,_|_|_|_|\___|\___   "
-    echo "  _   _ ___  ___ _ __| |__   ___ | |_ "
-    echo "| | | / __|/ _ | '__| '_ \ / _ \| __| "
-    echo "| |_| \__ |  __| |  | |_) | (_) | |_  "
-    echo " \__,_|___/\___|_|  |_.__/ \___/ \__|  "
-    echo "                                      "
-    echo "Отлично! lordnet-userbot установлен успешно!"
-    echo "Тип установки: Systemd service"
-    echo "Запуск: \"sudo systemctl start lordnet\""
-    echo "Выключить: \"sudo systemctl stop lordnet\""
-    echo "============================"
-    ;;
-  *)
-    echo
-    echo "                                      "
-    echo "  _               _            _      "
-    echo " | | ___  _ __ __| |_ __   ___| |_    "
-    echo " | |/ _ \| '__/ _' | '_ \ / _ | __|   "
-    echo " | | (_) | | | (_| | | | |  __| |_    "
-    echo " |_|\___/|_|  \__,_|_|_|_|\___|\___   "
-    echo "  _   _ ___  ___ _ __| |__   ___ | |_ "
-    echo "| | | / __|/ _ | '__| '_ \ / _ \| __| "
-    echo "| |_| \__ |  __| |  | |_) | (_) | |_  "
-    echo " \__,_|___/\___|_|  |_.__/ \___/ \__|  "
-    echo "                                      "
-    echo "Отлично! lordnet-userbot установлен успешно!"
-    echo "Тип установки: Custom"
-    echo "Запуск: \"python3 run.py\""
-    echo "============================"
-    ;;
+  echo
+  echo "                                      "
+  echo "  _               _            _      "
+  echo " | | ___  _ __ __| |_ __   ___| |_    "
+  echo " | |/ _ \| '__/ _' | '_ \ / _ | __|   "
+  echo " | | (_) | | | (_| | | | |  __| |_    "
+  echo " |_|\___/|_|  \__,_|_|_|_|\___|\___   "
+  echo "  _   _ ___  ___ _ __| |__   ___ | |_ "
+  echo "| | | / __|/ _ | '__| '_ \ / _ \| __| "
+  echo "| |_| \__ |  __| |  | |_) | (_) | |_  "
+  echo " \__,_|___/\___|_|  |_.__/ \___/ \__|  "
+  echo "                                      "
+  echo "Отлично! lordnet-userbot установлен успешно!"
+  echo "Тип установки: Systemd service"
+  echo "Запуск: \"sudo systemctl start lordnet\""
+  echo "Выключить: \"sudo systemctl stop lordnet\""
+  echo "============================"
+  ;;
+*)
+  echo
+  echo "                                      "
+  echo "  _               _            _      "
+  echo " | | ___  _ __ __| |_ __   ___| |_    "
+  echo " | |/ _ \| '__/ _' | '_ \ / _ | __|   "
+  echo " | | (_) | | | (_| | | | |  __| |_    "
+  echo " |_|\___/|_|  \__,_|_|_|_|\___|\___   "
+  echo "  _   _ ___  ___ _ __| |__   ___ | |_ "
+  echo "| | | / __|/ _ | '__| '_ \ / _ \| __| "
+  echo "| |_| \__ |  __| |  | |_) | (_) | |_  "
+  echo " \__,_|___/\___|_|  |_.__/ \___/ \__|  "
+  echo "                                      "
+  echo "Отлично! lordnet-userbot установлен успешно!"
+  echo "Тип установки: Custom"
+  echo "Запуск: \"python3 run.py\""
+  echo "============================"
+  ;;
 esac
 
 chown -R $SUDO_USER:$SUDO_USER .

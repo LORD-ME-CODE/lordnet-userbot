@@ -20,7 +20,17 @@ from pyrogram import Client, errors, types
 from helper import module, session, exception_str, import_library
 
 Image = import_library("PIL.Image", "pillow")
-cv2 = import_library("cv2", "opencv-python")
+try:
+    import psutil
+
+    psutil.cpu_count(logical=True)
+    termux = False
+except OSError:
+    termux = True
+if not termux:
+    cv2 = import_library("cv2", "opencv-python")
+else:
+    cv2 = None
 
 
 @module(cmds=["q", "quote"], args=["reply"], desc="Создать цитату из сообщения")
@@ -177,6 +187,8 @@ async def render_message(app: Client, message: types.Message) -> dict:
         if file_name.endswith(".tgs"):
             return ""
         elif file_name.endswith((".webm", ".gif", ".mp4")):
+            if cv2 is None:
+                return ""
             try:
                 vidcap = cv2.VideoCapture(file_name)
                 _, image = vidcap.read()
