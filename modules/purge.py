@@ -40,24 +40,20 @@ async def purge(client: Client, message: Message):
         count = 0
     chunk = []
     if message.reply_to_message:
-        if count:
-            itera = client.get_chat_history(
-                chat_id=message.chat.id,
-                offset_id=message.reply_to_message_id + 1,
-                limit=count,
-            )
-        else:
-            itera = client.get_chat_history(
-                chat_id=message.chat.id,
-                offset_id=-message.reply_to_message_id,
-                limit=count,
-            )
-    else:
-        itera = client.get_chat_history(
+        iterable = client.get_chat_history(
             chat_id=message.chat.id,
+            offset_id=message.reply_to_message_id + 1
+            if count
+            else -message.reply_to_message_id,
             limit=count,
         )
-    async for msg in itera:
+    else:
+        iterable = client.get_chat_history(
+            chat_id=message.chat.id,
+            limit=count,
+            offset_id=message.id,
+        )
+    async for msg in iterable:
         chunk.append(msg.id)
         if len(chunk) >= 100:
             try:
