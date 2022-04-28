@@ -126,8 +126,8 @@ async def copyuser(client: Client, message: Message):
     await client.update_profile(
         first_name=user.first_name, last_name=user.last_name if user.last_name else " "
     )
-    await client.download_media(user.photo.big_file_id, "downloads/copyuser.jpg")
-    await client.set_profile_photo(photo="downloads/copyuser.jpg")
+    file = await client.download_media(user.photo.big_file_id, in_memory=True)
+    await client.set_profile_photo(photo=file)
 
     await client.send_message(
         "me",
