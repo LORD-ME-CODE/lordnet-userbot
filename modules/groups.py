@@ -535,6 +535,7 @@ async def tmuted_handler(_, message: Message):
         with suppress(RPCError):
             await message.delete()
             await message.chat.ban_member(message.sender_chat.id)
+        return
 
     if db_cache.get(f"antiraid{message.chat.id}", False):
         with suppress(RPCError):
@@ -543,6 +544,7 @@ async def tmuted_handler(_, message: Message):
                 await message.chat.ban_member(message.from_user.id)
             elif message.sender_chat:
                 await message.chat.ban_member(message.sender_chat.id)
+        return
 
     if message.new_chat_members:
         if db_cache.get(f"antiarab{message.chat.id}", False):
