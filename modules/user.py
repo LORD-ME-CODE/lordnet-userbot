@@ -10,8 +10,29 @@
 #
 # 🔒 Licensed under the GNU GPLv3
 # 🌐 https://www.gnu.org/licenses/agpl-3.0.html
+from asyncio import sleep
 
 from helper import module, Message, Client, escape_html
+
+
+async def creation_date(client: Client, user_id: int):
+    """
+    Get user creation date
+    """
+    my_msg = await client.send_message("creationdatebot", f"/id {user_id}")
+    error = True
+    while error:
+        try:
+            msg = await client.get_messages("creationdatebot", my_msg.id + 1)
+            if msg and msg.text:
+                text = msg.text
+                error = False
+            else:
+                continue
+        except ValueError:
+            continue
+        await sleep(0.05)
+    return text
 
 
 @module(
@@ -43,6 +64,7 @@ async def userinfo(client: Client, message: Message):
         "<b>└ 📞 Номер:</b> {}\n"
         "<b>└ 📍 Статус:</b> <u>{}</u>\n"
         "<b>└ 📅 Онлайн:</b> <code>{}</code>\n"
+        "<b>└ 📅 Дата рег:</b> <code>{}</code>\n"
         "<b>└ 🤖 Бот:</b> <code>{}</code>\n"
         "<b>└ 🔨 Ограниченный:</b> <code>{}</code>\n"
         "<b>└ ✅ Верифнутый:</b> <code>{}</code>\n"
@@ -61,6 +83,7 @@ async def userinfo(client: Client, message: Message):
         else "<spoiler>ЛОХ</spoiler>",
         user.status,
         user.last_online_date,
+        await creation_date(client, user.id),
         user.is_bot,
         user.is_restricted,
         user.is_verified,
