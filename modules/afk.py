@@ -45,7 +45,9 @@ async def afk(_, message: Message):
         start = datetime.datetime.fromtimestamp(_afk["start"])
         end = datetime.datetime.now().replace(microsecond=0)
         afk_time = end - start
-        text = "<b>😴 Я AFK сейчас.\n" "Уже прошло: <code>{}</code></b>".format(afk_time)
+        text = (
+            "<b>😴 Я AFK сейчас.\n" "⏳ Уже прошло: <code>{}</code>\n" "Причина: {}</b>"
+        ).format(afk_time, _afk["reason"])
         return await message.reply(text)
 
 

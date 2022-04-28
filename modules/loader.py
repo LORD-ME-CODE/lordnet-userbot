@@ -182,7 +182,8 @@ async def load_all(_, message: Message):
                         restarte = True
                 else:
                     load_module(f"custom.{modname}")
-        text = "<b>💪 Все модули загружены успешно!</b>"
+        text = f"<b>💪 Все {len(modules)} модулей загружены успешно!</b>\n"
+        text += ", ".join(modules) + "\n"
         if restarte:
             text += "\n🌚 Перезагружаю, потому-что вы уже устанавливали/удаляли какой-то из модулей"
             await message.edit(text)
@@ -238,7 +239,7 @@ async def download_modules(_, message: Message):
     restarte = False
     with zipfile.ZipFile("downloads/backup_mods.zip", "r") as zip_ref:
         files = zip_ref.namelist()
-        count = 0
+        count = []
         for file in files:
             if file.endswith(".py"):
                 zip_ref.extract(file, "custom")
@@ -257,10 +258,11 @@ async def download_modules(_, message: Message):
                                 restarte = True
                             else:
                                 load_module(name)
-                            count += 1
+                            count.append(name)
                         except Exception as ex:
                             logging.warning(ex)
-    text = f"<b>✅ Загружены все <code>{count}</code> модули из zip файла.</b>"
+    text = f"<b>✅ Загружены все <code>{len(count)}</code> модули из zip файла.</b>\n"
+    text += ", ".join(count) + "\n"
     if restarte:
         text += "\n🌚 Перезагружаю, потому-что вы уже устанавливали/удаляли какой-то из модулей"
         await message.edit(text)
@@ -290,7 +292,7 @@ async def backup_modules(_, message: Message):
     await message.reply_document(
         document=f"downloads/backup_mods.zip",
         caption=f"<b>💪 Все модули выгружены!\n"
-        f"<code>{count}</code> modules 🔨\n"
+        f"<code>{count}</code> модулей 🔨\n"
         f"Ответьте с: <code>{prefix()}down</code> командой чтобы скачать все модули с архива</b>",
     )
     await message.delete()

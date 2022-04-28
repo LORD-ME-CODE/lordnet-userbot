@@ -14,9 +14,6 @@ nav_exclude: true
   [![Телеграм](https://img.shields.io/badge/Чат-1877F2?style=for-the-badge&logo=telegram&logoColor=white)](https://t.me/lordnetchat)
   [![Телеграм](https://img.shields.io/badge/Модули-05CC47?style=for-the-badge&logo=telegram&logoColor=white)](https://t.me/lordnet_modules)
 
-## Telegram TOS
-<script async src="https://telegram.org/js/telegram-widget.js?19" data-telegram-post="lordnetchat/5425" data-width="100%" data-userpic="true" data-dark="1"></script>
-
 ## Установка юзербота
 1. [Автоматическая](https://docs.lordnet.ml/installation/automated/)
 2. [Вручную](https://docs.lordnet.ml/installation/manual/)
@@ -30,3 +27,7 @@ nav_exclude: true
 
 4. Наш репозиторий на GitHub: [@lordnet-userbot](https://github.com/LORD-ME-CODE/lordnet-userbot)
 5. Core Dev: [@LORD-ME-CODE](https://github.com/LORD-ME-CODE)
+
+
+## Telegram TOS
+<script async src="https://telegram.org/js/telegram-widget.js?19" data-telegram-post="lordnetchat/5425" data-width="100%" data-userpic="true" data-dark="1"></script>

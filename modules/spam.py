@@ -13,14 +13,14 @@
 
 from asyncio import sleep
 
-from helper import module, Message, prefix
+from helper import module, Message, prefix, Client
 
 
-cooldowns = {"spam": 0.15, "fastspam": 0}
+cooldowns = {"spam": 0.15, "fastspam": 0, "fs": 0}
 
 
-@module(commands=["spam", "fastspam"], args=["кол-во", "текст"])
-async def spam_cmd(_, message: Message):
+@module(commands=["spam", "fastspam", "fs"], args=["кол-во", "текст"])
+async def spam_cmd(client: Client, message: Message):
     cmd = message.command[0]
 
     if len(message.command) < 3:
@@ -36,12 +36,17 @@ async def spam_cmd(_, message: Message):
     cooldown = cooldowns[cmd]
 
     text = message.text.split(maxsplit=2)[2]
-    reply = message.reply_to_message.id if message.reply_to_message else None
+    reply = message.reply_to_message_id
+    chat_id = message.chat.id
 
     if cooldown:
         for _ in range(int(message.command[1])):
-            await message.reply(text=text, reply_to_message_id=reply)
+            await client.send_message(
+                chat_id=chat_id, text=text, reply_to_message_id=reply
+            )
             await sleep(cooldown)
     else:
         for _ in range(int(message.command[1])):
-            await message.reply(text=text, reply_to_message_id=reply)
+            await client.send_message(
+                chat_id=chat_id, text=text, reply_to_message_id=reply
+            )
