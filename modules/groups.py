@@ -13,13 +13,13 @@
 
 import re
 from contextlib import suppress
-from datetime import datetime
+from datetime import datetime, timedelta
 from typing import Any
 
 from pyrogram import ContinuePropagation, filters
-from pyrogram.enums import MessageEntityType
+from pyrogram.enums import MessageEntityType, ChatMembersFilter, ChatMemberStatus
 from pyrogram.errors import UserAdminInvalid, ChatAdminRequired, RPCError
-from pyrogram.types import ChatPermissions, ChatPrivileges
+from pyrogram.types import ChatPermissions, ChatPrivileges, ChatMember
 
 from helper import module, Message, db, Client, escape_html, import_library
 from time import time as unixtime_1
@@ -31,6 +31,7 @@ def unixtime() -> int:
 
 class MyUser:
     def __init__(self, user: Any):
+        self.user = user
         self.id: int = user.id
         self.username: str = user.username
         self.first_name: str = escape_html(user.first_name)
@@ -42,6 +43,10 @@ class MyUser:
             else f"""<a href='{user.invite_link if user.invite_link else f"tg://openmessage?chat_id={user.id}"}'>
 {user.first_name}</a>"""
         )
+
+    @property
+    def last_name(self):
+        return escape_html(self.user.last_name)
 
 
 db_cache: dict = db.get_collection()
@@ -56,7 +61,9 @@ def user_is_tmuted(chat_id: int, user_id: int) -> bool:
     return user_id in db_cache.get(f"{chat_id}_tmutes", [])
 
 
-async def find_user_in_message(client: Client, message: Message):
+async def find_user_in_message(
+    client: Client, message: Message, chat_member: bool = False
+):
     args = message.text.split()
     if message.reply_to_message and message.reply_to_message.from_user:
         user = message.reply_to_message.from_user
@@ -101,6 +108,8 @@ async def find_user_in_message(client: Client, message: Message):
     else:
         await message.edit("<b>🧭 Не удалось найти пользователя в вашем сообщении</b>")
         raise ContinuePropagation
+    if chat_member:
+        return await message.chat.get_member(user.id)
     return MyUser(user), text
 
 
@@ -429,6 +438,63 @@ async def welcome_cmd(_: Client, message: Message):
     )
 
 
+@module(cmds="kickdel", desc="Кикнуть удаленные аккаунты с чата")
+async def kickdel_cmd(_, message: Message):
+    await message.edit("<b>[🔴] Кикаю удалённые аккаунты...</b>")
+    # noinspection PyTypeChecker
+    values = [
+        await message.chat.ban_member(
+            user.user.id, datetime.now() + timedelta(seconds=31)
+        )
+        async for user in message.chat.get_members()
+        if user.user.is_deleted
+    ]
+    await message.edit(
+        f"<b>[🔴] Вы успешно кикнули {len(values)} удаленных пользователей</b>"
+    )
+
+
+@module(cmds="kickleave", desc="Кикнуть вышедших с чата")
+async def kickleave_cmd(_, message: Message):
+    await message.edit("<b>[🟠] Кикаю вышедших пользователей...</b>")
+    # noinspection PyTypeChecker
+    values = [
+        await message.chat.ban_member(
+            user.user.id, datetime.now() + timedelta(seconds=31)
+        )
+        async for user in message.chat.get_members()
+        if user.status == ChatMemberStatus.LEFT
+    ]
+    await message.edit(
+        f"<b>[🟠] Вы успешно кикнули {len(values)} вышедших пользователей</b>"
+    )
+
+
+admins_p = [ChatMemberStatus.ADMINISTRATOR, ChatMemberStatus.OWNER]
+
+
+@module(
+    cmds="cinfo", desc="Показать чат информацию о пользователе", args=["reply/user"]
+)
+async def uinfo_cmd(client: Client, message: Message):
+    user: ChatMember = await find_user_in_message(client, message, True)
+    if user is None:
+        return await message.edit("<b>[🔴] Не удалось найти пользователя</b>")
+    data = str(user.permissions if user.status not in admins_p else user.privileges)
+    data = "{" + data.split("_", maxsplit=1)[1].split(",", maxsplit=1)[1]
+    text = (
+        f"<b>👾 Чат инфо об {MyUser(user.user).mention}:\n"
+        f"🤡 Замучен by: {MyUser(user.restricted_by).mention if user.restricted_by else 'Никто'} до {user.until_date}\n"
+        f"🥝 Приглашён by: {MyUser(user.invited_by).mention if user.invited_by else 'Никто'}\n"
+        f"📅 Зашёл в чат: {user.joined_date}\n"
+        f"\n"
+        f"🈸 Разрешения: <code>"
+        f"{data}"
+        f"</code>\n</b>"
+    )
+    await message.edit(text=text)
+
+
 @module(filters.group & ~filters.me)
 async def tmuted_handler(_, message: Message):
     if user_is_tmuted(
@@ -451,7 +517,10 @@ async def tmuted_handler(_, message: Message):
             with suppress(RPCError):
                 for user in message.new_chat_members:
                     DetectorFactory.seed = 0
-                    if detect(user.first_name + " " + user.last_name) == "ar":
+                    if (
+                        detect(user.first_name) == "ar"
+                        or detect(str(user.last_name)) == "ar"
+                    ):
                         with suppress(RPCError):
                             await message.chat.ban_member(user.id)
         else:
