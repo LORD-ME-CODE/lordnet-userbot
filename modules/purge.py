@@ -33,7 +33,7 @@ async def del_msg(client: Client, message: Message):
 
 @module(cmds="purge", args=["кол-во"], desc="Массовое удаление сообщений")
 async def purge(client: Client, message: Message):
-    await message.edit("🗑️ Происходит удаление...")
+    await message.edit("<b>🗑️ Происходит удаление...</b>")
     try:
         count = int(message.command[1])
     except IndexError:
@@ -53,8 +53,10 @@ async def purge(client: Client, message: Message):
             limit=count,
             offset_id=message.id,
         )
+    counted = 0
     async for msg in iterable:
         chunk.append(msg.id)
+        counted += 1
         if len(chunk) >= 100:
             try:
                 await client.delete_messages(message.chat.id, chunk)
@@ -69,4 +71,4 @@ async def purge(client: Client, message: Message):
         except RPCError:
             pass
 
-    await message.edit("🗑️ Удаление завершено!")
+    await message.edit(f"<b>🗑️ Удаление завершено, удалено {counted} сообщений!</b>")
