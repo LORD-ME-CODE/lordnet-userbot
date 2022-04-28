@@ -10,6 +10,7 @@ pkg install python3 git libjpeg-turbo zlib libwebp libffi -y || exit 2
 
 python3 -m pip install -U pip
 LDFLAGS="-L${PREFIX}/lib/" CFLAGS="-I${PREFIX}/include/" pip3 install --upgrade wheel pillow
+python3 -m pip install -U opencv-python
 
 if [[ -d "lordnet-userbot" ]]; then
   cd lordnet-userbot
