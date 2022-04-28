@@ -420,6 +420,21 @@ async def antiarab_cmd(_: Client, message: Message):
 
 
 @module(
+    cmds=["antich", "antichannel"],
+    desc="Анти-каналы в чате (вкл/выкл)",
+)
+async def antichannel_cmd(_: Client, message: Message):
+    now = not db_cache.get(f"antichannel{message.chat.id}", False)
+    db_cache[f"antichannel{message.chat.id}"] = now
+    db.set(f"antichannel{message.chat.id}", now)
+    return await message.edit(
+        "<b>🦎 Вы успешно выключили Анти-каналы в чате</b>"
+        if not now
+        else "<b>🦎 Вы успешно включили Анти-каналы в чате</b>"
+    )
+
+
+@module(
     cmds="welcome",
     desc="Включить/выключить приветствие",
     args=["текст/off"],
@@ -515,6 +530,11 @@ async def tmuted_handler(_, message: Message):
     ):
         with suppress(RPCError):
             await message.delete()
+
+    if db_cache.get(f"antichannel{message.chat.id}", False) and message.sender_chat:
+        with suppress(RPCError):
+            await message.delete()
+            await message.chat.ban_member(message.sender_chat.id)
 
     if db_cache.get(f"antiraid{message.chat.id}", False):
         with suppress(RPCError):
