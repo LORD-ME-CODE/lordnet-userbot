@@ -17,6 +17,8 @@ import os
 from importlib import import_module
 from pathlib import Path
 
+from threading import Thread
+
 import pyrogram
 from pyrogram.handlers import MessageHandler
 from helper.misc import modules_dict, prefix
@@ -157,39 +159,55 @@ def module(*filters, **params):
     return sub_decorator
 
 
+def _preload_module(path, is_basic: bool = False):
+    global imported, exceptions
+
+    module_path = ".".join(path.parent.parts + (path.stem,))
+    try:
+        if is_basic:
+            import_module(module_path)
+            modules_dict[module_path]["made_by"] = "@lordnet_userbot"
+        else:
+            load_module(module_path)
+        imported += 1
+    except Exception as e:
+        exceptions += 1
+        logging.warning(
+            f"Не удалось импортировать {module_path}: {e.__class__.__name__}: {e}"
+        )
+
+
+imported, exceptions = 0, 0
+
+
 def load_modules(loop=None):
+    global imported, exceptions
+
+    logging.info("[_] Загружаю модули...")
+
     if loop:
         asyncio.set_event_loop(loop)
 
+    preloads = []
+
+    for path in Path("modules").rglob("*.py"):
+        pre = Thread(target=_preload_module, args=(path, True))
+        pre.start()
+        preloads.append(pre)
+
+    for path in Path("custom").rglob("*.py"):
+        pre = Thread(target=_preload_module, args=(path,))
+        pre.start()
+        preloads.append(pre)
+
+    for pre in preloads:
+        pre.join()
+
+    logging.info(f"[+] Загружено {imported} модулей!")
     imported = 0
-    exceptions = 0
-
-    for path in sorted(sorted((Path("modules")).rglob("*.py")), key=os.path.getmtime):
-        module_path = ".".join(path.parent.parts + (path.stem,))
-        try:
-            import_module(module_path)
-            modules_dict[module_path]["made_by"] = "@lordnet_userbot"
-            imported += 1
-        except Exception as e:
-            exceptions += 1
-            logging.warning(
-                f"Не удалось импортировать {module_path}: {e.__class__.__name__}: {e}"
-            )
-
-    for path in sorted(sorted((Path("custom")).rglob("*.py")), key=os.path.getmtime):
-        module_path = ".".join(path.parent.parts + (path.stem,))
-        try:
-            load_module(module_path)
-            imported += 1
-        except Exception as e:
-            exceptions += 1
-            logging.warning(
-                f"Не удалось импортировать {module_path}: {e.__class__.__name__}: {e}"
-            )
-
-    logging.info(f"Загружено {imported} модулей")
     if exceptions:
-        logging.warning(f"{exceptions} модулей не удалось загрузить")
+        logging.warning(f"[-] {exceptions} модулей не удалось загрузить!")
+        exceptions = 0
 
 
 def load_module(module_name: str):

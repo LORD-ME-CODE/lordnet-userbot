@@ -82,7 +82,7 @@ if __name__ == "__main__":
         if restart_type == "1":
             text = "<b>💚 lordnet обновлён успешно!</b>"
         else:
-            text = "<b>😋 Перезагрузка прошла успешно!</b>"
+            text = "<b>⚡ Перезагрузка прошла успешно!</b>"
         try:
             app.send_message(
                 chat_id=sys.argv[1], text=text, reply_to_message_id=int(sys.argv[2])
@@ -90,6 +90,6 @@ if __name__ == "__main__":
         except errors.RPCError:
             app.send_message(chat_id=sys.argv[1], text=text)
 
-    logging.info("lordnet-userbot запущен!")
+    logging.info("[+] lordnet-userbot запущен!")
 
     idle()
