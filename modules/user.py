@@ -131,7 +131,8 @@ async def copyuser(client: Client, message: Message):
 
     await client.send_message(
         "me",
-        f"<b>📸 Успешно скопирован юзер {user.mention} аватарка и информация</b>",
+        f"<b>📸 Успешно скопирован юзер {'@' + user.username if user.username else user.mention}"
+        f" аватарка и информация</b>",
     )
 
 
