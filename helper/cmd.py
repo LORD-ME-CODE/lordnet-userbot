@@ -19,8 +19,7 @@ import sys
 import inspect
 import traceback
 from types import ModuleType
-from pyrogram import errors, types
-from . import modules_dict
+from pyrogram import errors
 
 
 def restart():
