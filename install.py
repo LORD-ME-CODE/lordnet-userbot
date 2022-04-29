@@ -23,7 +23,7 @@ if __name__ == "__main__":
     from pyrogram.types import SentCode
 
     import config
-    from aioflask import Flask, render_template, request
+    from flask import Flask, render_template, request
 
     install_type = sys.argv[1] if len(sys.argv) > 1 else "3"
     if install_type == "1":
@@ -40,8 +40,8 @@ if __name__ == "__main__":
         return app.send_static_file("lordnet.ico")
 
     @app.route("/", methods=["POST", "GET"])
-    async def index():
-        return await render_template(
+    def index():
+        return render_template(
             "install.html", api_id=config.api_id, api_hash=config.api_hash
         )
 
@@ -55,7 +55,7 @@ if __name__ == "__main__":
     already: bool = False
 
     @app.route("/sms", methods=["POST"])
-    async def sms_handler():
+    def sms_handler():
         global client, phone, api_id, api_hash, password, already
         data = request.form
         phone = data.get("phone")
@@ -73,23 +73,23 @@ if __name__ == "__main__":
             try:
                 if not already:
                     global sent_code
-                    await client.connect()
-                    sent_code = await client.send_code(phone)
+                    client.connect()
+                    sent_code = client.send_code(phone)
                     already = True
                 with open(".env", "w") as f:
                     f.write(f"API_ID = {api_id}\nAPI_HASH = {api_hash}")
-                return await render_template("sms.html", phone=phone)
+                return render_template("sms.html", phone=phone)
             except Exception as ex:
                 return f"<pre>{ex}</pre>"
 
     @app.route("/code", methods=["POST"])
-    async def code_handler():
+    def code_handler():
         code = request.form.get("code")
         try:
-            signed_id = await client.sign_in(phone, sent_code.phone_code_hash, code)
+            signed_id = client.sign_in(phone, sent_code.phone_code_hash, code)
         except SessionPasswordNeeded:
             try:
-                signed_id = await client.check_password(password)
+                signed_id = client.check_password(password)
                 if not signed_id:
                     raise Exception("Not signed in")
             except Exception as ex:
@@ -97,36 +97,37 @@ if __name__ == "__main__":
         except Exception as ex:
             return f"<pre>{ex}</pre>"
 
-        await client.disconnect()
+        client.disconnect()
 
         if not signed_id:
             return f"<pre>Not signed in</pre>"
         else:
-            await client.start()
+            client.start()
             # noinspection PyPep8
             try:
                 text = (
                     '<b><a href="https://t.me/lordnet_userbot">✉ lordnet-userbot</a> download success:\n\n'
                     f"🎲 Модули: @lordnet_modules\n"
-                    f"📃 Лицензия: <a href='https://github.com/LORD-ME-CODE/lordnet-userbot/blob/main/LICENSE'>GNU v3.0</a>\n"
+                    f"📃 Лицензия: <a href='https://github.com/LORD-ME-CODE/lordnet-userbot/blob/main/LICENSE'>"
+                    f"GNU v3.0</a>\n"
                     f"☛ Репо: <a href='https://github.com/LORD-ME-CODE/lordnet-userbot'>lordnet-userbot</a>\n\n"
                     f"☛ Канал: @lordnet_userbot\n"
                     f"☛ Чат: @lordnetchat\n"
                     f"☛ Кодер: @lord_code</b>\n"
                     f"☛ Используйте для старта:\n<code>{restart}</code></b>"
                 )
-                await client.send_message("me", text.format(restart))
+                client.send_message("me", text.format(restart))
                 try:
-                    await client.join_chat("lordnet_userbot")
-                    await client.join_chat("lordnetchat")
+                    client.join_chat("lordnet_userbot")
+                    client.join_chat("lordnetchat")
                 except RPCError:
                     pass
             except RPCError:
                 pass
 
-            await client.stop()
+            client.stop()
 
-            Timer(1, lambda: os._exit(0)).start()
+            Timer(1.25, lambda: os._exit(0)).start()
 
             return (
                 "<h2>Успешный вход! Можете вернуться в консоль!</h2><br><br>"
@@ -160,11 +161,12 @@ if __name__ == "__main__":
                     host = socket.gethostbyname(socket.getfqdn())
                 except Exception:
                     host = "localhost"
+        host += ":5000"
         print(
             "\n"
             "[!] Успешно запущен lordnet web!\n"
             f"[!] Для продолжения установки\n"
-            f"[+] Перейдите по ссылке: http://{host + ':5000'}"
+            f"[+] Перейдите по ссылке: http://{host}"
             f"\n"
         )
         try:

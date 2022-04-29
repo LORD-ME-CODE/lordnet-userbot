@@ -55,7 +55,7 @@ echo "[2] Systemd service"
 echo "[3] Custom (default)"
 read -r -p "> " install_type
 
-python3 -m pip install aioflask
+python3 -m pip install flask
 
 python3 install.py $install_type
 
