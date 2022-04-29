@@ -133,9 +133,7 @@ dmypy.json
 .pyre/
 
 # Other
-/lordnet.session
-/lordnet.sqlite3
-/lordnet.session-journal
+/lordnet.*
 custom/
 /upload.py
 /upload.cmd
