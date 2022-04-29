@@ -12,7 +12,7 @@
 # 🌐 https://www.gnu.org/licenses/agpl-3.0.html
 
 from .module import module, modules_dict, module_exists, escape_html
-from .cmd import restart, import_library, aimport_library, exception_str
+from .cmd import restart, import_library, aimport_library, exception_str, answer
 from .misc import python_version, prefix, __version__, session
 from .db import db
 
