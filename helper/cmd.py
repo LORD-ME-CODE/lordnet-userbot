@@ -116,14 +116,3 @@ async def aimport_library(library_name: str, package_name: str = None):
         assert completed.returncode == 0, "library install failed"
         modules_[library_name] = importlib.import_module(library_name)
         return modules_[library_name]
-
-
-async def answer(message: types.Message, text: str):
-    try:
-        await message.edit(
-            text
-        ) if message.from_user.username == modules_dict.client.username else await message.reply(
-            text
-        )
-    except errors.MessageIdInvalid:
-        await message.reply(text)

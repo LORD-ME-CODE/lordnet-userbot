@@ -19,6 +19,7 @@ from pathlib import Path
 from threading import Thread
 
 import pyrogram
+from pyrogram.errors import MessageIdInvalid
 from pyrogram.handlers import MessageHandler
 from helper.misc import modules_dict, prefix
 from helper.misc import session, lordnet_url
@@ -242,3 +243,14 @@ async def module_exists(module_name: str):
 
 def escape_html(text: Any) -> str:
     return str(text).replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+
+
+async def answer(message: pyrogram.types.Message, text: str):
+    try:
+        await message.edit(
+            text
+        ) if message.from_user.username == modules_dict.client.username else await message.reply(
+            text
+        )
+    except MessageIdInvalid:
+        await message.reply(text)
