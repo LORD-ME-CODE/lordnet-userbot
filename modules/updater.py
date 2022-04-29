@@ -43,14 +43,8 @@ async def restart_cmd(_, message: Message):
 
 @module(commands=["update"], desc="Обновить lordnet-userbot")
 async def update_cmd(_, message: Message):
-    await message.edit("<b>👩‍🚀 Обновляю pip...</b> (<code>25%</code>)")
+    await message.edit("<b>👩‍🚀 Обновляю pip...</b> (<code>45%</code>)")
     subprocess.run([sys.executable, "-m", "pip", "install", "-U", "pip"])
-    await message.edit(
-        "<b>👩‍🚀 Обновляю setuptools и wheel...</b>" " (<code>50%</code>)"
-    )
-    subprocess.run(
-        [sys.executable, "-m", "pip", "install", "-U", "setuptools", "wheel"]
-    )
     await message.edit("<b>👩‍🚀 Обновляю юзербот с гитхаба...</b>" " (<code>75%</code>)")
     subprocess.run(["git", "pull"])
     await message.edit(
