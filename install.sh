@@ -4,17 +4,12 @@ if command -v termux-setup-storage; then
   exit 1
 fi
 
-if [[ $UID != 0 ]]; then
-  echo Please run this script as root
-  exit 1
-fi
-
 apt update -y
 apt install python3 python3-pip git python3-dev libwebp-dev libz-dev libjpeg-dev libopenjp2-7 libtiff5 python3-opencv -y || exit 2
 
-su -c "python3 -m pip install -U pip" $SUDO_USER
-su -c "python3 -m pip install -U setuptools wheel" $SUDO_USER
-su -c "python3 -m pip install -U pillow opencv-python" $SUDO_USER
+python3 -m pip install -U pip
+python3 -m pip install -U setuptools wheel
+python3 -m pip install -U pillow opencv-python
 
 if [[ -d "lordnet-userbot" ]]; then
   # shellcheck disable=SC2164
@@ -31,7 +26,7 @@ if [[ -f ".env" ]] && [[ -f "lordnet.session" ]]; then
   exit
 fi
 
-su -c "python3 -m pip install -U -r requirements.txt" $SUDO_USER || exit 2
+python3 -m pip install -U -r requirements.txt || exit 2
 
 echo
 echo "Введите API_ID и API_HASH"
@@ -62,7 +57,7 @@ read -r -p "> " install_type
 
 python3 -m pip install aioflask
 
-su -c "python3 install.py ${install_type}" $SUDO_USER
+python3 install.py $install_type
 
 if [[ ! -f "lordnet.session" ]]; then
   echo "Видимо не удалось установить юзербот..."
@@ -75,11 +70,11 @@ case $install_type in
     curl -fsSL https://deb.nodesource.com/setup_17.x | bash
     apt install nodejs -y
     npm install pm2 -g
-    su -c "pm2 startup" $SUDO_USER
+    pm2 startup
     env PATH=$PATH:/usr/bin /usr/lib/node_modules/pm2/bin/pm2 startup systemd -u $SUDO_USER --hp /home/$SUDO_USER
   fi
-  su -c "pm2 start run.py --name lordnet --interpreter python3" $SUDO_USER
-  su -c "pm2 save" $SUDO_USER
+  pm2 start run.py --name lordnet --interpreter python3
+  pm2 save
 
   echo
   echo "                                      "
@@ -156,4 +151,4 @@ EOL
   ;;
 esac
 
-chown -R $SUDO_USER:$SUDO_USER .
+chown -R $SUDO_USER:$SUDO_USER . || exit 1
