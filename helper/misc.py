@@ -101,7 +101,7 @@ c_date = git.head.object.committed_datetime
 base_link = "https://github.com/LORD-ME-CODE/lordnet-userbot"
 build_link = base_link + "/commit/{}".format(c_hexed)
 
-_prefix_ = db.get("prefix", ",")
+_prefix_ = db.get("prefix", ".")
 
 
 def prefix():
