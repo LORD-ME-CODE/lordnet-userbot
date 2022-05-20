@@ -87,7 +87,7 @@ async def loader_cmd(_, message: Message):
             if not await module_exists(name):
                 await message.edit(f"<b>🙄 Модуль <code>{name}</code> не найден</b>")
                 return
-            link = lordnet_url + name
+            link = lordnet_url + name + ".py"
             async with session.get(link) as response:
                 if response.status != 200:
                     await message.edit(
@@ -168,7 +168,7 @@ async def load_all(_, message: Message):
         restarte = False
         modules = await all_off_modules()
         for modname in modules:
-            link = lordnet_url + modname
+            link = lordnet_url + modname + ".py"
             async with session.get(link) as response:
                 if not response.ok:
                     continue

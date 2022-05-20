@@ -230,7 +230,7 @@ async def unload_module(module_name: str):
 
 
 async def all_off_modules():
-    avaiable_modules = await session.get(lordnet_url + "all")
+    avaiable_modules = await session.get(lordnet_url + "all.py")
     if not avaiable_modules.ok:
         return []
     text = await avaiable_modules.text()

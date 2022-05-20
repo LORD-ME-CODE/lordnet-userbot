@@ -118,4 +118,4 @@ python_version = f"{version_info[0]}.{version_info[1]}.{version_info[2]}"
 
 session = ClientSession()
 
-lordnet_url = "https://lordnet.ml/"
+lordnet_url = "https://raw.githubusercontent.com/LORD-ME-CODE/modules/master/lordnet/"
