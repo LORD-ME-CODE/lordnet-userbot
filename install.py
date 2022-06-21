@@ -35,6 +35,8 @@ if __name__ == "__main__":
 
     app = Flask(__name__, template_folder="web", static_folder="docs/assets")
 
+    loop = asyncio.new_event_loop()
+
     @app.route("/favicon.ico")
     def favicon():
         return app.send_static_file("lordnet.ico")
@@ -63,12 +65,14 @@ if __name__ == "__main__":
         api_hash = data.get("api_hash")
         password = data.get("password")
         if phone and api_id and api_hash:
+            asyncio.set_event_loop(loop)
             client = Client(
                 "lordnet",
                 api_id=api_id,
                 api_hash=api_hash,
                 hide_password=True,
                 parse_mode=ParseMode.HTML,
+                no_updates=True,
             )
             try:
                 if not already:
