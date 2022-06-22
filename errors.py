@@ -61,7 +61,7 @@ def get_error(error: Exception, message: Message):
     return txt
 
 
-async def error_handler_sync(_, error: Exception, message: Message):
+def error_handler_sync(_, error: Exception, message: Message):
     txt = get_error(error, message)
     try:
         return message.edit(txt)
