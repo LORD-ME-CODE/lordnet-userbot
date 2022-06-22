@@ -90,6 +90,8 @@ if __name__ == "__main__":
     @app.route("/code", methods=["POST"])
     def code_handler():
         code = request.form.get("code")
+        asyncio.set_event_loop(loop)
+
         try:
             signed_id = client.sign_in(phone, sent_code.phone_code_hash, code)
         except SessionPasswordNeeded:
