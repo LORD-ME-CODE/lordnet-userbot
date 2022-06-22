@@ -121,7 +121,7 @@ async def copyuser(client: Client, message: Message):
         first_name = me.first_name
         last_name = me.last_name
         if not last_name:
-        	last_name = ""
+            last_name = ""
         photo_id = me.photo.big_file_id
         await client.download_media(photo_id, "downloads/copyuser_me.jpg")
 
