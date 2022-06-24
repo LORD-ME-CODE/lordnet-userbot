@@ -249,7 +249,7 @@ async def answer(message: pyrogram.types.Message, text: str):
     try:
         await message.edit(
             text
-        ) if message.from_user.username == modules_dict.client.username else await message.reply(
+        ) if message.from_user.id == modules_dict.client.me.id else await message.reply(
             text
         )
     except MessageIdInvalid:
